@@ -39,7 +39,7 @@ const OrderDetailsContainer: FC<RouteComponentProps<
           <OrderStatusCard status={order.status} />
           <IonList>
             <IonItemGroup>
-              <IonItemDivider>
+              <IonItemDivider color="primary">
                 <IonLabel>Items</IonLabel>
               </IonItemDivider>
               {order.orderItems.map((item) => (
@@ -55,7 +55,7 @@ const OrderDetailsContainer: FC<RouteComponentProps<
               ))}
             </IonItemGroup>
             <IonItemGroup>
-              <IonItemDivider>
+              <IonItemDivider color="primary">
                 <IonLabel>Summary</IonLabel>
               </IonItemDivider>
               <IonItem>
