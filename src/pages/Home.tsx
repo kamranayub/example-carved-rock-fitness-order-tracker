@@ -7,7 +7,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { RouteComponentProps } from "react-router";
-import IdeasContainer from "../components/IdeasContainer";
+import OrdersContainer from "../components/OrdersContainer";
 import "./Home.css";
 
 const Home: React.FC<RouteComponentProps> = (props) => {
@@ -24,7 +24,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
             <IonTitle size="large">Order Tracker</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IdeasContainer {...props} />
+        <OrdersContainer {...props} />
       </IonContent>
     </IonPage>
   );
