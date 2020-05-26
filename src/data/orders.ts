@@ -38,7 +38,7 @@ const orders: Order[] = [
         image: "",
       },
       {
-        productId: 900,
+        productId: 901,
         productName: "Backpacker's Guide to Colorado Hiking Trails",
         price: 21,
         qty: 1,

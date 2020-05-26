@@ -43,7 +43,7 @@ const OrderDetailsContainer: FC<RouteComponentProps<
                 <IonLabel>Items</IonLabel>
               </IonItemDivider>
               {order.orderItems.map((item) => (
-                <IonItem>
+                <IonItem key={item.productId}>
                   <IonLabel>
                     <h2>{item.productName}</h2>
                     <IonNote>Quantity: {item.qty}</IonNote>

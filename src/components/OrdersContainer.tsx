@@ -37,7 +37,7 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
       </IonRefresher>
       <IonList>
         {orders.map((order) => (
-          <IonItem button onClick={() => props.history.push('/orders/' + order.id)}>
+          <IonItem key={order.id} button onClick={() => props.history.push('/orders/' + order.id)}>
             <IonLabel>
               <h1>Order #{order.id}</h1>
               <IonNote>
