@@ -15,13 +15,13 @@ const Home: React.FC<RouteComponentProps> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Order Tracker</IonTitle>
+          <IonTitle>My Orders</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Order Tracker</IonTitle>
+            <IonTitle size="large">My Orders</IonTitle>
           </IonToolbar>
         </IonHeader>
         <OrdersContainer {...props} />
