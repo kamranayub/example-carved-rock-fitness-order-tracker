@@ -1,9 +1,16 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import React from 'react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Home.css';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import React from "react";
+import { RouteComponentProps } from "react-router";
+import IdeasContainer from "../components/IdeasContainer";
+import "./Home.css";
 
-const Home: React.FC = () => {
+const Home: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
       <IonHeader>
@@ -17,7 +24,7 @@ const Home: React.FC = () => {
             <IonTitle size="large">Order Tracker</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer />
+        <IdeasContainer {...props} />
       </IonContent>
     </IonPage>
   );
