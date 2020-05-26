@@ -15,6 +15,8 @@ import { getOrders } from "../data/orders";
 import OrderStatusBadge from "./OrderStatusBadge";
 import Amount from "./Amount";
 
+import "./OrdersContainer.css";
+
 export const OrdersContainer: FC<RouteComponentProps> = (props) => {
   const { data: orders = [], status, refetch } = useQuery("orders", getOrders);
   const refreshOrders = useCallback(
@@ -37,9 +39,13 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
       </IonRefresher>
       <IonList>
         {orders.map((order) => (
-          <IonItem key={order.id} button onClick={() => props.history.push('/orders/' + order.id)}>
+          <IonItem
+            key={order.id}
+            button
+            onClick={() => props.history.push("/orders/" + order.id)}
+          >
             <IonLabel>
-              <h1>Order #{order.id}</h1>
+              <h1 className="orders-heading">Order #{order.id}</h1>
               <IonNote>
                 {order.orderItems.length} items &bull;{" "}
                 <Amount amount={order.total} />

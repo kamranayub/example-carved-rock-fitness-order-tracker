@@ -8,9 +8,9 @@ import {
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import OrdersContainer from "../components/OrdersContainer";
-import "./Home.css";
+import "./Orders.css";
 
-const Home: React.FC<RouteComponentProps> = (props) => {
+const Orders: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
       <IonHeader>
@@ -30,4 +30,4 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   );
 };
 
-export default Home;
+export default Orders;

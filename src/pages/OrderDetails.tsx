@@ -22,7 +22,7 @@ const OrderDetails: React.FC<RouteComponentProps<OrderDetailsRouteParams>> = (
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
+            <IonBackButton defaultHref="/orders" />
           </IonButtons>
           <IonTitle>Order #{props.match.params.id}</IonTitle>
         </IonToolbar>
