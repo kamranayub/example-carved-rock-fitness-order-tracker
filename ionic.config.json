@@ -1,0 +1,7 @@
+{
+  "name": "example-carved-rock-fitness-pwa",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
