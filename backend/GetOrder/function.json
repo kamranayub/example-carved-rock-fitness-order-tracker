@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["get"],
-      "route": "orders"
+      "route": "orders/{id:int}"
     },
     {
       "type": "http",
@@ -14,5 +14,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/GetOrders/index.js"
+  "scriptFile": "../dist/GetOrder/index.js"
 }
