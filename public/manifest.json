@@ -1,6 +1,6 @@
 {
-  "short_name": "Ionic App",
-  "name": "My Ionic App",
+  "short_name": "CRF Orders",
+  "name": "Carved Rock Fitness Order Tracker",
   "icons": [
     {
       "src": "assets/icon/favicon.png",
