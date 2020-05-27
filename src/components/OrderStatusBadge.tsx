@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { IonBadge } from "@ionic/react";
+import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
 import { orderStatusToThemeColor } from "../data/orderStatusToThemeColor";
 
 interface OrderStatusProps {

@@ -1,3 +1,5 @@
+import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
+
 export async function getOrders() {
   const res = await fetch("https://carved-rock-fitness-backend.azurewebsites.net/api/GetOrders");
   if (res.ok) {

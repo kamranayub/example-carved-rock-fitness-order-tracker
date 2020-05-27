@@ -3,10 +3,10 @@
     "module": "commonjs",
     "target": "es6",
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "sourceMap": true,
-    "strict": false
+    "strict": false,
+    "declaration": true
   },
-  "include": ["**/*.ts"],
-  "exclude": [".yalc"]
+  "include": ["src"]
 }

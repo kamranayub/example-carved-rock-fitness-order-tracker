@@ -1,3 +1,5 @@
+import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
+
 export function orderStatusToThemeColor(
   status: CarvedRockFitnessApi.OrderStatus
 ) {

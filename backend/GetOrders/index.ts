@@ -1,4 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
 
 const orders: CarvedRockFitnessApi.Order[] = [
   {

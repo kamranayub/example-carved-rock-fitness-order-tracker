@@ -92,3 +92,7 @@ bin
 obj
 appsettings.json
 local.settings.json
+
+# Yalc
+.yalc
+yalc.lock

@@ -6,6 +6,7 @@ import {
   IonCardTitle,
   IonCardContent,
 } from "@ionic/react";
+import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
 import { orderStatusToThemeColor } from "../data/orderStatusToThemeColor";
 
 const OrderStatusContent: FC<{ status: CarvedRockFitnessApi.OrderStatus }> = ({ status }) => {

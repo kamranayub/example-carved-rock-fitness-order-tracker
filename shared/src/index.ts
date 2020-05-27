@@ -1,4 +1,4 @@
-declare namespace CarvedRockFitnessApi {
+export namespace CarvedRockFitnessApi {
   export interface Order {
     id: number;
     orderedAt: string;
