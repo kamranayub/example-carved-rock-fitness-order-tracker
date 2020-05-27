@@ -25,6 +25,7 @@
     "typescript": "3.8.3"
   },
   "scripts": {
+    "postinstall": "yalc publish shared && yalc update && npm i",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -47,7 +48,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "2.1.0",
-    "react-query": "^1.5.3"
+    "react-query": "^1.5.3",
+    "yalc": "^1.0.0-pre.35"
   },
   "description": "An Ionic project"
 }
