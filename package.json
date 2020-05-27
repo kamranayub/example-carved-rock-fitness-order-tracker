@@ -25,7 +25,7 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "postinstall": "yalc publish shared && yalc add @carved-rock-fitness/shared",
+    "postinstall": "yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
