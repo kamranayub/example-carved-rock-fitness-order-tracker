@@ -1,11 +1,10 @@
-import { OrderStatus } from "../data/orders";
 import React, { FC } from "react";
 import { IonBadge } from "@ionic/react";
 import { orderStatusToThemeColor } from "../data/orderStatusToThemeColor";
 
 interface OrderStatusProps {
   slot?: string;
-  status: OrderStatus;
+  status: CarvedRockFitnessApi.OrderStatus;
 }
 
 const OrderStatusBadge: FC<OrderStatusProps> = ({ slot, status }) => {
