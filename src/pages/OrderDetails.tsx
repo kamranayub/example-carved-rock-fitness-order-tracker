@@ -13,6 +13,7 @@ import { RouteComponentProps } from "react-router";
 import OrderDetailsContainer, {
   OrderDetailsRouteParams,
 } from "../components/OrderDetailsContainer";
+import OrderNotifications from "../components/OrderNotifications";
 
 const OrderDetails: React.FC<RouteComponentProps<OrderDetailsRouteParams>> = (
   props
@@ -25,6 +26,9 @@ const OrderDetails: React.FC<RouteComponentProps<OrderDetailsRouteParams>> = (
             <IonBackButton defaultHref="/orders" />
           </IonButtons>
           <IonTitle>Order #{props.match.params.id}</IonTitle>
+          <IonButtons slot="end">
+            <OrderNotifications orderId={props.match.params.id} />
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>

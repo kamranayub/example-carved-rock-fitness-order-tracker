@@ -1,0 +1,114 @@
+import { IonToggle, IonToast, IonIcon } from "@ionic/react";
+import React, { FC, useState, useCallback, useEffect } from "react";
+import { usePermission, useLocalStorage } from "react-use";
+import { notificationsOff, notifications } from "ionicons/icons";
+
+interface OrderNotificationsProps {
+  orderId: string;
+}
+
+const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
+  const [
+    enableNotifications,
+    setEnableNotifications,
+    unsetEnableNotifications,
+  ] = useLocalStorage("notifications/orders/" + orderId, false);
+  const notificationPermission = usePermission({ name: "notifications" });
+  const [isPermissionGranted, setIsPermissionGranted] = useState(
+    notificationPermission === "granted"
+  );
+  const [showDeniedToast, setShowDeniedToast] = useState(false);
+  const [
+    showEnableNotificationToast,
+    setShowEnableNotificationToast,
+  ] = useState(false);
+  const [
+    showDisableNotificationToast,
+    setShowDisableNotificationToast,
+  ] = useState(false);
+
+  const handleToggleChange = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      const { checked } = e.detail;
+
+      // check for permissions
+      if (!checked || isPermissionGranted) {
+        setEnableNotifications(checked);
+
+        if (checked) {
+          setShowEnableNotificationToast(true);
+          setShowDisableNotificationToast(false);
+        } else {
+          setShowDisableNotificationToast(true);
+          setShowEnableNotificationToast(false);
+        }
+      } else if (
+        notificationPermission === "prompt" ||
+        (notificationPermission as any) === "default" // some browsers
+      ) {
+        const promptPermission = await Notification.requestPermission();
+
+        if (promptPermission === "granted") {
+          setIsPermissionGranted(true);
+        } else {
+          setIsPermissionGranted(false);
+          setShowDeniedToast(true);
+          unsetEnableNotifications();
+        }
+      } else if (notificationPermission === "denied") {
+        setShowDeniedToast(true);
+      }
+    },
+    [
+      isPermissionGranted,
+      notificationPermission,
+      setEnableNotifications,
+      unsetEnableNotifications,
+    ]
+  );
+
+  useEffect(() => {
+    if (notificationPermission === "granted") {
+      setIsPermissionGranted(true);
+    }
+  }, [notificationPermission]);
+
+  return (
+    <>
+      <IonIcon icon={enableNotifications ? notifications : notificationsOff} />
+      <IonToggle
+        checked={enableNotifications}
+        onIonChange={handleToggleChange}
+        style={{
+          "--background":
+            notificationPermission === "denied"
+              ? "var(--ion-color-danger)"
+              : undefined,
+          "--background-checked": "var(--ion-color-success)",
+        }}
+        value={orderId}
+      />
+      <IonToast
+        message="We will notify you of any updates to this order"
+        isOpen={showEnableNotificationToast}
+        duration={2000}
+        color="success"
+      />
+      <IonToast
+        message="You will no longer receive updates for this order"
+        isOpen={showDisableNotificationToast}
+        duration={2000}
+        color="success"
+      />
+      <IonToast
+        message="We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
+        isOpen={showDeniedToast}
+        color="warning"
+      />
+    </>
+  );
+};
+
+export default OrderNotifications;
