@@ -14,6 +14,7 @@ import { useQuery } from "react-query";
 import { getOrders } from "../data/orders";
 import OrderStatusBadge from "./OrderStatusBadge";
 import Amount from "./Amount";
+import InstallationPrompt from "./InstallationPrompt";
 
 import "./OrdersContainer.css";
 
@@ -34,6 +35,7 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
 
   return (
     <>
+      <InstallationPrompt />
       <IonRefresher slot="fixed" onIonRefresh={refreshOrders}>
         <IonRefresherContent />
       </IonRefresher>
