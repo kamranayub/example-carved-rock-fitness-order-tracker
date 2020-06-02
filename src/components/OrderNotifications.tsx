@@ -2,6 +2,8 @@ import { IonToggle, IonToast, IonIcon } from "@ionic/react";
 import React, { FC, useState, useCallback, useEffect } from "react";
 import { usePermission, useLocalStorage } from "react-use";
 import { notificationsOff, notifications } from "ionicons/icons";
+import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
+import { subscribeToOrder } from "../data/orders";
 
 interface OrderNotificationsProps {
   orderId: string;
@@ -40,6 +42,16 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
         if (checked) {
           setShowEnableNotificationToast(true);
           setShowDisableNotificationToast(false);
+
+          //
+          // Simulate subscribing to an order from the server
+          //
+          await subscribeToOrder(
+            parseInt(orderId, 10),
+
+            // We are passing an order status to send via notification for demo purposes
+            CarvedRockFitnessApi.OrderStatus.Shipped
+          );
         } else {
           setShowDisableNotificationToast(true);
           setShowEnableNotificationToast(false);
@@ -62,6 +74,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
       }
     },
     [
+      orderId,
       isPermissionGranted,
       notificationPermission,
       setEnableNotifications,
