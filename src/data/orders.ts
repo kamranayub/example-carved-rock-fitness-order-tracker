@@ -44,8 +44,13 @@ export function subscribeToOrder(
       ["order", id],
       (existingOrder) => {
         if (existingOrder) {
-          new Notification(`Order #${existingOrder.id} Status`, {
+          const n = new Notification(`Order #${existingOrder.id} Status`, {
             body: `Your order with ${existingOrder.orderItems.length} items is now "${status}"`,
+          });
+
+          // TODO: Add testing hook here
+          n.addEventListener("show", () => {
+            console.log("notification shown!", n);
           });
 
           return { ...existingOrder, status };
