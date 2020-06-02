@@ -36,7 +36,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
       const { checked } = e.detail;
 
       // check for permissions
-      if (!checked || isPermissionGranted) {
+      if (isPermissionGranted) {
         setEnableNotifications(checked);
 
         if (checked) {
@@ -46,7 +46,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
           //
           // Simulate subscribing to an order from the server
           //
-          await subscribeToOrder(
+          subscribeToOrder(
             parseInt(orderId, 10),
 
             // We are passing an order status to send via notification for demo purposes
@@ -63,6 +63,9 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
         const promptPermission = await Notification.requestPermission();
 
         if (promptPermission === "granted") {
+          if (!checked) {
+            setEnableNotifications(true);
+          }
           setIsPermissionGranted(true);
         } else {
           setIsPermissionGranted(false);
