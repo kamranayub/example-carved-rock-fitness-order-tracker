@@ -16,22 +16,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
+
+       # Install NPM dependencies, cache them correctly
+      - name: Install dependencies
+        uses: cypress-io/github-action@v1
+        with:
+          # just perform install
+          runTests: false
+
+      # Install Ionic CLI globally
+      - run: npm install @ionic/cli -g
+
+      # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
         with:
+          install: false
+          start: ionic serve --https
+          wait-on: 'https://localhost:8100'
           browser: chrome
           headless: true
-  
-  firefox:
-    runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node12.16.1-chrome80-ff73
-      options: --user 1001
-    steps:
-      - uses: actions/checkout@v1
-      - name: Tests on Firefox
-        uses: cypress-io/github-action@v1
-        with:
-          browser: firefox
