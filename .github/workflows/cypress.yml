@@ -30,13 +30,14 @@ jobs:
 
       # Install Ionic CLI globally
       - run: sudo npm install @ionic/cli -g
+      - run: ionic ssl generate
 
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
         with:
           install: false
-          start: ionic serve --https
+          start: SSL_CRT_FILE=./ionic/ssl/cert.pem SSL_KEY_FILE=./ionic/ssl/key.pem ionic serve --https --no-open --prod
           wait-on: 'https://localhost:8100'
           browser: chrome
           headless: true
