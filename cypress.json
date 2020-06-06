@@ -1,3 +1,4 @@
 {
-    "baseUrl": "https://localhost:8100/"
+    "baseUrl": "https://localhost:8100/",
+    "chromeWebSecurity": false
 }

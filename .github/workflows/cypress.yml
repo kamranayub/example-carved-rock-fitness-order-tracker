@@ -42,9 +42,9 @@ jobs:
         env:
           SSL_CRT_FILE: ./.ionic/ssl/cert.pem
           SSL_KEY_FILE: ./.ionic/ssl/key.pem
+          NODE_EXTRA_CA_CERTS: ./.ionic/ssl/cert.pem
         with:
           install: false
           start: ionic serve --https --no-open --prod
-          wait-on: 'https://localhost:8100'
           browser: chrome
           headless: true
