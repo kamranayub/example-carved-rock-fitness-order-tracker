@@ -33,7 +33,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open",
+    "cypress:run": "cypress run --browser chrome --headless"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -52,6 +54,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "2.1.0",
+    "@testing-library/cypress": "^6.0.0",
+    "cypress": "^4.7.0",
     "react-query": "^1.5.3",
     "yalc": "^1.0.0-pre.35"
   },
