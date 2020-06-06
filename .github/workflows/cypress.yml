@@ -37,7 +37,7 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           install: false
-          start: SSL_CRT_FILE=./ionic/ssl/cert.pem SSL_KEY_FILE=./ionic/ssl/key.pem ionic serve --https --no-open --prod
+          start: SSL_CRT_FILE=./.ionic/ssl/cert.pem SSL_KEY_FILE=./.ionic/ssl/key.pem ionic serve --https --no-open --prod
           wait-on: 'https://localhost:8100'
           browser: chrome
           headless: true
