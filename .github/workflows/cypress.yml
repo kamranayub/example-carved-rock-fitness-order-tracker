@@ -35,9 +35,12 @@ jobs:
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
+        env:
+          SSL_CRT_FILE: ./.ionic/ssl/cert.pem
+          SSL_KEY_FILE: ./.ionic/ssl/key.pem
         with:
           install: false
-          start: SSL_CRT_FILE=./.ionic/ssl/cert.pem SSL_KEY_FILE=./.ionic/ssl/key.pem ionic serve --https --no-open --prod
+          start: ionic serve --https --no-open --prod
           wait-on: 'https://localhost:8100'
           browser: chrome
           headless: true
