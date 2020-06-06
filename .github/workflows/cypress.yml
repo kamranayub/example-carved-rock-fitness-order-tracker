@@ -18,6 +18,9 @@ jobs:
         with:
           submodules: true
 
+      - run: npm install yalc -g
+      - run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
+
        # Install NPM dependencies, cache them correctly
       - name: Install dependencies
         uses: cypress-io/github-action@v1
