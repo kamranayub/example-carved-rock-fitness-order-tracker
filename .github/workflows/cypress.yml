@@ -32,6 +32,10 @@ jobs:
       - run: sudo npm install @ionic/cli -g
       - run: ionic ssl generate
 
+      # Trust certs
+      - run: sudo cp ./.ionic/ssl/cert.pem /usr/local/share/ca-certificates/ionic.crt
+      - run: sudo update-ca-certificates
+
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
