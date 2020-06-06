@@ -1,0 +1,18 @@
+{
+  "name": "@carved-rock-fitness/shared",
+  "version": "1.0.0",
+  "description": "Shared modules for frontend and backend",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "prepare": "npm run build",
+    "publish": "yalc publish"
+  },
+  "author": "Kamran Ayub",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "typescript": "^3.9.3",
+    "yalc": "^1.0.0-pre.35"
+  }
+}

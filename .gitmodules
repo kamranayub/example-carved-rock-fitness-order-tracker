@@ -1,0 +1,4 @@
+[submodule "lib/create-react-app"]
+	path = lib/create-react-app
+	url = https://github.com/kamranayub/create-react-app
+	branch = feat/workbox-v5
