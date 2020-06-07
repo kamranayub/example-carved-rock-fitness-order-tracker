@@ -1,0 +1,42 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Run  Cypress tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  chrome:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - run: sudo npm install yalc -g
+      - run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
+
+       # Install NPM dependencies, cache them correctly
+      - name: Install dependencies
+        uses: cypress-io/github-action@v1
+        with:
+          # just perform install
+          runTests: false
+
+      # Install Ionic CLI globally
+      - run: sudo npm install @ionic/cli -g
+
+      # Run all Cypress tests
+      - name: Tests on Chrome
+        uses: cypress-io/github-action@v1
+        with:
+          install: false
+          config: chromeWebSecurity=false
+          start: ionic serve --https --no-open --prod
+          browser: chrome
+          headless: true

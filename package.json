@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@capacitor/cli": "2.1.0",
     "@capacitor/core": "2.1.0",
     "@carved-rock-fitness/shared": "file:.yalc/@carved-rock-fitness/shared",
     "@ionic/react": "^5.1.1",
     "@ionic/react-router": "^5.0.7",
+    "@testing-library/cypress": "^6.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^8.0.3",
@@ -16,24 +18,29 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-router": "^5.1.4",
     "@types/react-router-dom": "^5.1.3",
+    "cypress": "^4.7.0",
     "ionicons": "^5.0.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "file:.yalc/react-scripts",
+    "react-query": "^1.5.3",
     "react-use": "^15.1.1",
     "typescript": "3.8.3",
     "workbox-core": "^5.1.3",
     "workbox-precaching": "^5.1.3",
-    "workbox-routing": "^5.1.3"
+    "workbox-routing": "^5.1.3",
+    "yalc": "^1.0.0-pre.35"
   },
   "scripts": {
     "postinstall": "yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open",
+    "cypress:run": "cypress run --browser chrome --headless"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,11 +56,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@capacitor/cli": "2.1.0",
-    "react-query": "^1.5.3",
-    "yalc": "^1.0.0-pre.35"
   },
   "description": "An Ionic project"
 }

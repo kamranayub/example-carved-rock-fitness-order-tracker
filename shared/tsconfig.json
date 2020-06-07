@@ -6,7 +6,8 @@
     "rootDir": "src",
     "sourceMap": true,
     "strict": false,
-    "declaration": true
+    "declaration": true,
+    "typeRoots": ["./node_modules/@types"]
   },
   "include": ["src"]
 }
