@@ -36,6 +36,7 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           install: false
+          config: chromeWebSecurity=false
           start: ionic serve --https --no-open --prod
           browser: chrome
           headless: true
