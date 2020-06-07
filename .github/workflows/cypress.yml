@@ -30,19 +30,10 @@ jobs:
 
       # Install Ionic CLI globally
       - run: sudo npm install @ionic/cli -g
-      - run: ionic ssl generate
-
-      # Trust certs
-      - run: sudo cp ./.ionic/ssl/cert.pem /usr/local/share/ca-certificates/ionic.crt
-      - run: sudo update-ca-certificates
 
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
-        env:
-          SSL_CRT_FILE: ./.ionic/ssl/cert.pem
-          SSL_KEY_FILE: ./.ionic/ssl/key.pem
-          NODE_EXTRA_CA_CERTS: ./.ionic/ssl/cert.pem
         with:
           install: false
           start: ionic serve --https --no-open --prod
