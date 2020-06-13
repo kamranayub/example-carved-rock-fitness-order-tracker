@@ -1,0 +1,22 @@
+name: Lighthouse CI for Netlify sites
+on: pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Wait for the Netlify Preview
+        uses: jakepartusch/wait-for-netlify-action@v1
+        id: netlify
+        with:
+          site_name: 'carved-rock-order-tracker-pwa'
+          max_timeout: 180
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v3
+        with:
+          urls: |
+            ${{ steps.netlify.outputs.url }}
+            ${{ steps.netlify.outputs.url }}/orders/1001
+          budgetPath: ./budget.json
+          uploadArtifacts: true
