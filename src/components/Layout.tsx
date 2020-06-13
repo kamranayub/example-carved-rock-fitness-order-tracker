@@ -31,7 +31,7 @@ const Layout: FC = ({ children }) => (
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem href="/orders">My Orders</IonItem>
+            <IonItem routerLink="/orders">My Orders</IonItem>
             <IonItem>Account</IonItem>
             <IonItem>Settings</IonItem>
           </IonList>
