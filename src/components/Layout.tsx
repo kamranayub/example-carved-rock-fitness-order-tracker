@@ -9,7 +9,11 @@ import {
   IonTitle,
   IonList,
   IonItem,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from "@ionic/react";
+import HeroImageCol from "./HeroImageCol";
 
 const Layout: FC = ({ children }) => (
   <IonContent>
@@ -37,7 +41,16 @@ const Layout: FC = ({ children }) => (
           </IonList>
         </IonContent>
       </IonMenu>
-      {children}
+      <IonContent id="main">
+        <IonGrid style={{ height: '100%', '--ion-grid-padding': '0px' }}>
+          <IonRow style={{ height: '100%' }}>
+            <IonCol size="12" sizeMd="8" sizeXl="6">
+              {children}
+            </IonCol>
+            <HeroImageCol />
+          </IonRow>
+        </IonGrid>
+      </IonContent>
     </IonSplitPane>
   </IonContent>
 );

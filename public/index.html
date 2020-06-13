@@ -16,16 +16,23 @@
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/assets/icon/favicon.png" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="%PUBLIC_URL%/assets/icon/favicon.png"
+    />
 
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="CRF Orders" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- prefetch hero images, if able -->
+    <link rel="prefetch" href="/assets/hero-1.png" />
+    <link rel="prefetch" href="/assets/hero-2.png" />
   </head>
 
   <body>
     <div id="root"></div>
   </body>
-
 </html>
