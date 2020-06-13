@@ -11,6 +11,7 @@ jobs:
         id: netlify
         with:
           site_name: 'carved-rock-order-tracker-pwa'
+          max_timeout: 180
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v3
         with:
