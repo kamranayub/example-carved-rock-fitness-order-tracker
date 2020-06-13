@@ -24,15 +24,18 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import Layout from "./components/Layout";
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>        
-        <Route path="/orders" component={Orders} exact />
-        <Route path="/orders/:id" component={OrderDetails} exact />
-        <Route exact path="/" render={() => <Redirect to="/orders" />} />
-      </IonRouterOutlet>
+      <Layout>
+        <IonRouterOutlet>
+          <Route path="/orders" component={Orders} exact />
+          <Route path="/orders/:id" component={OrderDetails} exact />
+          <Route exact path="/" render={() => <Redirect to="/orders" />} />
+        </IonRouterOutlet>
+      </Layout>
     </IonReactRouter>
     <NetworkIndicator />
   </IonApp>
