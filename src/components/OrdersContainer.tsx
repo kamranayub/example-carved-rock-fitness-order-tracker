@@ -9,9 +9,9 @@ import {
   IonRefresherContent,
 } from "@ionic/react";
 import { RouteComponentProps } from "react-router";
-import { useQuery } from "react-query";
+import { useQuery, queryCache } from "react-query";
 
-import { getOrders } from "../data/orders";
+import { getOrders, getOrder } from "../data/orders";
 import OrderStatusBadge from "./OrderStatusBadge";
 import Amount from "./Amount";
 import InstallationPrompt from "./InstallationPrompt";
@@ -19,7 +19,15 @@ import InstallationPrompt from "./InstallationPrompt";
 import "./OrdersContainer.css";
 
 export const OrdersContainer: FC<RouteComponentProps> = (props) => {
-  const { data: orders = [], status, refetch } = useQuery("orders", getOrders);
+  const { data: orders = [], status, refetch } = useQuery("orders", getOrders, {
+    onSuccess(orders) {
+      // prefetch orders for caching purposes, in case user goes offline at _least_ we'll have preloaded some
+      // of their latest orders
+      orders.forEach((order) => {
+        queryCache.prefetchQuery(["order", order.id], getOrder);
+      });
+    },
+  });
   const refreshOrders = useCallback(
     async (e) => {
       await refetch({ force: true });
