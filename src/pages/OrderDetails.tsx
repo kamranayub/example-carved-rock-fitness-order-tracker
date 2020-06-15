@@ -23,7 +23,7 @@ const OrderDetails: React.FC<RouteComponentProps<OrderDetailsRouteParams>> = (
 ) => {
   const [, setHeroImage] = useHeroImage();
 
-  useIonViewWillEnter(() => setHeroImage("/assets/hero-2.png"));
+  useIonViewWillEnter(() => setHeroImage("/assets/hero-2.jpg"));
 
   return (
     <IonPage>

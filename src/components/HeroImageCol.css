@@ -1,6 +1,11 @@
 .hero-image-col {
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+
+.hero-image-col img {
+    margin: 32px;
+    max-width: 250px;
+}

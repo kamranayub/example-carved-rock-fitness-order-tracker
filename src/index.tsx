@@ -26,14 +26,15 @@ window.addEventListener("load", () => {
 
   if (window.caches) {
     addImagesToCache([
-      "/assets/hero-1.png",
-      "/assets/hero-2.png",
-      "/assets/logo.png",
+      "/assets/hero-1.jpg",
+      "/assets/hero-2.jpg",
+      "/assets/logo-white.svg",
+      "/assets/logo-yellow.svg",
       "/assets/pluralsight-white.png",
       "/assets/icon/favicon.png",
       "/assets/icon/icon-144.png",
       "/assets/icon/icon.png",
-      "/assets/icon/icon-white.png",
+      "/assets/icon/icon-solid-white.svg",
     ]);
   }
 });

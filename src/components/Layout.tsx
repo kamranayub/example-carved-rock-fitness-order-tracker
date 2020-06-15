@@ -25,7 +25,7 @@ const Layout: FC = ({ children }) => (
           <IonToolbar color="primary">
             <IonTitle>
               <img
-                src="/assets/icon/icon-white.png"
+                src="/assets/icon/icon-solid-white.svg"
                 alt="Carved Rock Fitness"
                 width="32"
                 height="32"

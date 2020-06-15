@@ -17,7 +17,7 @@ const Orders: React.FC<RouteComponentProps> = (props) => {
   const [, setHeroImage] = useHeroImage();
 
   useIonViewWillEnter(() => {
-    setHeroImage("/assets/hero-1.png");
+    setHeroImage("/assets/hero-1.jpg");
   });
 
   return (
