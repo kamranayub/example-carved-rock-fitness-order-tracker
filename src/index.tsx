@@ -33,6 +33,7 @@ window.addEventListener("load", () => {
       "/assets/icon/favicon.png",
       "/assets/icon/icon-144.png",
       "/assets/icon/icon.png",
+      "/assets/icon/icon-white.png",
     ]);
   }
 });
