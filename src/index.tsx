@@ -29,6 +29,7 @@ window.addEventListener("load", () => {
       "/assets/hero-1.png",
       "/assets/hero-2.png",
       "/assets/logo.png",
+      "/assets/pluralsight-white.png",
       "/assets/icon/favicon.png",
       "/assets/icon/icon-144.png",
       "/assets/icon/icon.png",

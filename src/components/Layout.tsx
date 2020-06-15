@@ -15,12 +15,14 @@ import {
 } from "@ionic/react";
 import HeroImageCol from "./HeroImageCol";
 
+import "./Layout.css";
+
 const Layout: FC = ({ children }) => (
   <IonContent>
     <IonSplitPane contentId="main">
       <IonMenu contentId="main">
         <IonHeader>
-          <IonToolbar>
+          <IonToolbar color="primary">
             <IonTitle>
               <img
                 src="/assets/icon/icon.png"
@@ -39,11 +41,18 @@ const Layout: FC = ({ children }) => (
             <IonItem>Account</IonItem>
             <IonItem>Settings</IonItem>
           </IonList>
+          <footer className="pluralsight">
+            <img src="/assets/pluralsight-white.png" alt="Pluralsight Logo" />
+            <section>
+              This site is created for demonstrative purposes only and does not
+              offer any real products or services.
+            </section>
+          </footer>
         </IonContent>
       </IonMenu>
       <IonContent id="main">
-        <IonGrid style={{ height: '100%', '--ion-grid-padding': '0px' }}>
-          <IonRow style={{ height: '100%' }}>
+        <IonGrid style={{ height: "100%", "--ion-grid-padding": "0px" }}>
+          <IonRow style={{ height: "100%" }}>
             <IonCol size="12" sizeMd="8" sizeXl="6">
               {children}
             </IonCol>

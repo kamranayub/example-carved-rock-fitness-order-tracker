@@ -1,0 +1,31 @@
+footer.pluralsight {
+  background: black;
+  color: white;
+  padding: 16px;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  footer.pluralsight {
+    padding: 32px;
+  }
+}
+
+footer.pluralsight img {
+  max-width: 225px;
+}
+
+footer.pluralsight section::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: 32px 0;
+  background: linear-gradient(to right, #f05a28 0, #e80a89 100%);
+}
+
+footer.pluralsight section {
+  text-align: left;
+}
