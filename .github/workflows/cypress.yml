@@ -39,4 +39,3 @@ jobs:
           config: chromeWebSecurity=false
           start: ionic serve --https --no-open --prod
           browser: chrome
-          headless: true
