@@ -1,10 +1,13 @@
 describe("responsive design", () => {
   //
-  // For Ionic default breakpoints,
-  // see https://ionicframework.com/docs/layout/css-utilities#ionic-breakpoints
+  // To reference Ionic default breakpoints, see:
+  // https://ionicframework.com/docs/layout/css-utilities#ionic-breakpoints
+  //
+  // To reference Cypress presets, see:
+  // https://docs.cypress.io/api/commands/viewport.html#Arguments
   //
 
-  describe("size: phones", () => {
+  describe("on phones", () => {
     before(() => {
       cy.visit("/");
     });
@@ -23,11 +26,12 @@ describe("responsive design", () => {
           cy.get('ion-menu ion-item[href="/orders"]')
             .should("be.visible")
             .should("contain.text", "My Orders");
+          cy.waitForIonicAnimations();
         });
 
         it("should close left menu when clicking off", () => {
           cy.viewport("iphone-6", orientation);
-          cy.waitForIonicAnimations();
+
           cy.get('ion-menu[role="navigation"]')
             .click("topRight")
             .should("not.be.visible");
@@ -41,34 +45,30 @@ describe("responsive design", () => {
     });
   });
 
-  describe(
-    "size: tablet / medium",
-    { viewportWidth: 768, viewportHeight: 1024 },
-    () => {
-      before(() => {
-        cy.visit("/");
-      });
-
-      it("should display left menu always", () => {
-        cy.get('ion-menu[role="navigation"]').should("be.visible");
-      });
-
-      it("should not display menu navigation button", () => {
-        cy.get("ion-menu-button").should("not.be.visible");
-      });
-
-      it("should display marketing imagery", () => {
-        cy.get(".hero-image-col").should("be.visible");
-      });
-    }
-  );
-
-  describe("size: large", { viewportWidth: 1440, viewportHeight: 900 }, () => {
+  describe("on tablet-sized screens", () => {
     before(() => {
       cy.visit("/");
     });
 
-    it("should display marketing imagery", () => {
+    it("should only display left menu", () => {
+      cy.viewport("ipad-2");
+      cy.get('ion-menu[role="navigation"]').should("be.visible");
+      cy.get("ion-menu-button").should("not.be.visible");
+    });
+
+    it("should be the first size to show marketing imagery", () => {
+      cy.viewport("ipad-2");
+      cy.get(".hero-image-col").should("be.visible");
+    });
+  });
+
+  describe("on larger screens", () => {
+    before(() => {
+      cy.visit("/");
+    });
+
+    it("should continue displaying marketing imagery", () => {
+      cy.viewport("macbook-15");
       cy.get(".hero-image-col").should("be.visible");
     });
   });
