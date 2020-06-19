@@ -36,7 +36,20 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           install: false
-          config: chromeWebSecurity=false
+          config: baseUrl=https://localhost:8100,chromeWebSecurity=false
           start: ionic serve --https --no-open --prod
           browser: chrome
-          headless: true
+
+      # Upload artifacts
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          
+      # Test run video was always captured, so this action uses "always()" condition
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
