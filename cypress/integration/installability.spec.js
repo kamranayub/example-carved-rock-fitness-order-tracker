@@ -1,9 +1,15 @@
 describe("installability", () => {
-  before(() => {
+  beforeEach(() => {
+    // Clear all browser state we may be using
     cy.clearCookies();
     cy.clearLocalStorage();
     cy.clearSessionStorage();
+
+    // Reload the page
     cy.visit("/");
+
+    // Wait for orders to load
+    cy.findByText("Order #1001").should("be.visible");
   });
 
   it("should show toast when browser prompts for install", () => {
@@ -21,37 +27,72 @@ describe("installability", () => {
   });
 
   it("should be able to dismiss toast", () => {
+    cy.triggerBeforeInstallEvent();
     cy.get("ion-toast:not(.overlay-hidden)")
       .as("installToast")
       .then((toast) => {
         const [dom] = toast.get();
-        const cancelButton = dom.shadowRoot.querySelector('button.toast-button-cancel');
+        const cancelButton = dom.shadowRoot.querySelector(
+          "button.toast-button-cancel"
+        );
 
-        cancelButton.dispatchEvent(new Event('click'));
+        cancelButton.dispatchEvent(new Event("click"));
       });
     cy.get("@installToast").should("not.be.visible");
   });
 
   it("should not prompt again once dismissed", () => {
-    cy.reload();
     cy.triggerBeforeInstallEvent();
 
-    // toasts are invisible by default, so wait until it might pop up before
-    // asserting
+    cy.get("ion-toast:not(.overlay-hidden)")
+      .as("installToast")
+      .then((toast) => {
+        const [dom] = toast.get();
+        const cancelButton = dom.shadowRoot.querySelector(
+          "button.toast-button-cancel"
+        );
+
+        cancelButton.dispatchEvent(new Event("click"));
+      });
+
+    cy.get("@installToast").should("not.be.visible");
+
+    cy.triggerBeforeInstallEvent();
+
+    cy.wait(500);
+    cy.get("@installToast").should("not.be.visible");
+  });
+
+  it("should not prompt when launched from a home screen", () => {
+    cy.visit("/", {
+      onBeforeLoad(window) {
+        // Intercept (stub) window.matchMedia before the page loads
+        cy.stub(window, "matchMedia")
+          .withArgs("(display-mode: standalone)")
+          .callsFake(() => ({
+            matches: true,
+            addListener: () => false,
+            removeListener: () => false,
+          }));
+
+        // If the media query doesn't match,
+        // call through to the original window.matchMedia
+        // so we don't break other aspects of the page
+        window.matchMedia.callThrough();
+      },
+    });
+    cy.triggerBeforeInstallEvent();
     cy.wait(500);
     cy.get("ion-toast:not(.overlay-hidden)").should("not.be.visible");
   });
 
-  it("should prompt again on a new session", () => {
-    cy.clearSessionStorage();
-    cy.reload();
-    cy.window().trigger("beforeinstallprompt");
-    cy.get("ion-toast").should("be.visible");
-  });
-
-  it("should not prompt when launched from a home screen", () => {
-    cy.mockMatchMedia();
-    cy.window().trigger("beforeinstallprompt");
-    cy.get("ion-toast").should("not.be.visible");
+  it("should not prompt when app is installed while launched", () => {
+    cy.window().then((window) => {
+      const appInstalledEvent = new Event("appinstalled");
+      window.dispatchEvent(appInstalledEvent);
+    });
+    cy.triggerBeforeInstallEvent();
+    cy.wait(500);
+    cy.get("ion-toast:not(.overlay-hidden)").should("not.be.visible");
   });
 });

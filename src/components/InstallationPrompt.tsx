@@ -42,6 +42,14 @@ const InstallationPrompt: FC = () => {
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
+
+      console.log('beforeinstallprompt', 'hasDismissed', hasDismissed, 'isAppInstalled', isAppInstalled, 'hasInstalled', hasInstalled)
+
+      // Check if install status has changed
+      if (hasDismissed || isAppInstalled || hasInstalled) {
+        return;
+      }
+
       // Stash the event so it can be triggered later.
       setDeferredPrompt(e);
       // Update UI notify the user they can install the PWA
@@ -64,7 +72,7 @@ const InstallationPrompt: FC = () => {
         handleBeforeInstallPrompt
       );
     };
-  }, [ignorePrompt]);
+  }, [ignorePrompt, hasDismissed, hasInstalled, isAppInstalled]);
 
   return (
     <IonToast

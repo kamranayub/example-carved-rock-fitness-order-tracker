@@ -15,6 +15,8 @@ export default function useDisplayMode(): DisplayMode {
 
   useEffect(() => {
     const handleDisplayModeMedia = (e: MediaQueryListEvent) => {
+      console.log('use-display-mode: changed');
+      
       if (e.matches) {
         setDisplayMode("standalone");
       } else {
@@ -22,22 +24,19 @@ export default function useDisplayMode(): DisplayMode {
       }
     };
 
-    const handleLoaded = () => {
-      if (navigator.standalone) {
-        setDisplayMode("standalone-ios");
-      }
-      if (window.matchMedia("(display-mode: standalone)").matches) {
-        setDisplayMode("standalone");
-      }
-      window
-        .matchMedia("(display-mode: standalone)")
-        .addListener(handleDisplayModeMedia);
-    };
+    if (navigator.standalone) {
+      setDisplayMode("standalone-ios");
+    }
 
-    window.addEventListener("DOMContentLoaded", handleLoaded);
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setDisplayMode("standalone");
+    }
+
+    window
+      .matchMedia("(display-mode: standalone)")
+      .addListener(handleDisplayModeMedia);
 
     return () => {
-      window.removeEventListener("DOMContentLoaded", handleLoaded);
       window
         .matchMedia("(display-mode: standalone)")
         .removeListener(handleDisplayModeMedia);
