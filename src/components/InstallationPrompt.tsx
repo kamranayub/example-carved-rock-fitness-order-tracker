@@ -68,6 +68,7 @@ const InstallationPrompt: FC = () => {
 
   return (
     <IonToast
+      data-testid="toast-install"
       isOpen={showInstallToast}
       message="Install this app for faster access next time"
       onDidDismiss={() => setShowInstallToast(false)}
