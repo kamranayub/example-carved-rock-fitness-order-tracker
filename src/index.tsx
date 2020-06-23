@@ -22,6 +22,13 @@ serviceWorker.register({
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.ready.then(() => {
     document.querySelector("html")?.classList.add("sw", "sw-ready");
+
+    if ("Cypress" in window) {
+      navigator.serviceWorker.controller?.postMessage({
+        type: "USE_XHR",
+        value: true,
+      });
+    }
   });
 }
 

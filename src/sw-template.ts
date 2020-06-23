@@ -6,10 +6,15 @@ import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
 declare let self: ServiceWorkerGlobalScope;
+let useXhr = false;
 
 self.addEventListener("message", function (event: ExtendableMessageEvent) {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
+  }
+
+  if (event.data && event.data.type === "USE_XHR") {
+    useXhr = event.data.value;
   }
 });
 
@@ -29,18 +34,52 @@ registerRoute(navigationRoute);
 // Attempt to retrieve latest orders, otherwise fallback to cached
 // responses.
 //
+
+const apiNetworkFirst = new NetworkFirst({
+  networkTimeoutSeconds: 5,
+  cacheName: "orders",
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
+  ],
+});
+
 registerRoute(
   ({ url }) =>
     url.origin === "https://carved-rock-fitness-backend.azurewebsites.net",
-  new NetworkFirst({
-    networkTimeoutSeconds: 5,
-    cacheName: "orders",
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
-  })
+  (call) => {
+    if (useXhr) {
+      return new Promise((resolve, reject) => {
+        const xmlHttpRequest = new XMLHttpRequest();
+        const method =
+          typeof call.request === "string"
+            ? "GET"
+            : call.request.method ?? "GET";
+        const body =
+          typeof call.request === "string" ? undefined : call.request.body;
+
+        xmlHttpRequest.onload = () => {
+          if (
+            xmlHttpRequest.response !== null &&
+            xmlHttpRequest.status === 200
+          ) {
+            resolve(xmlHttpRequest.response);
+          } else {
+            reject({
+              status: xmlHttpRequest.status,
+              statusText: xmlHttpRequest.statusText,
+              response: xmlHttpRequest.response,
+            });
+          }
+        };
+        xmlHttpRequest.open(method, call.url?.toString() ?? "");
+        xmlHttpRequest.send(body);
+      });
+    } else {
+      return apiNetworkFirst.handle(call);
+    }
+  }
 );
 
 //
