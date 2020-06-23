@@ -1,4 +1,6 @@
 {
   "baseUrl": "https://carved-rock-order-tracker-pwa.netlify.app/",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "experimentalShadowDomSupport": true,
+  "experimentalFetchPolyfill": true
 }
