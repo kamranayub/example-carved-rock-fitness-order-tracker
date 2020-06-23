@@ -28,3 +28,17 @@ import "@testing-library/cypress/add-commands";
 Cypress.Commands.add("waitForIonicAnimations", () => {
   cy.wait(300);
 });
+
+Cypress.Commands.add("triggerBeforeInstallEvent", () => {
+  cy.wait(1000);
+  cy.window().then((window) => {
+    const beforeInstallPromptEvent = new Event("beforeinstallprompt");
+    window.dispatchEvent(beforeInstallPromptEvent);
+  });
+});
+
+Cypress.Commands.add("clearSessionStorage", () => {
+  cy.window().then((window) => {
+    window.sessionStorage.clear();
+  });
+});

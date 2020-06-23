@@ -58,5 +58,18 @@
       "last 1 safari version"
     ]
   },
-  "description": "A Pluralsight sample Progressive Web App designed for the Testing Progressive Web Apps course"
+  "description": "A Pluralsight sample Progressive Web App designed for the Testing Progressive Web Apps course",
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
+  }
 }
