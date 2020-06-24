@@ -66,5 +66,14 @@ describe("offline support", () => {
           "You're back online, your data is automatically being updated."
         );
     });
+
+    it("should refetch orders", () => {
+      cy.server();
+      cy.route("**/orders/*").as("getOrder");
+
+      cy.online();
+
+      cy.wait("@getOrder");
+    });
   });
 });
