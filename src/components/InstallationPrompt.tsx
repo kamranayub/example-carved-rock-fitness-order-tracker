@@ -2,6 +2,7 @@ import React, { useEffect, FC, useState, useLayoutEffect } from "react";
 import { IonToast } from "@ionic/react";
 import { useSessionStorage, useLocalStorage } from "react-use";
 import useIsAppInstalled from "../use-is-app-installed";
+import { setIonToastPresented } from "../util";
 
 /**
  * Customize the PWA installation prompt. Only supported in Chrome and Android.
@@ -43,7 +44,15 @@ const InstallationPrompt: FC = () => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
 
-      console.log('beforeinstallprompt', 'hasDismissed', hasDismissed, 'isAppInstalled', isAppInstalled, 'hasInstalled', hasInstalled)
+      console.log(
+        "beforeinstallprompt",
+        "hasDismissed",
+        hasDismissed,
+        "isAppInstalled",
+        isAppInstalled,
+        "hasInstalled",
+        hasInstalled
+      );
 
       // Check if install status has changed
       if (hasDismissed || isAppInstalled || hasInstalled) {
@@ -76,9 +85,9 @@ const InstallationPrompt: FC = () => {
 
   return (
     <IonToast
-      data-testid="toast-install"
       isOpen={showInstallToast}
       message="Install this app for faster access next time"
+      onDidPresent={setIonToastPresented}
       onDidDismiss={() => setShowInstallToast(false)}
       position="bottom"
       buttons={[
