@@ -21,15 +21,20 @@ describe("offline support", () => {
 
     it("should show toast when browser goes offline", () => {
       cy.get("ion-toast:not(.overlay-hidden)")
+        .as("offlineToast")
+        .shadow()
+        .find(".toast-container")
         .should("be.visible")
-        .should((e) => {
-          const [dom] = e.get();
-          const message = dom.shadowRoot.querySelector(".toast-message");
+        .find(".toast-message")
+        .should(
+          "have.text",
+          "Looks like you went offline, your data may not be up-to-date."
+        );
 
-          expect(message).to.have.text(
-            "Looks like you went offline, your data may not be up-to-date."
-          );
-        });
+      // wait for automatic dismissal
+      cy.get("ion-toast:not(.overlay-hidden)", { timeout: 10 * 1000 }).should(
+        "not.be.visible"
+      );
     });
 
     it("should navigate to order details using cache", () => {
@@ -47,15 +52,14 @@ describe("offline support", () => {
 
     it("should show toast", () => {
       cy.get("ion-toast:not(.overlay-hidden)")
+        .shadow()
+        .find(".toast-container")
         .should("be.visible")
-        .should((e) => {
-          const [dom] = e.get();
-          const message = dom.shadowRoot.querySelector(".toast-message");
-
-          expect(message).to.have.text(
-            "You're back online, your data is automatically being updated."
-          );
-        });
+        .find(".toast-message")
+        .should(
+          "have.text",
+          "You're back online, your data is automatically being updated."
+        );
     });
   });
 });
