@@ -2,6 +2,7 @@ import React, { FC, useEffect, useLayoutEffect, useState } from "react";
 import { IonToast } from "@ionic/react";
 import { useQueryCache } from "react-query";
 import { usePrevious, useNetwork } from "react-use";
+import { setIonToastPresented } from "../util";
 
 const NetworkIndicator: FC = () => {
   const queryCache = useQueryCache();
@@ -43,6 +44,7 @@ const NetworkIndicator: FC = () => {
         position="bottom"
         isOpen={isOfflineOpen}
         duration={4000}
+        onDidPresent={setIonToastPresented}
         onDidDismiss={() => setIsOfflineOpen(false)}
         message="Looks like you went offline, your data may not be up-to-date."
       />
@@ -50,6 +52,7 @@ const NetworkIndicator: FC = () => {
         position="bottom"
         isOpen={isOnlineOpen}
         duration={4000}
+        onDidPresent={setIonToastPresented}
         onDidDismiss={() => setIsOnlineOpen(false)}
         message="You're back online, your data is automatically being updated."
       />
