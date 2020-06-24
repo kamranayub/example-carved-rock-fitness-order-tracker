@@ -14,21 +14,19 @@ describe("installability", () => {
 
   it("should show toast when browser prompts for install", () => {
     cy.triggerBeforeInstallEvent();
-    cy.get("ion-toast:not(.overlay-hidden)")
+    cy.get("ion-toast[data-presented]")
+      .should("exist")
       .shadow()
-      .find(".toast-container")
-      .should("be.visible")
       .find(".toast-message")
       .should("have.text", "Install this app for faster access next time");
   });
 
   it("should be able to dismiss toast", () => {
     cy.triggerBeforeInstallEvent();
-    cy.get("ion-toast:not(.overlay-hidden)")
+    cy.get("ion-toast[data-presented]")
       .as("installToast")
+      .should("exist")
       .shadow()
-      .find(".toast-container")
-      .should("be.visible")
       .find("button.toast-button-cancel")
       .click();
     cy.get("@installToast").should("not.be.visible");
@@ -37,20 +35,19 @@ describe("installability", () => {
   it("should not prompt again once dismissed", () => {
     cy.triggerBeforeInstallEvent();
 
-    cy.get("ion-toast:not(.overlay-hidden)")
+    cy.get("ion-toast[data-presented]")
       .as("installToast")
+      .should("exist")
       .shadow()
-      .find(".toast-container")
-      .should("be.visible")
       .find("button.toast-button-cancel")
       .click();
 
-    cy.get("@installToast").should("not.be.visible");
+    cy.get("@installToast").should("not.exist");
 
     cy.triggerBeforeInstallEvent();
 
     cy.wait(500);
-    cy.get("@installToast").should("not.be.visible");
+    cy.get("@installToast").should("not.exist");
   });
 
   it("should not prompt when launched from a home screen", () => {
@@ -73,7 +70,7 @@ describe("installability", () => {
     });
     cy.triggerBeforeInstallEvent();
     cy.wait(500);
-    cy.get("ion-toast:not(.overlay-hidden)").should("not.be.visible");
+    cy.get("ion-toast[data-presented]").should("not.exist");
   });
 
   it("should not prompt when app is installed while launched", () => {
@@ -83,6 +80,6 @@ describe("installability", () => {
     });
     cy.triggerBeforeInstallEvent();
     cy.wait(500);
-    cy.get("ion-toast:not(.overlay-hidden)").should("not.be.visible");
+    cy.get("ion-toast[data-presented]").should("not.exist");
   });
 });

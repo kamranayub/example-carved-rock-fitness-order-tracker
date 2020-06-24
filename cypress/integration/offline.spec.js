@@ -14,17 +14,23 @@ describe("offline support", () => {
 
   describe("when going offline", () => {
     beforeEach(() => {
+      // We cannot stub or intercept Service Worker fetch requests
+      // because they exist in a separate context and Cypress does
+      // not yet support stubbing them.
+      //
+      // To emulate "going offline" which would result in 404s or
+      // other network errors, we remove the SW and force all requests
+      // to abort.
       cy.unregisterServiceWorkers();
       cy.server({ force404: true });
       cy.offline();
     });
 
     it("should show toast when browser goes offline", () => {
-      cy.get("ion-toast:not(.overlay-hidden)")
+      cy.get("ion-toast[data-presented]")
         .as("offlineToast")
+        .should("exist")
         .shadow()
-        .find(".toast-container")
-        .should("be.visible")
         .find(".toast-message")
         .should(
           "have.text",
@@ -32,8 +38,8 @@ describe("offline support", () => {
         );
 
       // wait for automatic dismissal
-      cy.get("ion-toast:not(.overlay-hidden)", { timeout: 10 * 1000 }).should(
-        "not.be.visible"
+      cy.get("ion-toast[data-presented]", { timeout: 10 * 1000 }).should(
+        "not.exist"
       );
     });
 
@@ -51,10 +57,9 @@ describe("offline support", () => {
     });
 
     it("should show toast", () => {
-      cy.get("ion-toast:not(.overlay-hidden)")
+      cy.get("ion-toast[data-presented]")
+        .should("exist")
         .shadow()
-        .find(".toast-container")
-        .should("be.visible")
         .find(".toast-message")
         .should(
           "have.text",

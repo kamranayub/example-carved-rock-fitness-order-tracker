@@ -25,6 +25,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import Layout from "./components/Layout";
+import InstallationPrompt from "./components/InstallationPrompt";
 
 const App: React.FC = () => (
   <IonApp>
@@ -38,6 +39,7 @@ const App: React.FC = () => (
       </Layout>
     </IonReactRouter>
     <NetworkIndicator />
+    <InstallationPrompt />
   </IonApp>
 );
 
