@@ -44,17 +44,25 @@ Cypress.Commands.add("clearSessionStorage", () => {
 });
 
 Cypress.Commands.add("online", () => {
-  cy.server({ enable: false });
   cy.window().then((window) => {
     const onlineEvent = new Event("online");
     window.dispatchEvent(onlineEvent);
   });
 });
 
-Cypress.Commands.add("offline", (serverOptions = {}) => {
-  cy.server({ force404: true, ...serverOptions });
+Cypress.Commands.add("offline", () => {
   cy.window().then((window) => {
     const offlineEvent = new Event("offline");
     window.dispatchEvent(offlineEvent);
   });
+});
+
+Cypress.Commands.add("unregisterServiceWorkers", () => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .getRegistrations()
+      .then((registrations) =>
+        registrations.forEach((reg) => reg.unregister())
+      );
+  }
 });

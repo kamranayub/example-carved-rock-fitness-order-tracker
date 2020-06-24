@@ -14,6 +14,8 @@ describe("offline support", () => {
 
   describe("when going offline", () => {
     beforeEach(() => {
+      cy.unregisterServiceWorkers();
+      cy.server({ force404: true });
       cy.offline();
     });
 
