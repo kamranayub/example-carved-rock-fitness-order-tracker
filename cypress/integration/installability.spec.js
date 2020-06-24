@@ -15,29 +15,22 @@ describe("installability", () => {
   it("should show toast when browser prompts for install", () => {
     cy.triggerBeforeInstallEvent();
     cy.get("ion-toast:not(.overlay-hidden)")
+      .shadow()
+      .find(".toast-container")
       .should("be.visible")
-      .should((e) => {
-        const [dom] = e.get();
-        const message = dom.shadowRoot.querySelector(".toast-message");
-
-        expect(message).to.have.text(
-          "Install this app for faster access next time"
-        );
-      });
+      .find(".toast-message")
+      .should("have.text", "Install this app for faster access next time");
   });
 
   it("should be able to dismiss toast", () => {
     cy.triggerBeforeInstallEvent();
     cy.get("ion-toast:not(.overlay-hidden)")
       .as("installToast")
-      .then((toast) => {
-        const [dom] = toast.get();
-        const cancelButton = dom.shadowRoot.querySelector(
-          "button.toast-button-cancel"
-        );
-
-        cancelButton.dispatchEvent(new Event("click"));
-      });
+      .shadow()
+      .find(".toast-container")
+      .should("be.visible")
+      .find("button.toast-button-cancel")
+      .click();
     cy.get("@installToast").should("not.be.visible");
   });
 
@@ -46,14 +39,11 @@ describe("installability", () => {
 
     cy.get("ion-toast:not(.overlay-hidden)")
       .as("installToast")
-      .then((toast) => {
-        const [dom] = toast.get();
-        const cancelButton = dom.shadowRoot.querySelector(
-          "button.toast-button-cancel"
-        );
-
-        cancelButton.dispatchEvent(new Event("click"));
-      });
+      .shadow()
+      .find(".toast-container")
+      .should("be.visible")
+      .find("button.toast-button-cancel")
+      .click();
 
     cy.get("@installToast").should("not.be.visible");
 
