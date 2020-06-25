@@ -10,22 +10,20 @@ describe("responsive design", () => {
   describe("on phones", () => {
     before(() => {
       cy.visit("/");
+      cy.findByText("Order #1001").should("be.visible");
     });
 
     ["portrait", "landscape"].forEach((orientation) => {
       describe(`in ${orientation}`, () => {
-        it("should display menu navigation button", () => {
+        it.only("should display menu navigation button", () => {
           cy.viewport("iphone-6", orientation);
           cy.get("ion-menu-button").should("be.visible");
         });
 
-        it("should open left menu using menu button navigation", () => {
+        it.only("should open left menu using menu button navigation", () => {
           cy.viewport("iphone-6", orientation);
           cy.get("ion-menu-button").click();
-          cy.get('ion-menu[role="navigation"]').should("be.visible");
-          cy.get('ion-menu ion-item[href="/orders"]')
-            .should("be.visible")
-            .should("contain.text", "My Orders");
+          cy.get("ion-list").findByText("My Orders").should("be.visible");
           cy.waitForIonicAnimations();
         });
 
