@@ -59,10 +59,12 @@ Cypress.Commands.add("offline", () => {
 
 Cypress.Commands.add("unregisterServiceWorkers", () => {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .getRegistrations()
-      .then((registrations) =>
-        registrations.forEach((reg) => reg.unregister())
-      );
+    cy.wrap(
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) =>
+          Promise.all(registrations.map((reg) => reg.unregister()))
+        )
+    );
   }
 });
