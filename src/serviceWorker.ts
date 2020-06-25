@@ -23,6 +23,7 @@ const isLocalhost = Boolean(
 type Config = {
   onSuccess?: (registration: ServiceWorkerRegistration) => void;
   onUpdate?: (registration: ServiceWorkerRegistration) => void;
+  onReady?: (registration: ServiceWorkerRegistration) => void;
 };
 
 export function register(config?: Config) {
@@ -42,19 +43,25 @@ export function register(config?: Config) {
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
-
-        // Add some additional logging to localhost, pointing developers to the
-        // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then(() => {
-          console.log(
-            "This web app is being served cache-first by a service " +
-              "worker. To learn more, visit https://bit.ly/CRA-PWA"
-          );
-        });
       } else {
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config);
       }
+
+      navigator.serviceWorker.ready.then((registration) => {
+        // Add some additional logging to localhost, pointing developers to the
+        // service worker/PWA documentation.
+        if (isLocalhost) {
+          console.log(
+            "This web app is being served cache-first by a service " +
+              "worker. To learn more, visit https://bit.ly/CRA-PWA"
+          );
+        }
+
+        if (config && config.onReady) {
+          config.onReady(registration);
+        }
+      });
     });
   }
 }
