@@ -61,12 +61,9 @@ export function register(config?: Config) {
         //
         // Skip waiting during Cypress test run
         //
-        if ("Cypress" in window && navigator.serviceWorker.controller) {
+        if ("Cypress" in window && registration.waiting) {
           console.log("Telling SW to skipWaiting during Cypress run");
-
-          navigator.serviceWorker.controller.postMessage({
-            type: "SKIP_WAITING",
-          });
+          registration.waiting.postMessage({ type: "SKIP_WAITING" });
         }
 
         if (config && config.onReady) {
