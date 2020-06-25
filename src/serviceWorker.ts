@@ -58,6 +58,17 @@ export function register(config?: Config) {
           );
         }
 
+        //
+        // Skip waiting during Cypress test run
+        //
+        if ("Cypress" in window && navigator.serviceWorker.controller) {
+          console.log("Telling SW to skipWaiting during Cypress run");
+
+          navigator.serviceWorker.controller.postMessage({
+            type: "SKIP_WAITING",
+          });
+        }
+
         if (config && config.onReady) {
           config.onReady(registration);
         }
@@ -85,15 +96,6 @@ function registerValidSW(swUrl: string, config?: Config) {
                 "New content is available and will be used when all " +
                   "tabs for this page are closed. See https://bit.ly/CRA-PWA."
               );
-
-              //
-              // Skip waiting during Cypress test run
-              //
-              if ("Cypress" in window) {
-                navigator.serviceWorker.controller.postMessage({
-                  type: "SKIP_WAITING",
-                });
-              }
 
               // Execute callback
               if (config && config.onUpdate) {

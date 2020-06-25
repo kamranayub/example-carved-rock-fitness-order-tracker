@@ -55,6 +55,7 @@ describe("offline support", () => {
 
   describe("when coming back online", () => {
     beforeEach(() => {
+      cy.unregisterServiceWorkers();
       cy.online();
     });
 
