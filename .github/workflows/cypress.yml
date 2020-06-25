@@ -18,8 +18,8 @@ jobs:
         with:
           submodules: true
 
-      - name: Install yalc
-        run: sudo npm install yalc -g
+      - name: Install global dependencies
+        run: sudo npm install yalc http-server @ionic/cli -g
 
       - name: Publish local packages
         run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
@@ -30,12 +30,6 @@ jobs:
         with:
           # just perform install
           runTests: false
-
-      - name: Install Ionic CLI
-        run: sudo npm install @ionic/cli -g
-
-      - name: Install http-server
-        run: sudo npm install http-server -g
 
       - name: Generate SSL certificate
         run: ionic ssl generate
