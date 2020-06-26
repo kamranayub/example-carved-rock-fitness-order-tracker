@@ -1,6 +1,5 @@
 describe("offline support", () => {
   before(() => {
-    cy.visit("/");
     // We cannot stub or intercept Service Worker fetch requests
     // because they exist in a separate context and Cypress does
     // not yet support stubbing them.
@@ -8,7 +7,7 @@ describe("offline support", () => {
     // To emulate "going offline" which would result in 404s or
     // other network errors, we remove the SW and use XHR instead
     // so we can stub fetch calls.
-    cy.window().setServiceWorkerShouldFetch(false);
+    cy.visitWithoutApiCaching("/");
   });
 
   it("should load orders when online", () => {

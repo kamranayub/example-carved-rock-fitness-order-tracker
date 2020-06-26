@@ -26,6 +26,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import Layout from "./components/Layout";
 import InstallationPrompt from "./components/InstallationPrompt";
+import CypressTestHooks from "./components/CypressTestHooks";
 
 const App: React.FC = () => (
   <IonApp>
@@ -40,6 +41,7 @@ const App: React.FC = () => (
     </IonReactRouter>
     <NetworkIndicator />
     <InstallationPrompt />
+    <CypressTestHooks />
   </IonApp>
 );
 

@@ -4,6 +4,7 @@ import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
 import { NetworkFirst, CacheFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
+import localForage from "localforage";
 
 declare let self: ServiceWorkerGlobalScope;
 clientsClaim();
@@ -18,21 +19,17 @@ const navigationRoute = new NavigationRoute(handler, {
 
 registerRoute(navigationRoute);
 
-const bool = (v: string | undefined | null) => v === "true" || false;
 //
 // Attempt to retrieve latest orders, otherwise fallback to cached
 // responses.
 //
 registerRoute(
   ({ url }) => {
-    const shouldFetchValue =
-      window.sessionStorage.getItem("SW_SHOULD_FETCH") || true;
-    const shouldFetch =
-      typeof shouldFetchValue === "string"
-        ? bool(shouldFetchValue)
-        : shouldFetchValue;
+    const shouldFetch = !url.searchParams.has("sw_bypass");
 
-    console.log("Matching SW backend route, shouldFetch:", shouldFetch, url);
+    if (!shouldFetch) {
+      console.log("Bypassing SW handling of URL", url.toString());
+    }
 
     return (
       shouldFetch &&
@@ -68,17 +65,9 @@ registerRoute(
 
 self.addEventListener("message", function (event: ExtendableMessageEvent) {
   if (event.data) {
-    console.log("Handled SW message event", event.data);
-
     switch (event.type) {
       case "SKIP_WAITING":
         self.skipWaiting();
-        break;
-      case "SET_SHOULD_FETCH":
-        window.sessionStorage.setItem(
-          "SW_SHOULD_FETCH",
-          String(event.data.value)
-        );
         break;
     }
   }
