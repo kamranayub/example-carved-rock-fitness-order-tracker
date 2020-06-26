@@ -57,17 +57,35 @@ Cypress.Commands.add("offline", () => {
   });
 });
 
-Cypress.Commands.add("unregisterServiceWorkers", () => {
-  if ("serviceWorker" in navigator) {
-    cy.wrap(
-      navigator.serviceWorker
-        .getRegistrations()
-        .then((registrations) =>
-          Promise.all(registrations.map((reg) => reg.unregister()))
-        )
-    );
+// Cypress.Commands.add("visitWithoutServiceWorker", (url, options = {}) => {
+//   cy.visit(url, {
+//     onBeforeLoad(win) {
+//       options.onBeforeLoad && options.onBeforeLoad(win);
+//       delete win.navigator.__proto__.serviceWorker;
+//     },
+//   });
+// });
+
+Cypress.Commands.add(
+  "setServiceWorkerShouldFetch",
+  { prevSubject: "window" },
+  (window, enable = true) => {
+    if (
+      "serviceWorker" in window.navigator &&
+      window.navigator.serviceWorker.controller
+    ) {
+      // wait for SW readiness
+      cy.get("html").should("have.class", "sw");
+
+      // send a message to Workbox SW to set fetch mode
+      // see sw-template.ts
+      window.navigator.serviceWorker.controller.postMessage({
+        type: "SET_SHOULD_FETCH",
+        value: enable,
+      });
+    }
   }
-});
+);
 
 Cypress.Commands.overwrite("viewport", (originalFn, ...args) => {
   // Delegate to original fn

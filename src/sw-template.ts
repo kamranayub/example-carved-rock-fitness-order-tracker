@@ -6,10 +6,20 @@ import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
 declare let self: ServiceWorkerGlobalScope;
+let shouldHandleFetching = true;
 
 self.addEventListener("message", function (event: ExtendableMessageEvent) {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    self.skipWaiting();
+  if (event.data) {
+    console.log("Handled SW message event", event.data);
+
+    switch (event.type) {
+      case "SKIP_WAITING":
+        self.skipWaiting();
+        break;
+      case "SET_SHOULD_FETCH":
+        shouldHandleFetching = event.data.value;
+        break;
+    }
   }
 });
 
@@ -31,6 +41,7 @@ registerRoute(navigationRoute);
 //
 registerRoute(
   ({ url }) =>
+    shouldHandleFetching &&
     url.origin === "https://carved-rock-fitness-backend.azurewebsites.net",
   new NetworkFirst({
     networkTimeoutSeconds: 5,

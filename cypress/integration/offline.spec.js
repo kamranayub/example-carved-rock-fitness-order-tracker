@@ -1,11 +1,14 @@
 describe("offline support", () => {
   before(() => {
     cy.visit("/");
-  });
-
-  it("should wait for service worker to be registered", () => {
-    // we have a hook that adds an HTML classname when service worker is ready
-    cy.get("html", { timeout: 6000 }).should("have.class", "sw-ready");
+    // We cannot stub or intercept Service Worker fetch requests
+    // because they exist in a separate context and Cypress does
+    // not yet support stubbing them.
+    //
+    // To emulate "going offline" which would result in 404s or
+    // other network errors, we remove the SW and use XHR instead
+    // so we can stub fetch calls.
+    cy.window().setServiceWorkerShouldFetch(false);
   });
 
   it("should load orders when online", () => {
@@ -14,14 +17,6 @@ describe("offline support", () => {
 
   describe("when going offline", () => {
     beforeEach(() => {
-      // We cannot stub or intercept Service Worker fetch requests
-      // because they exist in a separate context and Cypress does
-      // not yet support stubbing them.
-      //
-      // To emulate "going offline" which would result in 404s or
-      // other network errors, we remove the SW and force all requests
-      // to abort.
-      cy.unregisterServiceWorkers();
       cy.server({ force404: true });
       cy.offline();
     });
@@ -54,7 +49,6 @@ describe("offline support", () => {
 
   describe("when coming back online", () => {
     beforeEach(() => {
-      cy.unregisterServiceWorkers();
       cy.online();
     });
 
