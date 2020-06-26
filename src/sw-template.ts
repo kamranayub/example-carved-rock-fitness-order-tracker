@@ -5,8 +5,9 @@ import { NetworkFirst, CacheFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
-declare let self: ServiceWorkerGlobalScope;
-let shouldHandleFetching = true;
+declare let self: ServiceWorkerGlobalScope & {
+  shouldDisableFetching?: boolean;
+};
 
 clientsClaim();
 
@@ -26,14 +27,12 @@ registerRoute(navigationRoute);
 //
 registerRoute(
   ({ url }) => {
-    console.log(
-      "Matching SW backend route, shouldHandleFetching:",
-      shouldHandleFetching,
-      url
-    );
+    const shouldFetch = !self.shouldDisableFetching;
+
+    console.log("Matching SW backend route, shouldFetch:", shouldFetch, url);
 
     return (
-      shouldHandleFetching &&
+      shouldFetch &&
       url.origin === "https://carved-rock-fitness-backend.azurewebsites.net"
     );
   },
@@ -73,7 +72,7 @@ self.addEventListener("message", function (event: ExtendableMessageEvent) {
         self.skipWaiting();
         break;
       case "SET_SHOULD_FETCH":
-        shouldHandleFetching = event.data.value;
+        self.shouldDisableFetching = !event.data.value;
 
         break;
     }
