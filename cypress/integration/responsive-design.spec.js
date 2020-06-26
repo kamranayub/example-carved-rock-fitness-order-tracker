@@ -6,7 +6,7 @@ describe("responsive design", () => {
   // To reference Cypress presets, see:
   // https://docs.cypress.io/api/commands/viewport.html#Arguments
   //
-  let orientation = "portrait";
+
   describe("on phones", () => {
     before(() => {
       cy.visit("/");
