@@ -68,3 +68,11 @@ Cypress.Commands.add("unregisterServiceWorkers", () => {
     );
   }
 });
+
+Cypress.Commands.overwrite("viewport", (originalFn, ...args) => {
+  // Delegate to original fn
+  originalFn(...args);
+
+  // Seems to be needed in 4.9.0 for a split second
+  cy.wait(500);
+});

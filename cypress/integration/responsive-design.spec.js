@@ -6,7 +6,7 @@ describe("responsive design", () => {
   // To reference Cypress presets, see:
   // https://docs.cypress.io/api/commands/viewport.html#Arguments
   //
-
+  let orientation = "portrait";
   describe("on phones", () => {
     before(() => {
       cy.visit("/");
@@ -15,12 +15,12 @@ describe("responsive design", () => {
 
     ["portrait", "landscape"].forEach((orientation) => {
       describe(`in ${orientation}`, () => {
-        it.only("should display menu navigation button", () => {
+        it("should display menu navigation button", () => {
           cy.viewport("iphone-6", orientation);
           cy.get("ion-menu-button").should("be.visible");
         });
 
-        it.only("should open left menu using menu button navigation", () => {
+        it("should open left menu using menu button navigation", () => {
           cy.viewport("iphone-6", orientation);
           cy.get("ion-menu-button").click();
           cy.get("ion-list").findByText("My Orders").should("be.visible");
@@ -29,7 +29,8 @@ describe("responsive design", () => {
 
         it("should close left menu when clicking off", () => {
           cy.viewport("iphone-6", orientation);
-
+          cy.get("ion-menu-button").filter(":visible").click();
+          cy.waitForIonicAnimations();
           cy.get('ion-menu[role="navigation"]')
             .click("topRight")
             .should("not.be.visible");
@@ -48,15 +49,21 @@ describe("responsive design", () => {
       cy.visit("/");
     });
 
-    it("should only display left menu", () => {
+    it("should not display left menu", () => {
       cy.viewport("ipad-2");
-      cy.get('ion-menu[role="navigation"]').should("be.visible");
-      cy.get("ion-menu-button").should("not.be.visible");
+      cy.get('ion-menu[role="navigation"]').should("not.be.visible");
+      cy.get("ion-menu-button").should("be.visible");
     });
 
     it("should be the first size to show marketing imagery", () => {
       cy.viewport("ipad-2");
       cy.get(".hero-image-col").should("be.visible");
+    });
+
+    it("should display left menu in landscape", () => {
+      cy.viewport("ipad-2", "landscape");
+      cy.get('ion-menu[role="navigation"]').should("be.visible");
+      cy.get("ion-menu-button").should("not.be.visible");
     });
   });
 
