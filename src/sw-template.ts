@@ -4,7 +4,6 @@ import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
 import { NetworkFirst, CacheFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
-import localForage from "localforage";
 
 declare let self: ServiceWorkerGlobalScope;
 clientsClaim();
