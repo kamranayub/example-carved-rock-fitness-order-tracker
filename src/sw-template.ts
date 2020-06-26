@@ -5,10 +5,7 @@ import { NetworkFirst, CacheFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
-declare let self: ServiceWorkerGlobalScope & {
-  shouldDisableFetching?: boolean;
-};
-
+declare let self: ServiceWorkerGlobalScope;
 clientsClaim();
 
 precacheAndRoute(self.__WB_MANIFEST);
@@ -21,13 +18,19 @@ const navigationRoute = new NavigationRoute(handler, {
 
 registerRoute(navigationRoute);
 
+const bool = (v: string | undefined | null) => v === "true" || false;
 //
 // Attempt to retrieve latest orders, otherwise fallback to cached
 // responses.
 //
 registerRoute(
   ({ url }) => {
-    const shouldFetch = !self.shouldDisableFetching;
+    const shouldFetchValue =
+      window.sessionStorage.getItem("SW_SHOULD_FETCH") || true;
+    const shouldFetch =
+      typeof shouldFetchValue === "string"
+        ? bool(shouldFetchValue)
+        : shouldFetchValue;
 
     console.log("Matching SW backend route, shouldFetch:", shouldFetch, url);
 
@@ -72,8 +75,10 @@ self.addEventListener("message", function (event: ExtendableMessageEvent) {
         self.skipWaiting();
         break;
       case "SET_SHOULD_FETCH":
-        self.shouldDisableFetching = !event.data.value;
-
+        window.sessionStorage.setItem(
+          "SW_SHOULD_FETCH",
+          String(event.data.value)
+        );
         break;
     }
   }
