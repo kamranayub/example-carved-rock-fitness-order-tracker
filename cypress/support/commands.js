@@ -60,6 +60,7 @@ Cypress.Commands.add("offline", () => {
 Cypress.Commands.add("visitWithoutApiCaching", (url, options = {}) => {
   cy.visit(url, {
     onBeforeLoad(win) {
+      console.log("Disabling API caching");
       options.onBeforeLoad && options.onBeforeLoad(win);
       win.__CY_DISABLE_SW_API_CACHING = true;
     },

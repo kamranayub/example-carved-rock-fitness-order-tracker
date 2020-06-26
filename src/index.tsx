@@ -11,17 +11,20 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 // Add class names for Cypress' benefit
 // to check whether service worker is ready
-serviceWorker.register({
-  onSuccess() {
-    document.querySelector("html")?.classList.add("sw", "sw-registered");
-  },
-  onUpdate() {
-    document.querySelector("html")?.classList.add("sw", "sw-updated");
-  },
-  onReady() {
-    document.querySelector("html")?.classList.add("sw", "sw-ready");
-  },
-});
+serviceWorker
+  .register
+  //   {
+  //   onSuccess() {
+  //     document.querySelector("html")?.classList.add("sw", "sw-registered");
+  //   },
+  //   onUpdate() {
+  //     document.querySelector("html")?.classList.add("sw", "sw-updated");
+  //   },
+  //   onReady() {
+  //     document.querySelector("html")?.classList.add("sw", "sw-ready");
+  //   },
+  // }
+  ();
 
 //
 // For static files outside webpack/React

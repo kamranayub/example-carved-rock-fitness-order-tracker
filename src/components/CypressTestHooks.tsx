@@ -15,7 +15,7 @@ const CypressTestHooks: FC = () => {
 
   useEffect(() => {
     if ("Cypress" in window) {
-      console.debug("App is running under Cypress, enabling test globals");
+      console.debug("App is running under Cypress, enabling test globals:");
 
       if (typeof window.__CY_DISABLE_SW_API_CACHING !== "undefined") {
         console.debug(
