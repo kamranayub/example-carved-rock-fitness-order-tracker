@@ -13,7 +13,13 @@ precacheAndRoute(self.__WB_MANIFEST);
 const handler = createHandlerBoundToURL(`${process.env.PUBLIC_URL}/index.html`);
 
 const navigationRoute = new NavigationRoute(handler, {
-  denylist: [new RegExp("^/_"), new RegExp("/[^/?]+\\.[^/]+$"), new RegExp('sw_bypass')],
+  denylist: [
+    // URLs starting with /_ such as Cypress/Gatsby URLs
+    new RegExp("^/_"),
+    // Bypassing for Cypress tests due to window hooks
+    new RegExp("sw_bypass"),
+    new RegExp("/[^/?]+\\.[^/]+$"),
+  ],
 });
 
 registerRoute(navigationRoute);

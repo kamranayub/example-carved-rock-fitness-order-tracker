@@ -62,7 +62,7 @@ describe("installability", () => {
     beforeEach(() => {
       cy.visit("/", {
         onBeforeLoad(window) {
-          cy.log("executed cy.visit onBeforeLoad");
+          console.log("executed cy.visit onBeforeLoad");
           // Intercept (stub) window.matchMedia before the page loads
           cy.stub(window, "matchMedia")
             .withArgs("(display-mode: standalone)")

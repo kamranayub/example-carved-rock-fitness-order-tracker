@@ -16,7 +16,15 @@ describe("offline support", () => {
 
   describe("when going offline", () => {
     beforeEach(() => {
-      cy.server({ force404: true });
+      cy.server();
+
+      // Return 404 for backend requests
+      cy.route({
+        url: new RegExp(/\/orders/),
+        status: 404,
+        response: "Not Found",
+      });
+
       cy.offline();
     });
 

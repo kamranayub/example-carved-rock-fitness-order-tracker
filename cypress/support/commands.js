@@ -25,6 +25,20 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import "@testing-library/cypress/add-commands";
 
+Cypress.Commands.overwrite("visit", (originalFn, path, options) => {
+  // Bypass SW caching for index.html routes
+  // WARN: This doesn't handle if path already contains a query!
+  return originalFn(path + "?sw_bypass", options);
+});
+
+Cypress.Commands.overwrite("viewport", (originalFn, ...args) => {
+  // Delegate to original fn
+  originalFn(...args);
+
+  // Seems to be needed in 4.9.0 for a split second
+  cy.wait(500);
+});
+
 Cypress.Commands.add("waitForIonicAnimations", () => {
   cy.wait(300);
 });
@@ -60,17 +74,8 @@ Cypress.Commands.add("offline", () => {
 Cypress.Commands.add("visitWithoutApiCaching", (url, options = {}) => {
   cy.visit(url, {
     onBeforeLoad(win) {
-      console.log("Disabling API caching");
       options.onBeforeLoad && options.onBeforeLoad(win);
       win.__CY_DISABLE_SW_API_CACHING = true;
     },
   });
-});
-
-Cypress.Commands.overwrite("viewport", (originalFn, ...args) => {
-  // Delegate to original fn
-  originalFn(...args);
-
-  // Seems to be needed in 4.9.0 for a split second
-  cy.wait(500);
 });
