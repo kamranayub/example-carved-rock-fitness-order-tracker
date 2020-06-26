@@ -1,11 +1,8 @@
 describe("installability", () => {
   beforeEach(() => {
-    // Clear all browser state we may be using
     cy.clearCookies();
     cy.clearLocalStorage();
     cy.clearSessionStorage();
-
-    // Reload the page
     cy.visit("/");
 
     // Wait for orders to load
@@ -61,27 +58,33 @@ describe("installability", () => {
     cy.get("@installToast").should("not.exist");
   });
 
-  it("should not prompt when launched from a home screen", () => {
-    cy.visit("/", {
-      onBeforeLoad(window) {
-        // Intercept (stub) window.matchMedia before the page loads
-        cy.stub(window, "matchMedia")
-          .withArgs("(display-mode: standalone)")
-          .callsFake(() => ({
-            matches: true,
-            addListener: () => false,
-            removeListener: () => false,
-          }));
+  describe("when launched from a home screen", () => {
+    beforeEach(() => {
+      cy.visit("/", {
+        onBeforeLoad(window) {
+          cy.log("executed cy.visit onBeforeLoad");
+          // Intercept (stub) window.matchMedia before the page loads
+          cy.stub(window, "matchMedia")
+            .withArgs("(display-mode: standalone)")
+            .callsFake(() => ({
+              matches: true,
+              addListener: () => false,
+              removeListener: () => false,
+            }));
 
-        // If the media query doesn't match,
-        // call through to the original window.matchMedia
-        // so we don't break other aspects of the page
-        window.matchMedia.callThrough();
-      },
+          // If the media query doesn't match,
+          // call through to the original window.matchMedia
+          // so we don't break other aspects of the page
+          window.matchMedia.callThrough();
+        },
+      });
     });
-    cy.triggerBeforeInstallEvent();
-    cy.wait(500);
-    cy.get("ion-toast[data-presented]").should("not.exist");
+
+    it("should not prompt", () => {
+      cy.triggerBeforeInstallEvent();
+      cy.wait(500);
+      cy.get("ion-toast[data-presented]").should("not.exist");
+    });
   });
 
   it("should not prompt when app is installed while launched", () => {

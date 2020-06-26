@@ -8,21 +8,6 @@ import { ExpirationPlugin } from "workbox-expiration";
 declare let self: ServiceWorkerGlobalScope;
 let shouldHandleFetching = true;
 
-self.addEventListener("message", function (event: ExtendableMessageEvent) {
-  if (event.data) {
-    console.log("Handled SW message event", event.data);
-
-    switch (event.type) {
-      case "SKIP_WAITING":
-        self.skipWaiting();
-        break;
-      case "SET_SHOULD_FETCH":
-        shouldHandleFetching = event.data.value;
-        break;
-    }
-  }
-});
-
 clientsClaim();
 
 precacheAndRoute(self.__WB_MANIFEST);
@@ -40,9 +25,18 @@ registerRoute(navigationRoute);
 // responses.
 //
 registerRoute(
-  ({ url }) =>
-    shouldHandleFetching &&
-    url.origin === "https://carved-rock-fitness-backend.azurewebsites.net",
+  ({ url }) => {
+    console.log(
+      "Matching SW backend route, shouldHandleFetching:",
+      shouldHandleFetching,
+      url
+    );
+
+    return (
+      shouldHandleFetching &&
+      url.origin === "https://carved-rock-fitness-backend.azurewebsites.net"
+    );
+  },
   new NetworkFirst({
     networkTimeoutSeconds: 5,
     cacheName: "orders",
@@ -69,3 +63,19 @@ registerRoute(
     ],
   })
 );
+
+self.addEventListener("message", function (event: ExtendableMessageEvent) {
+  if (event.data) {
+    console.log("Handled SW message event", event.data);
+
+    switch (event.type) {
+      case "SKIP_WAITING":
+        self.skipWaiting();
+        break;
+      case "SET_SHOULD_FETCH":
+        shouldHandleFetching = event.data.value;
+
+        break;
+    }
+  }
+});
