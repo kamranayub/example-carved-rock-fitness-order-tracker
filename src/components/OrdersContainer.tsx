@@ -12,19 +12,20 @@ import { RouteComponentProps } from "react-router";
 import { useQuery, queryCache } from "react-query";
 
 import { getOrders, getOrder } from "../data/orders";
+import useServiceWorkerBypass from "../use-sw-bypass";
 import OrderStatusBadge from "./OrderStatusBadge";
 import Amount from "./Amount";
-import InstallationPrompt from "./InstallationPrompt";
 
 import "./OrdersContainer.css";
 
 export const OrdersContainer: FC<RouteComponentProps> = (props) => {
-  const { data: orders = [], status, refetch } = useQuery("orders", getOrders, {
+  const [swBypass] = useServiceWorkerBypass();
+  const { data: orders = [], status, refetch } = useQuery("orders", [swBypass], getOrders, {
     onSuccess(orders) {
       // prefetch orders for caching purposes, in case user goes offline at _least_ we'll have preloaded some
       // of their latest orders
       orders.forEach((order) => {
-        queryCache.prefetchQuery(["order", order.id], getOrder);
+        queryCache.prefetchQuery(["order", order.id], [swBypass], getOrder);
       });
     },
   });
@@ -43,7 +44,6 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
 
   return (
     <>
-      <InstallationPrompt />
       <IonRefresher slot="fixed" onIonRefresh={refreshOrders}>
         <IonRefresherContent />
       </IonRefresher>

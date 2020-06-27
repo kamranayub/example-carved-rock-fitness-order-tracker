@@ -1,10 +1,21 @@
 import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
 import { queryCache } from "react-query";
 
-export async function getOrders() {
-  const res = await fetch(
-    "https://carved-rock-fitness-backend.azurewebsites.net/api/orders"
-  );
+/**
+ * Helper to build CRF API URL
+ *
+ * @param path API path
+ * @param bypassServiceWorkerCaching Whether or not to hint to service worker to bypass caching for the request
+ */
+function url(path: string, bypassServiceWorkerCaching?: boolean) {
+  const base = "https://carved-rock-fitness-backend.azurewebsites.net";
+  const query = bypassServiceWorkerCaching ? "?sw_bypass" : "";
+
+  return base + path + query;
+}
+
+export async function getOrders(_: string, swBypass: boolean) {
+  const res = await fetch(url("/api/orders", swBypass));
   if (res.ok) {
     const orders: CarvedRockFitnessApi.Order[] = await res.json();
     return orders;
@@ -13,10 +24,8 @@ export async function getOrders() {
   throw new Error(res.statusText);
 }
 
-export async function getOrder(_: string, id: number) {
-  const res = await fetch(
-    "https://carved-rock-fitness-backend.azurewebsites.net/api/orders/" + id
-  );
+export async function getOrder(_: string, id: number, swBypass: boolean) {
+  const res = await fetch(url("/api/orders/" + id, swBypass));
   if (res.ok) {
     const order: CarvedRockFitnessApi.Order = await res.json();
     return order || undefined;

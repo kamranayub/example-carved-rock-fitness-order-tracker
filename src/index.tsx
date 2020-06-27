@@ -8,6 +8,9 @@ ReactDOM.render(<App />, document.getElementById("root"));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
+
+// Add class names for Cypress' benefit
+// to check whether service worker is ready
 serviceWorker.register({
   onSuccess() {
     document.querySelector("html")?.classList.add("sw", "sw-registered");
@@ -15,15 +18,10 @@ serviceWorker.register({
   onUpdate() {
     document.querySelector("html")?.classList.add("sw", "sw-updated");
   },
-});
-
-// Hook for Cypress' benefit
-// to check whether service worker is ready
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.ready.then(() => {
+  onReady() {
     document.querySelector("html")?.classList.add("sw", "sw-ready");
-  });
-}
+  },
+});
 
 //
 // For static files outside webpack/React

@@ -5,6 +5,7 @@ import { notificationsOff, notifications } from "ionicons/icons";
 import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
 import { subscribeToOrder, getOrder } from "../data/orders";
 import { useQuery } from "react-query";
+import useServiceWorkerBypass from "../use-sw-bypass";
 
 interface OrderNotificationsProps {
   orderId: string;
@@ -22,7 +23,12 @@ function canTrackOrder(orderStatus: CarvedRockFitnessApi.OrderStatus) {
 }
 
 const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
-  const { data: order } = useQuery(["order", parseInt(orderId, 10)], getOrder);
+  const [swBypass] = useServiceWorkerBypass();
+  const { data: order } = useQuery(
+    ["order", parseInt(orderId, 10)],
+    [swBypass],
+    getOrder
+  );
   const [
     enableNotifications,
     setEnableNotifications,

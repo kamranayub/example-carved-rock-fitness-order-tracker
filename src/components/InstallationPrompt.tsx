@@ -44,16 +44,6 @@ const InstallationPrompt: FC = () => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
 
-      console.log(
-        "beforeinstallprompt",
-        "hasDismissed",
-        hasDismissed,
-        "isAppInstalled",
-        isAppInstalled,
-        "hasInstalled",
-        hasInstalled
-      );
-
       // Check if install status has changed
       if (hasDismissed || isAppInstalled || hasInstalled) {
         return;

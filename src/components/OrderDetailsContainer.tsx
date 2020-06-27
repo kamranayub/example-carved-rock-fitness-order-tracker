@@ -12,6 +12,7 @@ import React, { FC } from "react";
 import { RouteComponentProps } from "react-router";
 import { useQuery } from "react-query";
 
+import useServiceWorkerBypass from "../use-sw-bypass";
 import { getOrder } from "../data/orders";
 import Amount from "../components/Amount";
 import OrderStatusCard from "./OrderStatusCard";
@@ -23,8 +24,10 @@ export interface OrderDetailsRouteParams {
 const OrderDetailsContainer: FC<RouteComponentProps<
   OrderDetailsRouteParams
 >> = (props) => {
+  const [swBypass] = useServiceWorkerBypass();
   const { data: order, status } = useQuery(
     ["order", Number(props.match.params.id)],
+    [swBypass],
     getOrder
   );
 

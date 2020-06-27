@@ -6,13 +6,6 @@ import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
 declare let self: ServiceWorkerGlobalScope;
-
-self.addEventListener("message", function (event: ExtendableMessageEvent) {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    self.skipWaiting();
-  }
-});
-
 clientsClaim();
 
 precacheAndRoute(self.__WB_MANIFEST);
@@ -20,7 +13,13 @@ precacheAndRoute(self.__WB_MANIFEST);
 const handler = createHandlerBoundToURL(`${process.env.PUBLIC_URL}/index.html`);
 
 const navigationRoute = new NavigationRoute(handler, {
-  denylist: [new RegExp("^/_"), new RegExp("/[^/?]+\\.[^/]+$")],
+  denylist: [
+    // URLs starting with /_ such as Cypress/Gatsby URLs
+    new RegExp("^/_"),
+    // Bypassing for Cypress tests due to window hooks
+    new RegExp("sw_bypass"),
+    new RegExp("/[^/?]+\\.[^/]+$"),
+  ],
 });
 
 registerRoute(navigationRoute);
@@ -30,8 +29,18 @@ registerRoute(navigationRoute);
 // responses.
 //
 registerRoute(
-  ({ url }) =>
-    url.origin === "https://carved-rock-fitness-backend.azurewebsites.net",
+  ({ url }) => {
+    const shouldFetch = !url.searchParams.has("sw_bypass");
+
+    if (!shouldFetch) {
+      console.log("Bypassing SW handling of URL", url.toString());
+    }
+
+    return (
+      shouldFetch &&
+      url.origin === "https://carved-rock-fitness-backend.azurewebsites.net"
+    );
+  },
   new NetworkFirst({
     networkTimeoutSeconds: 5,
     cacheName: "orders",
@@ -58,3 +67,13 @@ registerRoute(
     ],
   })
 );
+
+self.addEventListener("message", function (event: ExtendableMessageEvent) {
+  if (event.data) {
+    switch (event.type) {
+      case "SKIP_WAITING":
+        self.skipWaiting();
+        break;
+    }
+  }
+});
