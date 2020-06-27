@@ -29,7 +29,8 @@ describe("responsive design", () => {
 
         it("should close left menu when clicking off", () => {
           cy.viewport("iphone-6", orientation);
-          cy.get("ion-menu-button").filter(":visible").click();
+          cy.reload();
+          cy.get("ion-menu-button").click();
           cy.waitForIonicAnimations();
           cy.get('ion-menu[role="navigation"]')
             .click("topRight")
