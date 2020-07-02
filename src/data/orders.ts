@@ -57,10 +57,10 @@ export function subscribeToOrder(
             body: `Your order with ${existingOrder.orderItems.length} items is now "${status}"`,
           });
 
-          n.addEventListener("show", function () {
-            console.log("notification shown!", this);
+          n.addEventListener("show", () => {
+            console.log("notification shown!", n);
             if (typeof window.__CY_NOTIFICATION_PUSHED !== "undefined") {
-              window.__CY_NOTIFICATION_PUSHED(this);
+              window.__CY_NOTIFICATION_PUSHED(n);
             }
           });
 

@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://localhost:8100/",
+  "baseUrl": "https://deploy-preview-10--carved-rock-order-tracker-pwa.netlify.app/",
   "chromeWebSecurity": false,
   "experimentalShadowDomSupport": false,
   "experimentalFetchPolyfill": true
