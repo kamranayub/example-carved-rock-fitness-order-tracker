@@ -1,15 +1,6 @@
 import { useEffect, FC } from "react";
 import useServiceWorkerBypass from "../use-sw-bypass";
 
-declare global {
-    interface Window {
-      /**
-       * Global Cypress hook to bypass Service Worker route caching
-       */
-      __CY_DISABLE_SW_API_CACHING?: boolean;
-    }
-  }
-
 const CypressTestHooks: FC = () => {
   const [, setSwBypass] = useServiceWorkerBypass();
 

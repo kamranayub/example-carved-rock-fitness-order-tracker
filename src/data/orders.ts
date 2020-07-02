@@ -57,9 +57,11 @@ export function subscribeToOrder(
             body: `Your order with ${existingOrder.orderItems.length} items is now "${status}"`,
           });
 
-          // TODO: Add testing hook here
-          n.addEventListener("show", () => {
-            console.log("notification shown!", n);
+          n.addEventListener("show", function () {
+            console.log("notification shown!", this);
+            if (typeof window.__CY_NOTIFICATION_PUSHED !== "undefined") {
+              window.__CY_NOTIFICATION_PUSHED(this);
+            }
           });
 
           return { ...existingOrder, status };
