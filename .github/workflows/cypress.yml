@@ -42,8 +42,7 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           install: false
-          env:
-            CI: true
+          env: CI=true
           config: baseUrl=https://localhost:8100,chromeWebSecurity=false
           # Start a HTTP server with:
           # - Port 8100
