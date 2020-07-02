@@ -77,28 +77,60 @@ describe("notifications", () => {
       });
   });
 
-  it("will send desktop notification during test run after 6 seconds", () => {
-    cy.visit("/orders/1001", {
-      onBeforeLoad(win) {
-        cy.stub(win.navigator.permissions, "query")
-          .withArgs({ name: "notifications" })
-          .resolves({ state: "granted" });
+  Cypress.env().CI &&
+    it("will simulate sending desktop notification", () => {
+      cy.visit("/orders/1001", {
+        onBeforeLoad(win) {
+          cy.stub(win.navigator.permissions, "query")
+            .withArgs({ name: "notifications" })
+            .resolves({ state: "granted" });
 
-        win.navigator.permissions.query.callThrough();
-        win.__CY_NOTIFICATION_PUSHED = cy.stub();
-      },
-    });
-    cy.findByLabelText("Toggle Push Notifications").click();
-    cy.get("ion-toast:not(.overlay-hidden)")
-      .should("exist")
-      .should((e) => {
-        const [dom] = e.get();
-        expect(dom.shadowRoot.querySelector(".toast-message")).to.contain.text(
-          "We will notify you of any updates to this order"
-        );
+          win.navigator.permissions.query.callThrough();
+          cy.spy(win, "Notification");
+        },
       });
-    cy.window()
-      .its("__CY_NOTIFICATION_PUSHED", { timeout: 30000 })
-      .should("be.calledWithMatch", 'Your order with 2 items is now "Shipped"');
-  });
+      cy.findByLabelText("Toggle Push Notifications").click();
+      cy.get("ion-toast:not(.overlay-hidden)")
+        .should("exist")
+        .should((e) => {
+          const [dom] = e.get();
+          expect(
+            dom.shadowRoot.querySelector(".toast-message")
+          ).to.contain.text("We will notify you of any updates to this order");
+        });
+
+      cy.window()
+        .its("Notification", { timeout: 30000 })
+        .should("be.calledWithMatch", `Order #1001 Status`, {
+          body: 'Your order with 2 items is now "shipped"',
+        });
+    });
+
+  !Cypress.env().CI &&
+    it("will show desktop notification during test run", () => {
+      cy.visit("/orders/1001", {
+        onBeforeLoad(win) {
+          win.__CY_NOTIFICATION_PUSHED = cy.stub();
+        },
+      });
+      cy.findByLabelText("Toggle Push Notifications").click();
+
+      cy.log("Please allow notifications to grant permissions");
+
+      cy.get("ion-toast:not(.overlay-hidden)")
+        .should("exist")
+        .should((e) => {
+          const [dom] = e.get();
+          expect(
+            dom.shadowRoot.querySelector(".toast-message")
+          ).to.contain.text("We will notify you of any updates to this order");
+        });
+
+      cy.window()
+        .its("__CY_NOTIFICATION_PUSHED", { timeout: 30000 })
+        .should(
+          "be.calledWithMatch",
+          'Your order with 2 items is now "shipped"'
+        );
+    });
 });
