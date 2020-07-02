@@ -99,8 +99,6 @@ describe("notifications", () => {
       });
     cy.window()
       .its("__CY_NOTIFICATION_PUSHED", { timeout: 30000 })
-      .should("be.calledWithMatch", {
-        body: 'Your order with 2 items is now "Shipped"',
-      });
+      .should("be.calledWithMatch", 'Your order with 2 items is now "Shipped"');
   });
 });

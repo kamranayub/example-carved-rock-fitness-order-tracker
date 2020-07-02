@@ -60,7 +60,7 @@ export function subscribeToOrder(
           n.addEventListener("show", () => {
             console.log("notification shown!", n);
             if (typeof window.__CY_NOTIFICATION_PUSHED !== "undefined") {
-              window.__CY_NOTIFICATION_PUSHED(n);
+              window.__CY_NOTIFICATION_PUSHED(n.body);
             }
           });
 
