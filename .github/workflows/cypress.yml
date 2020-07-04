@@ -19,7 +19,7 @@ jobs:
           submodules: true
 
       - name: Install global dependencies
-        run: sudo npm install yalc http-server @ionic/cli -g
+        run: sudo npm install yalc http-server spa-http-server @ionic/cli -g
 
       - name: Publish local packages
         run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
