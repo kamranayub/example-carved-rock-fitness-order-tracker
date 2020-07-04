@@ -42,7 +42,7 @@ jobs:
           env: CI=true
           config: baseUrl=https://localhost:8100,chromeWebSecurity=false
           # Start a HTTP server
-          start: sudo servor --secure --silent build index.html 8100
+          start: sudo servor --secure build index.html 8100
           browser: chrome
 
       # Upload artifacts
