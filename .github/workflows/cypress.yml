@@ -48,8 +48,9 @@ jobs:
           # - Port 8100
           # - Silent output
           # - HTTPS and generated Ionic certs
+          # - Add catch-all route to index.html
           # - Serving `build` directory
-          start: http-server -p 8100 -s -S -C .ionic/ssl/cert.pem -K .ionic/ssl/key.pem build
+          start: http-server -p 8100 -s -S -C .ionic/ssl/cert.pem -K .ionic/ssl/key.pem --proxy https://localhost:8100? build
           browser: chrome
 
       # Upload artifacts
