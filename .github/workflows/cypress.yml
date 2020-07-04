@@ -19,7 +19,7 @@ jobs:
           submodules: true
 
       - name: Install global dependencies
-        run: sudo npm install yalc http-server spa-http-server @ionic/cli -g --force
+        run: sudo npm install yalc servor @ionic/cli -g --force
 
       - name: Publish local packages
         run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
@@ -31,9 +31,6 @@ jobs:
           # just perform install
           runTests: false
 
-      - name: Generate SSL certificate
-        run: ionic ssl generate
-
       - name: Build in Production mode
         run: npm run build
 
@@ -44,13 +41,8 @@ jobs:
           install: false
           env: CI=true
           config: baseUrl=https://localhost:8100,chromeWebSecurity=false
-          # Start a HTTP server with:
-          # - Port 8100
-          # - Silent output
-          # - HTTPS and generated Ionic certs
-          # - SPA support (push state)
-          # - Serving `build` directory
-          start: http-server -p 8100 -s -S -C .ionic/ssl/cert.pem -K .ionic/ssl/key.pem --push-state build
+          # Start a HTTP server
+          start: servor --secure --silent build index.html 8100
           browser: chrome
 
       # Upload artifacts
