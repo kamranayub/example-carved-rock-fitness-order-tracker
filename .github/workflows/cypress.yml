@@ -19,7 +19,7 @@ jobs:
           submodules: true
 
       - name: Install global dependencies
-        run: sudo npm install yalc servor @ionic/cli -g --force
+        run: sudo npm install yalc serve @ionic/cli -g --force
 
       - name: Publish local packages
         run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
@@ -40,9 +40,9 @@ jobs:
         with:
           install: false
           env: CI=true
-          config: baseUrl=https://localhost:8100,chromeWebSecurity=false
+          config: baseUrl=http://localhost:8100,chromeWebSecurity=false
           # Start a HTTP server
-          start: sudo servor --secure build index.html 8100
+          start: serve -s -l http://localhost:8100 build
           browser: chrome
 
       # Upload artifacts
