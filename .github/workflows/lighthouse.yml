@@ -7,11 +7,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Wait for Netlify Deploy Preview Commit
-        uses: kamranayub/wait-for-netlify-action@1.0.1
+        uses: kamranayub/wait-for-netlify-action@1.1.1
         id: netlify
         with:
           site_name: 'carved-rock-order-tracker-pwa'
           max_timeout: 180
+        env:
+          NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v3
         with:
