@@ -42,7 +42,7 @@ jobs:
           env: CI=true
           config: baseUrl=http://localhost:8100,chromeWebSecurity=false
           # Start a HTTP server
-          start: serve -s -l http://localhost:8100 build
+          start: serve -s -l 8100 build
           browser: chrome
 
       # Upload artifacts
