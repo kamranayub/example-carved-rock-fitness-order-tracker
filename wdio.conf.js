@@ -55,6 +55,15 @@ exports.config = {
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
       // excludeDriverLogs: ['bugreport', 'server'],
+
+      // Set permissions we expect to deal with
+      // See: https://www.browserstack.com/automate/handle-popups-alerts-prompts-in-automated-tests
+      "goog:chromeOptions": {
+        prefs: {
+          // 0 - Default, 1 - Allow, 2 - Block
+          "profile.managed_default_content_settings.notifications": 1,
+        },
+      },
     },
   ],
   //

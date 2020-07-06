@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["node", "webdriverio", "@wdio/mocha-framework"],
+    "noEmit": true,
+    "allowJs": true
+  },
+  "include": ["**/*"]
+}

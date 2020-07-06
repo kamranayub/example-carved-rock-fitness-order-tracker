@@ -1,6 +1,54 @@
-describe("webdriver.io page", () => {
-  it("should have the right title", async () => {
+browser.addCommand("focused", () => {
+  return $(() => document.activeElement);
+});
+
+describe("accessibility", () => {
+  before(async () => {
     await browser.url("/");
-    await expect(browser).toHaveTitle("Carved Rock Fitness Order Tracker");
+    const firstOrder = await $("=Order #1001");
+    expect(firstOrder).toBeDisplayed();
+  });
+
+  describe("keyboard navigation", () => {
+    it("should focus on My Orders menu item when tabbing first time", async () => {
+      await browser.keys("Tab");
+      const focused = await browser.focused();
+
+      await expect(focused).toHaveHref("/orders");
+      await expect(focused).toHaveText("My Orders");
+    });
+
+    it("should focus on first order next", async () => {
+      await browser.keys("Tab");
+      const focused = await browser.focused();
+
+      await expect(focused).toHaveTextContaining("Order #1001");
+    });
+
+    it("should navigate to order when selected with Enter key", async () => {
+      await browser.keys("Enter");
+      await expect(browser).toHaveUrl(browser.config.baseUrl + "orders/1001");
+      await expect($("ion-title*=Order #1001")).toBeDisplayed();
+    });
+
+    it("should be able to focus on notification toggle", async () => {
+      await browser.keys(["Tab", "Tab"]);
+      const focused = browser.focused();
+      await expect(focused).toHaveAttribute(
+        "aria-label",
+        "Toggle Push Notifications"
+      );
+      await expect(focused).toHaveAttribute("aria-checked", "false");
+    });
+
+    it("should be able to toggle notifications", async () => {
+      await browser.keys("Enter");
+      const focused = browser.focused();
+      await expect(focused).toHaveAttribute(
+        "aria-label",
+        "Toggle Push Notifications"
+      );
+      await expect(focused).toHaveAttribute("aria-checked", "true");
+    });
   });
 });
