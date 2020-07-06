@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Wait for Netlify Deploy Preview Commit
-        uses: kamranayub/wait-for-netlify-action@1.1.6
+        uses: kamranayub/wait-for-netlify-action@2.0.0
         id: netlify
         with:
           site_name: 'carved-rock-order-tracker-pwa'
