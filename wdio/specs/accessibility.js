@@ -5,8 +5,7 @@ browser.addCommand("focused", () => {
 describe("accessibility", () => {
   before(async () => {
     await browser.url("/");
-    const firstOrder = await $("=Order #1001");
-    expect(firstOrder).toBeDisplayed();
+    await expect($("=Order #1001")).toBeDisplayed();
   });
 
   describe("keyboard navigation", () => {
