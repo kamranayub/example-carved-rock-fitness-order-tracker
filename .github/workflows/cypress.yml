@@ -19,36 +19,28 @@ jobs:
           submodules: true
 
       - name: Install global dependencies
-        run: sudo npm install yalc http-server @ionic/cli -g
+        run: sudo npm install yalc serve @ionic/cli -g --force
 
       - name: Publish local packages
         run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
 
-       # Install NPM dependencies, cache them correctly
-      - name: Install Cypress with dependencies
-        uses: cypress-io/github-action@v1
+      # Wait for Netlify Deploy Preview to boot up
+      - name: Wait for Netlify Deploy Preview Commit
+        uses: kamranayub/wait-for-netlify-action@2.0.0
+        id: netlify
         with:
-          # just perform install
-          runTests: false
-
-      - name: Generate SSL certificate
-        run: ionic ssl generate
-
-      - name: Build in Production mode
-        run: npm run build
+          site_name: 'carved-rock-order-tracker-pwa'
+          max_timeout: 180
+        env:
+          NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
 
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
         with:
-          install: false
-          config: baseUrl=https://localhost:8100,chromeWebSecurity=false
-          # Start a HTTP server with:
-          # - Port 8100
-          # - Silent output
-          # - HTTPS and generated Ionic certs
-          # - Serving `build` directory
-          start: http-server -p 8100 -s -S -C .ionic/ssl/cert.pem -K .ionic/ssl/key.pem build
+          env: CI=true
+          # Substitute Netlify Deploy Preview URL to test
+          config: baseUrl=${{ steps.netlify.outputs.url }},chromeWebSecurity=false
           browser: chrome
 
       # Upload artifacts

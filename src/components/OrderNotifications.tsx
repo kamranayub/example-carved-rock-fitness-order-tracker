@@ -124,6 +124,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
               : undefined,
           "--background-checked": "var(--ion-color-success)",
         }}
+        aria-label="Toggle Push Notifications"
         value={orderId}
       />
       <IonToast
