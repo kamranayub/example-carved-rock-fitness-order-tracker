@@ -59,6 +59,7 @@ exports.config = {
       // Set permissions we expect to deal with
       // See: https://www.browserstack.com/automate/handle-popups-alerts-prompts-in-automated-tests
       "goog:chromeOptions": {
+        headless: !!process.env.CI,
         prefs: {
           // 0 - Default, 1 - Allow, 2 - Block
           "profile.managed_default_content_settings.notifications": 1,
@@ -97,7 +98,9 @@ exports.config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: "https://carved-rock-order-tracker-pwa.netlify.app/",
+  baseUrl:
+    process.env.WDIO_BASE_URL ||
+    "https://carved-rock-order-tracker-pwa.netlify.app/",
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
