@@ -67,11 +67,9 @@
     "@wdio/mocha-framework": "^6.1.19",
     "@wdio/spec-reporter": "^6.1.23",
     "@wdio/sync": "^6.1.14",
-    "chromedriver": "^83.0.0",
     "husky": "4.2.5",
     "lint-staged": "10.2.11",
-    "prettier": "2.0.5",
-    "wdio-chromedriver-service": "^6.0.3"
+    "prettier": "2.0.5"
   },
   "husky": {
     "hooks": {

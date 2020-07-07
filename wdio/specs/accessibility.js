@@ -23,7 +23,9 @@ describe("accessibility", () => {
 
     it("should navigate to order when selected with Enter key", async () => {
       await browser.keys("Enter");
-      await expect(browser).toHaveUrl(browser.config.baseUrl + "orders/1001");
+      await expect(browser).toHaveUrl(
+        new URL("orders/1001", browser.config.baseUrl).toString()
+      );
       const title = await $("ion-title*=Order #1001");
       await expect(title).toBeDisplayed();
       await browser.pause(500); // wait for Ionic page transition
