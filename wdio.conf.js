@@ -59,8 +59,7 @@ exports.config = {
       // excludeDriverLogs: ['bugreport', 'server'],
       "goog:chromeOptions": {
         // Use headless version in CI
-        // args: !process.env.CI ? ["--headless", "--disable-gpu"] : undefined,
-        headless: true,
+        headless: !!process.env.CI,
         args: ["--window-size=1024,768"],
 
         // Set permissions we expect to deal with
