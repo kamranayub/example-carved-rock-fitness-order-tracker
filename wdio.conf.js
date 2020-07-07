@@ -1,3 +1,5 @@
+const path = require("path");
+
 exports.config = {
   //
   // ====================
@@ -55,11 +57,12 @@ exports.config = {
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
       // excludeDriverLogs: ['bugreport', 'server'],
-
-      // Set permissions we expect to deal with
-      // See: https://www.browserstack.com/automate/handle-popups-alerts-prompts-in-automated-tests
       "goog:chromeOptions": {
-        headless: !!process.env.CI,
+        // Use headless version in CI
+        // args: !process.env.CI ? ["--headless", "--disable-gpu"] : undefined,
+
+        // Set permissions we expect to deal with
+        // See: https://www.browserstack.com/automate/handle-popups-alerts-prompts-in-automated-tests
         prefs: {
           // 0 - Default, 1 - Allow, 2 - Block
           "profile.managed_default_content_settings.notifications": 1,
@@ -75,6 +78,7 @@ exports.config = {
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
   logLevel: "info",
+  outputDir: path.resolve(__dirname, "wdio", "logs"),
   //
   // Set specific log levels per logger
   // loggers:
@@ -185,8 +189,11 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {Array.<String>} specs List of spec file paths that are to be run
    */
-  // before: function (capabilities, specs) {
-  // },
+  before: function (capabilities, specs) {
+    browser.addCommand("focused", function () {
+      return this.$(() => document.activeElement);
+    });
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {String} commandName hook command name

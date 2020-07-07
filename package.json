@@ -43,7 +43,7 @@
     "eject": "react-scripts eject",
     "cypress": "cypress open",
     "cypress:run": "cypress run --browser chrome",
-    "wdio": "npx wdio wdio.conf.js"
+    "wdio": "wdio wdio.conf.js"
   },
   "eslintConfig": {
     "extends": "react-app"

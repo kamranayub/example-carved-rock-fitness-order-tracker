@@ -1,11 +1,8 @@
-browser.addCommand("focused", () => {
-  return $(() => document.activeElement);
-});
-
 describe("accessibility", () => {
   before(async () => {
     await browser.url("/");
-    await expect($("=Order #1001")).toBeDisplayed();
+    const firstOrder = await $("ion-item*=Order #1001");
+    await expect(firstOrder).toBeDisplayed();
   });
 
   describe("keyboard navigation", () => {
@@ -27,12 +24,13 @@ describe("accessibility", () => {
     it("should navigate to order when selected with Enter key", async () => {
       await browser.keys("Enter");
       await expect(browser).toHaveUrl(browser.config.baseUrl + "orders/1001");
-      await expect($("ion-title*=Order #1001")).toBeDisplayed();
+      const title = await $("ion-title*=Order #1001");
+      await expect(title).toBeDisplayed();
     });
 
     it("should be able to focus on notification toggle", async () => {
       await browser.keys(["Tab", "Tab"]);
-      const focused = browser.focused();
+      const focused = await browser.focused();
       await expect(focused).toHaveAttribute(
         "aria-label",
         "Toggle Push Notifications"
@@ -42,7 +40,7 @@ describe("accessibility", () => {
 
     it("should be able to toggle notifications", async () => {
       await browser.keys("Enter");
-      const focused = browser.focused();
+      const focused = await browser.focused();
       await expect(focused).toHaveAttribute(
         "aria-label",
         "Toggle Push Notifications"
