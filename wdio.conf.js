@@ -60,6 +60,8 @@ exports.config = {
       "goog:chromeOptions": {
         // Use headless version in CI
         // args: !process.env.CI ? ["--headless", "--disable-gpu"] : undefined,
+        headless: true,
+        args: ["--window-size=1024,768"],
 
         // Set permissions we expect to deal with
         // See: https://www.browserstack.com/automate/handle-popups-alerts-prompts-in-automated-tests
@@ -79,6 +81,7 @@ exports.config = {
   // Level of logging verbosity: trace | debug | info | warn | error | silent
   logLevel: "info",
   outputDir: path.resolve(__dirname, "wdio", "logs"),
+  screenshotDir: path.resolve(__dirname, "wdio", "screenshots"),
   //
   // Set specific log levels per logger
   // loggers:
@@ -120,7 +123,7 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver"],
+  // services: ["chromedriver"],
 
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -193,6 +196,13 @@ exports.config = {
     browser.addCommand("focused", function () {
       return this.$(() => document.activeElement);
     });
+
+    browser.addCommand("isHeadless", function () {
+      if (this.capabilities["goog:chromeOptions"]) {
+        return this.capabilities["goog:chromeOptions"].headless || false;
+      }
+      return false;
+    });
   },
   /**
    * Runs before a WebdriverIO command gets executed.
@@ -227,8 +237,22 @@ exports.config = {
   /**
    * Function to be executed after a test (in Mocha/Jasmine).
    */
-  // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-  // },
+  afterTest: function (
+    test,
+    context,
+    { error, result, duration, passed, retries }
+  ) {
+    // if test passed, ignore, else take and save screenshot.
+    if (!error) {
+      return;
+    }
+    // get current test title and clean it, to use it as file name
+    const filename = encodeURIComponent(test.title.replace(/\s+/g, "-"));
+    // build file path
+    const filePath = path.join(this.screenshotDir, filename + ".png");
+    // save screenshot
+    browser.saveScreenshot(filePath);
+  },
 
   /**
    * Hook that gets executed after the suite has ended
