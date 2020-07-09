@@ -30,15 +30,13 @@ describe("offline support", () => {
 
     it("should show toast when browser goes offline", () => {
       cy.get("ion-toast[data-presented]")
-        .as("offlineToast")
         .should("exist")
-        .should((e) => {
-          const [el] = e.get();
-          const message = el.shadowRoot.querySelector(".toast-message");
-          expect(message).to.have.text(
-            "Looks like you went offline, your data may not be up-to-date."
-          );
-        });
+        .shadow()
+        .find(".toast-message")
+        .should(
+          "have.text",
+          "Looks like you went offline, your data may not be up-to-date."
+        );
 
       // wait for automatic dismissal
       cy.get("ion-toast[data-presented]", { timeout: 10 * 1000 }).should(
@@ -62,13 +60,12 @@ describe("offline support", () => {
     it("should show toast", () => {
       cy.get("ion-toast[data-presented]")
         .should("exist")
-        .should((e) => {
-          const [el] = e.get();
-          const message = el.shadowRoot.querySelector(".toast-message");
-          expect(message).to.have.text(
-            "You're back online, your data is automatically being updated."
-          );
-        });
+        .shadow()
+        .find(".toast-message")
+        .should(
+          "have.text",
+          "You're back online, your data is automatically being updated."
+        );
     });
 
     it("should refetch orders", () => {

@@ -46,14 +46,14 @@ describe("notifications", () => {
       },
     });
     cy.findByLabelText("Toggle Push Notifications").click();
-    cy.get("ion-toast:not(.overlay-hidden)")
+    cy.get("ion-toast[data-presented]")
       .should("exist")
-      .should((e) => {
-        const [dom] = e.get();
-        expect(dom.shadowRoot.querySelector(".toast-message")).to.contain.text(
-          "We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
-        );
-      });
+      .shadow()
+      .find(".toast-message")
+      .should(
+        "contain.text",
+        "We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
+      );
   });
 
   it("will show message confirming the user has enabled tracking", () => {
@@ -67,14 +67,14 @@ describe("notifications", () => {
       },
     });
     cy.findByLabelText("Toggle Push Notifications").click();
-    cy.get("ion-toast:not(.overlay-hidden)")
+    cy.get("ion-toast[data-presented]")
       .should("exist")
-      .should((e) => {
-        const [dom] = e.get();
-        expect(dom.shadowRoot.querySelector(".toast-message")).to.contain.text(
-          "We will notify you of any updates to this order"
-        );
-      });
+      .shadow()
+      .find(".toast-message")
+      .should(
+        "contain.text",
+        "We will notify you of any updates to this order"
+      );
   });
 
   Cypress.env().CI &&
@@ -90,14 +90,14 @@ describe("notifications", () => {
         },
       });
       cy.findByLabelText("Toggle Push Notifications").click();
-      cy.get("ion-toast:not(.overlay-hidden)")
+      cy.get("ion-toast[data-presented]")
         .should("exist")
-        .should((e) => {
-          const [dom] = e.get();
-          expect(
-            dom.shadowRoot.querySelector(".toast-message")
-          ).to.contain.text("We will notify you of any updates to this order");
-        });
+        .shadow()
+        .find(".toast-message")
+        .should(
+          "contain.text",
+          "We will notify you of any updates to this order"
+        );
 
       cy.window()
         .its("Notification", { timeout: 30000 })
@@ -117,14 +117,14 @@ describe("notifications", () => {
 
       cy.log("Please allow notifications to grant permissions");
 
-      cy.get("ion-toast:not(.overlay-hidden)")
+      cy.get("ion-toast[data-presented]")
         .should("exist")
-        .should((e) => {
-          const [dom] = e.get();
-          expect(
-            dom.shadowRoot.querySelector(".toast-message")
-          ).to.contain.text("We will notify you of any updates to this order");
-        });
+        .shadow()
+        .find(".toast-message")
+        .should(
+          "contain.text",
+          "We will notify you of any updates to this order"
+        );
 
       cy.window()
         .its("__CY_NOTIFICATION_PUSHED", { timeout: 30000 })
