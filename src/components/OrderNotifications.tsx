@@ -6,6 +6,7 @@ import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
 import { subscribeToOrder, getOrder } from "../data/orders";
 import { useQuery } from "react-query";
 import useServiceWorkerBypass from "../use-sw-bypass";
+import { setIonToastPresented } from "../util";
 
 interface OrderNotificationsProps {
   orderId: string;
@@ -129,18 +130,21 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
       />
       <IonToast
         message="We will notify you of any updates to this order"
+        onDidPresent={setIonToastPresented}
         isOpen={showEnableNotificationToast}
         duration={2000}
         color="success"
       />
       <IonToast
         message="You will no longer receive updates for this order"
+        onDidPresent={setIonToastPresented}
         isOpen={showDisableNotificationToast}
         duration={2000}
         color="success"
       />
       <IonToast
         message="We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
+        onDidPresent={setIonToastPresented}
         isOpen={showDeniedToast}
         color="warning"
       />

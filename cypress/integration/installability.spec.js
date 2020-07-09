@@ -13,13 +13,9 @@ describe("installability", () => {
     cy.triggerBeforeInstallEvent();
     cy.get("ion-toast[data-presented]")
       .should("exist")
-      .should((e) => {
-        const [el] = e.get();
-        const message = el.shadowRoot.querySelector(".toast-message");
-        expect(message).to.have.text(
-          "Install this app for faster access next time"
-        );
-      });
+      .shadow()
+      .find(".toast-message")
+      .should("have.text", "Install this app for faster access next time");
   });
 
   it("should be able to dismiss toast", () => {
@@ -27,12 +23,9 @@ describe("installability", () => {
     cy.get("ion-toast[data-presented]")
       .as("installToast")
       .should("exist")
-      .then((e) => {
-        const [el] = e.get();
-        const btn = el.shadowRoot.querySelector("button.toast-button-cancel");
-        const click = new Event("click");
-        btn.dispatchEvent(click);
-      });
+      .shadow()
+      .find("button.toast-button-cancel")
+      .click();
 
     cy.get("@installToast").should("not.be.visible");
   });
@@ -43,12 +36,9 @@ describe("installability", () => {
     cy.get("ion-toast[data-presented]")
       .as("installToast")
       .should("exist")
-      .then((e) => {
-        const [el] = e.get();
-        const btn = el.shadowRoot.querySelector("button.toast-button-cancel");
-        const click = new Event("click");
-        btn.dispatchEvent(click);
-      });
+      .shadow()
+      .find("button.toast-button-cancel")
+      .click();
 
     cy.get("@installToast").should("not.exist");
 
