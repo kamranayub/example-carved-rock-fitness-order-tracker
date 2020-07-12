@@ -79,3 +79,7 @@ Cypress.Commands.add("visitWithoutApiCaching", (url, options = {}) => {
     },
   });
 });
+
+Cypress.Commands.add("waitForAppReadiness", () => {
+  cy.findByText("Order #1001").should("be.visible");
+});

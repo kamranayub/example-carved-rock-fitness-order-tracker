@@ -1,18 +1,46 @@
 describe("responsive design", () => {
+  //
+  // To reference Ionic default breakpoints, see:
+  // https://ionicframework.com/docs/layout/css-utilities#ionic-breakpoints
+  //
+  // To reference Cypress presets, see:
+  // https://docs.cypress.io/api/commands/viewport.html#Arguments
+  //
+
   describe("on phones", () => {
     before(() => {
       cy.visit("/");
+      cy.waitForAppReadiness();
     });
 
     ["portrait", "landscape"].forEach((orientation) => {
       describe(`in ${orientation}`, () => {
-        it("should display menu navigation button", () => {});
+        it("should display menu navigation button", () => {
+          cy.viewport("iphone-6", orientation);
+          cy.get("ion-menu-button").should("be.visible");
+        });
 
-        it("should open left menu using menu button navigation", () => {});
+        it("should open left menu using menu button navigation", () => {
+          cy.viewport("iphone-6", orientation);
+          cy.get("ion-menu-button").click();
+          cy.get("ion-list").findByText("My Orders").should("be.visible");
+          cy.waitForIonicAnimations();
+        });
 
-        it("should close left menu when clicking off", () => {});
+        it("should close left menu when clicking off", () => {
+          cy.viewport("iphone-6", orientation);
+          cy.reload();
+          cy.get("ion-menu-button").click();
+          cy.waitForIonicAnimations();
+          cy.get('ion-menu[role="navigation"]')
+            .click("topRight")
+            .should("not.be.visible");
+        });
 
-        it("should not display marketing imagery", () => {});
+        it("should not display marketing imagery", () => {
+          cy.viewport("iphone-6", orientation);
+          cy.get(".hero-image-col").should("not.be.visible");
+        });
       });
     });
   });
