@@ -4,9 +4,7 @@ describe("installability", () => {
     cy.clearLocalStorage();
     cy.clearSessionStorage();
     cy.visit("/");
-
-    // Wait for orders to load
-    cy.findByText("Order #1001").should("be.visible");
+    cy.waitForAppReadiness();
   });
 
   it("should show toast when browser prompts for install", () => {

@@ -10,7 +10,7 @@ describe("responsive design", () => {
   describe("on phones", () => {
     before(() => {
       cy.visit("/");
-      cy.findByText("Order #1001").should("be.visible");
+      cy.waitForAppReadiness();
     });
 
     ["portrait", "landscape"].forEach((orientation) => {
