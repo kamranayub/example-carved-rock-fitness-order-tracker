@@ -50,11 +50,22 @@ describe("responsive design", () => {
       cy.visit("/");
     });
 
-    it("should not display left menu", () => {});
+    it("should not display left menu", () => {
+      cy.viewport("ipad-2");
+      cy.get('ion-menu[role="navigation"]').should("not.be.visible");
+      cy.get("ion-menu-button").should("be.visible");
+    });
 
-    it("should be the first size to show marketing imagery", () => {});
+    it("should be the first size to show marketing imagery", () => {
+      cy.viewport("ipad-2");
+      cy.get(".hero-image-col").should("be.visible");
+    });
 
-    it("should display left menu in landscape", () => {});
+    it("should display left menu in landscape", () => {
+      cy.viewport("ipad-2", "landscape");
+      cy.get('ion-menu[role="navigation"]').should("be.visible");
+      cy.get("ion-menu-button").should("not.be.visible");
+    });
   });
 
   describe("on larger screens", () => {
