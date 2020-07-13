@@ -65,6 +65,9 @@ describe("responsive design", () => {
       cy.visit("/");
     });
 
-    it("should continue displaying marketing imagery", () => {});
+    it("should continue displaying marketing imagery", () => {
+      cy.viewport("macbook-15");
+      cy.get(".hero-image-col").should("be.visible");
+    });
   });
 });
