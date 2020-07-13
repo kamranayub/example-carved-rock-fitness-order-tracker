@@ -46,6 +46,16 @@ describe("installability", () => {
     cy.get("@installToast").should("not.exist");
   });
 
+  it("should not prompt when app is installed while launched", () => {
+    cy.window().then((window) => {
+      const appInstalledEvent = new Event("appinstalled");
+      window.dispatchEvent(appInstalledEvent);
+    });
+    cy.triggerBeforeInstallEvent();
+    cy.wait(500);
+    cy.get("ion-toast[data-presented]").should("not.exist");
+  });
+
   describe("when launched from a home screen", () => {
     beforeEach(() => {
       cy.visit("/", {
@@ -72,15 +82,5 @@ describe("installability", () => {
       cy.wait(500);
       cy.get("ion-toast[data-presented]").should("not.exist");
     });
-  });
-
-  it("should not prompt when app is installed while launched", () => {
-    cy.window().then((window) => {
-      const appInstalledEvent = new Event("appinstalled");
-      window.dispatchEvent(appInstalledEvent);
-    });
-    cy.triggerBeforeInstallEvent();
-    cy.wait(500);
-    cy.get("ion-toast[data-presented]").should("not.exist");
   });
 });
