@@ -1,6 +1,5 @@
 describe("installability", () => {
   beforeEach(() => {
-    cy.clearCookies();
     cy.clearLocalStorage();
     cy.clearSessionStorage();
     cy.visit("/");
