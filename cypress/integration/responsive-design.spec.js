@@ -23,9 +23,11 @@ describe("responsive design", () => {
 
         it("should show and hide menu", () => {
           cy.get("ion-menu-button").click();
-          cy.get("ion-list").findByText("My Orders").should("be.visible");
+          cy.findByRole("navigation")
+            .findByText("My Orders")
+            .should("be.visible");
           cy.waitForIonicAnimations();
-          cy.get('ion-menu[role="navigation"]')
+          cy.findByRole("navigation")
             .click("topRight")
             .should("not.be.visible");
         });
@@ -44,7 +46,7 @@ describe("responsive design", () => {
 
     it("should not display left menu", () => {
       cy.viewport("ipad-2");
-      cy.get('ion-menu[role="navigation"]').should("not.be.visible");
+      cy.findByRole("navigation").should("not.be.visible");
       cy.get("ion-menu-button").should("be.visible");
     });
 
@@ -55,7 +57,7 @@ describe("responsive design", () => {
 
     it("should display left menu in landscape", () => {
       cy.viewport("ipad-2", "landscape");
-      cy.get('ion-menu[role="navigation"]').should("be.visible");
+      cy.findByRole("navigation").should("be.visible");
       cy.get("ion-menu-button").should("not.be.visible");
     });
   });
