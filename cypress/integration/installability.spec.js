@@ -33,6 +33,7 @@ describe("installability", () => {
       .findByText("Maybe Later")
       .click();
 
+    cy.get("@installToast").should("not.exist");
     cy.window().triggerEvent("beforeinstallprompt");
     cy.get("@installToast").should("not.exist");
   });
