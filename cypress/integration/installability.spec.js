@@ -34,6 +34,7 @@ describe("installability", () => {
       .click();
 
     cy.get("@installToast").should("not.exist");
+    cy.reload();
     cy.window().triggerEvent("beforeinstallprompt");
     cy.get("@installToast").should("not.exist");
   });
