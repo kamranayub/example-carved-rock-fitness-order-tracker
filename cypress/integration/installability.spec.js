@@ -9,19 +9,16 @@ describe("installability", () => {
   it("should show toast when browser prompts for install", () => {
     cy.window().triggerEvent("beforeinstallprompt");
     cy.get("ion-toast[data-presented]")
-      .should("exist")
       .shadow()
-      .find(".toast-message")
-      .should("have.text", "Install this app for faster access next time");
+      .findByText("Install this app for faster access next time");
   });
 
   it("should be able to dismiss toast", () => {
     cy.window().triggerEvent("beforeinstallprompt");
     cy.get("ion-toast[data-presented]")
       .as("installToast")
-      .should("exist")
       .shadow()
-      .find("button.toast-button-cancel")
+      .findByText("Maybe Later")
       .click();
 
     cy.get("@installToast").should("not.exist");
@@ -32,9 +29,8 @@ describe("installability", () => {
 
     cy.get("ion-toast[data-presented]")
       .as("installToast")
-      .should("exist")
       .shadow()
-      .find("button.toast-button-cancel")
+      .findByText("Maybe Later")
       .click();
 
     cy.window().triggerEvent("beforeinstallprompt");
