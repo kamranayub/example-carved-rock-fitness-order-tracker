@@ -1,4 +1,12 @@
 describe("installability", () => {
+  function triggerBeforeInstallEvent() {
+    cy.wait(1000);
+    cy.window().then((window) => {
+      const beforeInstallPromptEvent = new Event("beforeinstallprompt");
+      window.dispatchEvent(beforeInstallPromptEvent);
+    });
+  }
+
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.clearSessionStorage();
@@ -7,7 +15,7 @@ describe("installability", () => {
   });
 
   it("should show toast when browser prompts for install", () => {
-    cy.triggerBeforeInstallEvent();
+    triggerBeforeInstallEvent();
     cy.get("ion-toast[data-presented]")
       .should("exist")
       .shadow()
@@ -16,7 +24,7 @@ describe("installability", () => {
   });
 
   it("should be able to dismiss toast", () => {
-    cy.triggerBeforeInstallEvent();
+    triggerBeforeInstallEvent();
     cy.get("ion-toast[data-presented]")
       .as("installToast")
       .should("exist")
@@ -28,7 +36,7 @@ describe("installability", () => {
   });
 
   it("should not prompt again once dismissed", () => {
-    cy.triggerBeforeInstallEvent();
+    triggerBeforeInstallEvent();
 
     cy.get("ion-toast[data-presented]")
       .as("installToast")
@@ -39,7 +47,7 @@ describe("installability", () => {
 
     cy.get("@installToast").should("not.exist");
 
-    cy.triggerBeforeInstallEvent();
+    triggerBeforeInstallEvent();
 
     cy.wait(500);
     cy.get("@installToast").should("not.exist");
@@ -50,7 +58,7 @@ describe("installability", () => {
       const appInstalledEvent = new Event("appinstalled");
       window.dispatchEvent(appInstalledEvent);
     });
-    cy.triggerBeforeInstallEvent();
+    triggerBeforeInstallEvent();
     cy.wait(500);
     cy.get("ion-toast[data-presented]").should("not.exist");
   });
@@ -77,7 +85,7 @@ describe("installability", () => {
     });
 
     it("should not prompt", () => {
-      cy.triggerBeforeInstallEvent();
+      triggerBeforeInstallEvent();
       cy.wait(500);
       cy.get("ion-toast[data-presented]").should("not.exist");
     });

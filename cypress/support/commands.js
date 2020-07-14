@@ -31,24 +31,8 @@ Cypress.Commands.overwrite("visit", (originalFn, path, options) => {
   return originalFn(path + "?sw_bypass", options);
 });
 
-Cypress.Commands.overwrite("viewport", (originalFn, ...args) => {
-  // Delegate to original fn
-  originalFn(...args);
-
-  // Seems to be needed in 4.9.0 for a split second
-  cy.wait(500);
-});
-
 Cypress.Commands.add("waitForIonicAnimations", () => {
   cy.wait(300);
-});
-
-Cypress.Commands.add("triggerBeforeInstallEvent", () => {
-  cy.wait(1000);
-  cy.window().then((window) => {
-    const beforeInstallPromptEvent = new Event("beforeinstallprompt");
-    window.dispatchEvent(beforeInstallPromptEvent);
-  });
 });
 
 Cypress.Commands.add("clearSessionStorage", () => {
