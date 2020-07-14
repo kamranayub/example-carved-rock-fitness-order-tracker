@@ -24,7 +24,7 @@ describe("installability", () => {
       .find("button.toast-button-cancel")
       .click();
 
-    cy.get("@installToast").should("not.be.visible");
+    cy.get("@installToast").should("not.exist");
   });
 
   it("should not prompt again once dismissed", () => {
@@ -37,20 +37,14 @@ describe("installability", () => {
       .find("button.toast-button-cancel")
       .click();
 
-    cy.get("@installToast").should("not.exist");
-
     cy.window().triggerEvent("beforeinstallprompt");
-
-    cy.wait(500);
     cy.get("@installToast").should("not.exist");
   });
 
   it("should not prompt when app is installed while launched", () => {
-    cy.window().triggerEvent("appinstalled");
-    cy.wait(100);
+    cy.window().triggerEvent("appinstalled").wait(100);
     cy.window().triggerEvent("beforeinstallprompt");
-    cy.wait(500);
-    cy.get("ion-toast[data-presented]").should("not.exist");
+    cy.get("ion-toast").wait(100).should("not.have.attr", "data-presented");
   });
 
   describe("when launched from a home screen", () => {
@@ -76,8 +70,7 @@ describe("installability", () => {
 
     it("should not prompt", () => {
       cy.window().triggerEvent("beforeinstallprompt");
-      cy.wait(500);
-      cy.get("ion-toast[data-presented]").should("not.exist");
+      cy.get("ion-toast").wait(100).should("not.have.attr", "data-presented");
     });
   });
 });

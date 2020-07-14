@@ -47,9 +47,14 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add("waitForIonicAnimations", () => {
-  cy.wait(300);
+  cy.wait(Cypress.env().ionicAnimationTimeout);
 });
 
+/**
+ * Waits for initial orders to load from backend
+ */
 Cypress.Commands.add("waitForAppReadiness", () => {
-  cy.findByText("Order #1001").should("be.visible");
+  cy.findByText("Order #1001", {
+    timeout: Cypress.config().pageLoadTimeout,
+  }).should("be.visible");
 });
