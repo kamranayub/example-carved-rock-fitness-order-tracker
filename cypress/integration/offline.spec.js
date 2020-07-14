@@ -5,9 +5,11 @@ describe("offline support", () => {
     // not yet support stubbing them.
     //
     // To emulate "going offline" which would result in 404s or
-    // other network errors, we remove the SW and use XHR instead
+    // other network errors, we bypass the SW and use XHR instead
     // so we can stub fetch calls.
-    cy.visitWithoutApiCaching("/");
+    //
+    // See commands.js for the cy.visit override
+    cy.visit("/");
   });
 
   it("should load orders when online", () => {
@@ -25,7 +27,7 @@ describe("offline support", () => {
         response: "Not Found",
       });
 
-      cy.offline();
+      cy.window().triggerEvent("offline");
     });
 
     it("should show toast when browser goes offline", () => {
@@ -54,7 +56,7 @@ describe("offline support", () => {
 
   describe("when coming back online", () => {
     beforeEach(() => {
-      cy.online();
+      cy.window().triggerEvent("online");
     });
 
     it("should show toast", () => {
@@ -72,7 +74,7 @@ describe("offline support", () => {
       cy.server();
       cy.route("**/orders/*").as("getOrder");
 
-      cy.online();
+      cy.window().triggerEvent("online");
 
       cy.wait("@getOrder");
     });

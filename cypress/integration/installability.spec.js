@@ -1,12 +1,4 @@
 describe("installability", () => {
-  function triggerBeforeInstallEvent() {
-    cy.wait(1000);
-    cy.window().then((window) => {
-      const beforeInstallPromptEvent = new Event("beforeinstallprompt");
-      window.dispatchEvent(beforeInstallPromptEvent);
-    });
-  }
-
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.clearSessionStorage();
@@ -15,7 +7,7 @@ describe("installability", () => {
   });
 
   it("should show toast when browser prompts for install", () => {
-    triggerBeforeInstallEvent();
+    cy.window().triggerEvent("beforeinstallprompt");
     cy.get("ion-toast[data-presented]")
       .should("exist")
       .shadow()
@@ -24,7 +16,7 @@ describe("installability", () => {
   });
 
   it("should be able to dismiss toast", () => {
-    triggerBeforeInstallEvent();
+    cy.window().triggerEvent("beforeinstallprompt");
     cy.get("ion-toast[data-presented]")
       .as("installToast")
       .should("exist")
@@ -36,7 +28,7 @@ describe("installability", () => {
   });
 
   it("should not prompt again once dismissed", () => {
-    triggerBeforeInstallEvent();
+    cy.window().triggerEvent("beforeinstallprompt");
 
     cy.get("ion-toast[data-presented]")
       .as("installToast")
@@ -47,18 +39,16 @@ describe("installability", () => {
 
     cy.get("@installToast").should("not.exist");
 
-    triggerBeforeInstallEvent();
+    cy.window().triggerEvent("beforeinstallprompt");
 
     cy.wait(500);
     cy.get("@installToast").should("not.exist");
   });
 
   it("should not prompt when app is installed while launched", () => {
-    cy.window().then((window) => {
-      const appInstalledEvent = new Event("appinstalled");
-      window.dispatchEvent(appInstalledEvent);
-    });
-    triggerBeforeInstallEvent();
+    cy.window().triggerEvent("appinstalled");
+    cy.wait(100);
+    cy.window().triggerEvent("beforeinstallprompt");
     cy.wait(500);
     cy.get("ion-toast[data-presented]").should("not.exist");
   });
@@ -85,7 +75,7 @@ describe("installability", () => {
     });
 
     it("should not prompt", () => {
-      triggerBeforeInstallEvent();
+      cy.window().triggerEvent("beforeinstallprompt");
       cy.wait(500);
       cy.get("ion-toast[data-presented]").should("not.exist");
     });

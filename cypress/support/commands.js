@@ -31,37 +31,23 @@ Cypress.Commands.overwrite("visit", (originalFn, path, options) => {
   return originalFn(path + "?sw_bypass", options);
 });
 
-Cypress.Commands.add("waitForIonicAnimations", () => {
-  cy.wait(300);
-});
-
 Cypress.Commands.add("clearSessionStorage", () => {
   cy.window().then((window) => {
     window.sessionStorage.clear();
   });
 });
 
-Cypress.Commands.add("online", () => {
-  cy.window().then((window) => {
-    const onlineEvent = new Event("online");
-    window.dispatchEvent(onlineEvent);
-  });
-});
+Cypress.Commands.add(
+  "triggerEvent",
+  { prevSubject: "window" },
+  (win, eventName, eventInit = undefined) => {
+    const event = new Event(eventName, eventInit);
+    win.dispatchEvent(event);
+  }
+);
 
-Cypress.Commands.add("offline", () => {
-  cy.window().then((window) => {
-    const offlineEvent = new Event("offline");
-    window.dispatchEvent(offlineEvent);
-  });
-});
-
-Cypress.Commands.add("visitWithoutApiCaching", (url, options = {}) => {
-  cy.visit(url, {
-    onBeforeLoad(win) {
-      options.onBeforeLoad && options.onBeforeLoad(win);
-      win.__CY_DISABLE_SW_API_CACHING = true;
-    },
-  });
+Cypress.Commands.add("waitForIonicAnimations", () => {
+  cy.wait(300);
 });
 
 Cypress.Commands.add("waitForAppReadiness", () => {
