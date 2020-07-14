@@ -1,14 +1,5 @@
 describe("offline support", () => {
   before(() => {
-    // We cannot stub or intercept Service Worker fetch requests
-    // because they exist in a separate context and Cypress does
-    // not yet support stubbing them.
-    //
-    // To emulate "going offline" which would result in 404s or
-    // other network errors, we bypass the SW and use XHR instead
-    // so we can stub fetch calls.
-    //
-    // See commands.js for the cy.visit override
     cy.visit("/");
   });
 
@@ -55,11 +46,8 @@ describe("offline support", () => {
   });
 
   describe("when coming back online", () => {
-    beforeEach(() => {
-      cy.window().triggerEvent("online");
-    });
-
     it("should show toast", () => {
+      cy.window().triggerEvent("online");
       cy.get("ion-toast[data-presented]")
         .should("exist")
         .shadow()
