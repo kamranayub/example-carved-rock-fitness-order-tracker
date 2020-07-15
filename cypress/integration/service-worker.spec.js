@@ -7,6 +7,8 @@ describe("service workers", () => {
     cy.get("html", { timeout: 6000 }).should("have.class", "sw-ready");
   });
 
+  // Present this test from running if we already ran it once
+  // since SW will cache and serve the app data
   !Cypress.env("SW_ALREADY_RAN") &&
     it("should load orders once", () => {
       cy.get("ion-loading:not(.overlay-hidden)").should("exist");
@@ -16,6 +18,7 @@ describe("service workers", () => {
 
   it("should load orders immediately from cache on reload", () => {
     cy.reload();
+    cy.wait(200);
     cy.get("ion-loading:not(.overlay-hidden)").should("not.exist");
     cy.findByText("Order #1001").should("be.visible");
   });
