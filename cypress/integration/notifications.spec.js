@@ -57,11 +57,8 @@ describe("notifications", () => {
     });
     cy.findByLabelText("Toggle Push Notifications").click();
     cy.get("ion-toast[data-presented]")
-      .should("exist")
       .shadow()
-      .find(".toast-message")
-      .should(
-        "contain.text",
+      .findByText(
         "We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
       );
   });
@@ -78,13 +75,8 @@ describe("notifications", () => {
     });
     cy.findByLabelText("Toggle Push Notifications").click();
     cy.get("ion-toast[data-presented]")
-      .should("exist")
       .shadow()
-      .find(".toast-message")
-      .should(
-        "contain.text",
-        "We will notify you of any updates to this order"
-      );
+      .findByText("We will notify you of any updates to this order");
   });
 
   Cypress.env().CI &&
@@ -101,13 +93,8 @@ describe("notifications", () => {
       });
       cy.findByLabelText("Toggle Push Notifications").click();
       cy.get("ion-toast[data-presented]")
-        .should("exist")
         .shadow()
-        .find(".toast-message")
-        .should(
-          "contain.text",
-          "We will notify you of any updates to this order"
-        );
+        .findByText("We will notify you of any updates to this order");
 
       cy.window()
         .its("Notification", { timeout: 30000 })
@@ -127,13 +114,8 @@ describe("notifications", () => {
       cy.findByLabelText("Toggle Push Notifications").click();
 
       cy.get("ion-toast[data-presented]")
-        .should("exist")
         .shadow()
-        .find(".toast-message")
-        .should(
-          "contain.text",
-          "We will notify you of any updates to this order"
-        );
+        .findByText("We will notify you of any updates to this order");
 
       cy.window()
         .its("__CY_NOTIFICATION_PUSHED", { timeout: 30000 })
