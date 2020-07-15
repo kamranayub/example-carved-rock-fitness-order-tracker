@@ -1,3 +1,13 @@
+function getChromePrefValue(pref) {
+  return Cypress.env(`chromePreferences__${pref.replace(/\./gi, "__")}`);
+}
+
+function isChromePermissionAllowed(api) {
+  return (
+    getChromePrefValue("profile.managed_default_content_settings." + api) === 1
+  );
+}
+
 describe("notifications", () => {
   beforeEach(() => {
     cy.clearLocalStorage();
@@ -107,8 +117,8 @@ describe("notifications", () => {
     });
 
   Cypress.browser.isHeaded &&
-    it("will show desktop notification during test run", () => {
-      cy.log(`Notification permissions: ${Cypress.env("prefs_notifications")}`);
+    isChromePermissionAllowed("notifications") &&
+    it("will show desktop notification when permissions are allowed", () => {
       cy.visit("/orders/1001", {
         onBeforeLoad(win) {
           win.__CY_NOTIFICATION_PUSHED = cy.stub();
