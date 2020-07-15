@@ -106,16 +106,15 @@ describe("notifications", () => {
         });
     });
 
-  !Cypress.env().CI &&
+  Cypress.browser.isHeaded &&
     it("will show desktop notification during test run", () => {
+      cy.log(`Notification permissions: ${Cypress.env("prefs_notifications")}`);
       cy.visit("/orders/1001", {
         onBeforeLoad(win) {
           win.__CY_NOTIFICATION_PUSHED = cy.stub();
         },
       });
       cy.findByLabelText("Toggle Push Notifications").click();
-
-      cy.log("Please allow notifications to grant permissions");
 
       cy.get("ion-toast[data-presented]")
         .should("exist")
