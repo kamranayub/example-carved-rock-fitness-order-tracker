@@ -11,15 +11,7 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-const { set, unset, chain, toNumber, forOwn } = require("lodash");
-
-function isChromePrefEnvVar(_value, key) {
-  return key.startsWith("chromePreferences__");
-}
-
-function transformPrefEnvVarToPropertyPath(_value, key) {
-  return key.replace("chromePreferences__", "").replace(/__/gi, ".");
-}
+import { cypressBrowserPermissionsPlugin } from "cypress-browser-permissions";
 
 /**
  * @type {Cypress.PluginConfig}
@@ -27,28 +19,6 @@ function transformPrefEnvVarToPropertyPath(_value, key) {
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-
-  on("before:browser:launch", (browser = {}, launchOptions) => {
-    if (browser.family === "chromium" && browser.name !== "electron") {
-      // Allow overriding prefs via dynamic env variables
-      const chromePreferences = chain(config.env)
-        .pickBy(isChromePrefEnvVar)
-        .mapKeys(transformPrefEnvVarToPropertyPath)
-        .mapValues(toNumber)
-        .value();
-
-      // By default, unset preferences Cypress doesn't set automatically
-      unset(
-        launchOptions,
-        "preferences.default.profile.managed_default_content_settings"
-      );
-
-      // Set Chrome launchOptions preferences
-      forOwn(chromePreferences, (value, path) => {
-        set(launchOptions, `preferences.default.${path}`, value);
-      });
-
-      return launchOptions;
-    }
-  });
+  config = cypressBrowserPermissionsPlugin(on, config);
+  return config;
 };

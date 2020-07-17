@@ -5,7 +5,9 @@
   "experimentalFetchPolyfill": true,
   "env": {
     "ionicAnimationTimeout": 300,
-    "chromePreferences__profile__managed_default_content_settings__notifications": 1,
-    "chromePreferences__profile__managed_default_content_settings__geolocation": 1
+    "browserPermissions": {
+      "notifications": "block",
+      "geolocation": "allow"
+    }
   }
 }

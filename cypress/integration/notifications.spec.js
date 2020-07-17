@@ -1,12 +1,4 @@
-function getChromePrefValue(pref) {
-  return Cypress.env(`chromePreferences__${pref.replace(/\./gi, "__")}`);
-}
-
-function isChromePermissionAllowed(api) {
-  return (
-    getChromePrefValue("profile.managed_default_content_settings." + api) === 1
-  );
-}
+import { isPermissionAllowed } from "cypress-browser-permissions";
 
 describe("notifications", () => {
   beforeEach(() => {
@@ -104,7 +96,7 @@ describe("notifications", () => {
     });
 
   Cypress.browser.isHeaded &&
-    isChromePermissionAllowed("notifications") &&
+    isPermissionAllowed("notifications") &&
     it("will show desktop notification when permissions are allowed", () => {
       cy.visit("/orders/1001", {
         onBeforeLoad(win) {
