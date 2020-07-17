@@ -20,7 +20,7 @@
     "@types/react-router": "5.1.4",
     "@types/react-router-dom": "5.1.3",
     "cypress": "^4.10.0",
-    "cypress-browser-permissions": "^1.0.1",
+    "cypress-browser-permissions": "^1.0.2",
     "eslint-plugin-cypress": "2.11.1",
     "ionicons": "5.0.0",
     "localforage": "1.7.4",
