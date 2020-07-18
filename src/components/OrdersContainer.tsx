@@ -22,15 +22,20 @@ import "./OrdersContainer.css";
 export const OrdersContainer: FC<RouteComponentProps> = (props) => {
   const [swBypass] = useServiceWorkerBypass();
   const hasOrdersSwCache = useHasCacheStorage("orders");
-  const { data: orders = [], status, refetch } = useQuery("orders", [swBypass], getOrders, {
-    onSuccess(orders) {
-      // prefetch orders for caching purposes, in case user goes offline at _least_ we'll have preloaded some
-      // of their latest orders
-      orders.forEach((order) => {
-        queryCache.prefetchQuery(["order", order.id], [swBypass], getOrder);
-      });
-    },
-  });
+  const { data: orders = [], status, refetch } = useQuery(
+    "orders",
+    [swBypass],
+    getOrders,
+    {
+      onSuccess(orders) {
+        // prefetch orders for caching purposes, in case user goes offline at _least_ we'll have preloaded some
+        // of their latest orders
+        orders.forEach((order) => {
+          queryCache.prefetchQuery(["order", order.id], [swBypass], getOrder);
+        });
+      },
+    }
+  );
   const refreshOrders = useCallback(
     async (e) => {
       await refetch({ force: true });
@@ -49,7 +54,10 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
       <IonRefresher slot="fixed" onIonRefresh={refreshOrders}>
         <IonRefresherContent />
       </IonRefresher>
-      <IonList data-testid="orders-list" className={hasOrdersSwCache ? 'sw-cached' : ''}>
+      <IonList
+        data-testid="orders-list"
+        className={hasOrdersSwCache ? "sw-cached" : ""}
+      >
         {orders.map((order) => (
           <IonItem
             key={order.id}

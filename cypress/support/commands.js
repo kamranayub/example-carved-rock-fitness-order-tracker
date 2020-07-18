@@ -43,6 +43,16 @@ Cypress.Commands.add("clearSessionStorage", () => {
   });
 });
 
+Cypress.Commands.add("clearCacheStorage", () => {
+  cy.window().then((window) => {
+    if (window.caches) {
+      return window.caches.keys().then((cacheKeys) => {
+        return Promise.all(cacheKeys.map((key) => window.caches.delete(key)));
+      });
+    }
+  });
+});
+
 Cypress.Commands.add(
   "triggerEvent",
   { prevSubject: "window" },

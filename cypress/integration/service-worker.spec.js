@@ -7,13 +7,15 @@ describe("service workers", () => {
     cy.get("html", { timeout: 6000 }).should("have.class", "sw-ready");
   });
 
-  // Prevent this test from running locally since Cypress
-  // does not clear the service worker on each test run
-  Cypress.env().CI &&
-    it("should load orders once without caching", () => {
-      cy.findByText("Order #1001").should("be.visible");
-      cy.findByTestId("orders-list").should("not.have.class", "sw-cached");
-    });
+  it("should clear service worker cache", () => {
+    cy.clearCacheStorage();
+  });
+
+  it("should load orders without caching on initial load", () => {
+    cy.reload();
+    cy.findByText("Order #1001").should("be.visible");
+    cy.findByTestId("orders-list").should("not.have.class", "sw-cached");
+  });
 
   it("should load orders immediately from cache on reload", () => {
     cy.reload();

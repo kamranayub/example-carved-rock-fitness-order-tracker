@@ -5,7 +5,6 @@ export function useHasCacheStorage(cacheName: string) {
 
   useEffect(() => {
     window?.caches?.has(cacheName).then((hasCacheStorage) => {
-      console.log("hasCacheStorage", cacheName, hasCacheStorage);
       setHasCache(hasCacheStorage);
     });
   }, [cacheName]);
