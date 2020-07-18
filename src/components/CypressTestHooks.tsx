@@ -1,4 +1,4 @@
-import { useEffect, FC } from "react";
+import { useEffect, FC, useRef } from "react";
 import useServiceWorkerBypass from "../use-sw-bypass";
 
 const CypressTestHooks: FC = () => {
@@ -9,15 +9,8 @@ const CypressTestHooks: FC = () => {
       console.debug("App is running under Cypress, enabling test globals:");
 
       if (window.location.search.indexOf("sw_bypass") > -1) {
-        console.debug("sw_bypass");
+        console.debug("- sw_bypass");
         setSwBypass(true);
-      }
-
-      if (window.caches) {
-        console.debug("clearing cache storage");
-        window.caches.keys().then((cacheKeys) => {
-          cacheKeys.map(window.caches.delete);
-        });
       }
     }
   }, [setSwBypass]);
