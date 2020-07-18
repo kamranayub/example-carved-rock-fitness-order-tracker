@@ -38,6 +38,12 @@ window.addEventListener("load", () => {
   };
 
   if (window.caches) {
+    window.caches.has("orders").then((exists) => {
+      if (exists) {
+        document.querySelector("html")?.classList.add("sw-orders-cache-exists");
+      }
+    });
+
     addImagesToCache([
       "/assets/hero-1.jpg",
       "/assets/hero-2.jpg",

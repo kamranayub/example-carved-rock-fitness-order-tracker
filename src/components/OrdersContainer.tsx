@@ -21,7 +21,6 @@ import "./OrdersContainer.css";
 
 export const OrdersContainer: FC<RouteComponentProps> = (props) => {
   const [swBypass] = useServiceWorkerBypass();
-  const hasOrdersSwCache = useHasCacheStorage("orders");
   const { data: orders = [], status, refetch } = useQuery(
     "orders",
     [swBypass],
@@ -54,10 +53,7 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
       <IonRefresher slot="fixed" onIonRefresh={refreshOrders}>
         <IonRefresherContent />
       </IonRefresher>
-      <IonList
-        data-testid="orders-list"
-        className={hasOrdersSwCache ? "sw-cached" : ""}
-      >
+      <IonList data-testid="orders-list">
         {orders.map((order) => (
           <IonItem
             key={order.id}

@@ -13,13 +13,13 @@ describe("service workers", () => {
 
   it("should load orders without caching on initial load", () => {
     cy.reload();
-    cy.findByText("Order #1001").should("be.visible");
-    cy.findByTestId("orders-list").should("not.have.class", "sw-cached");
+    cy.findByTestId("orders-list").should("be.visible");
+    cy.get("html").should("not.have.class", "sw-orders-cache-exists");
   });
 
   it("should load orders immediately from cache on reload", () => {
     cy.reload();
-    cy.findByText("Order #1001").should("be.visible");
-    cy.findByTestId("orders-list").should("have.class", "sw-cached");
+    cy.findByTestId("orders-list").should("be.visible");
+    cy.get("html").should("have.class", "sw-orders-cache-exists");
   });
 });
