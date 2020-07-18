@@ -18,7 +18,6 @@ describe("service workers", () => {
 
   it("should load orders immediately from cache on reload", () => {
     cy.reload();
-    cy.wait(200);
     cy.get("ion-loading:not(.overlay-hidden)").should("not.exist");
     cy.findByText("Order #1001").should("be.visible");
   });

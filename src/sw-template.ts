@@ -1,7 +1,7 @@
 import { clientsClaim } from "workbox-core";
 import { NavigationRoute, registerRoute } from "workbox-routing";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
-import { NetworkFirst, CacheFirst } from "workbox-strategies";
+import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
@@ -41,8 +41,7 @@ registerRoute(
       url.origin === "https://carved-rock-fitness-backend.azurewebsites.net"
     );
   },
-  new NetworkFirst({
-    networkTimeoutSeconds: 5,
+  new StaleWhileRevalidate({
     cacheName: "orders",
     plugins: [
       new CacheableResponsePlugin({
