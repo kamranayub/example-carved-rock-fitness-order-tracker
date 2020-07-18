@@ -9,8 +9,11 @@ const CypressTestHooks: FC = () => {
       console.debug("App is running under Cypress, enabling test globals:");
 
       if (window.location.search.indexOf("sw_bypass") > -1) {
-        console.debug("- sw_bypass");
+        console.debug("- sw_bypass: on");
         setSwBypass(true);
+      } else {
+        console.debug("- sw_bypass: off");
+        setSwBypass(false);
       }
     }
   }, [setSwBypass]);
