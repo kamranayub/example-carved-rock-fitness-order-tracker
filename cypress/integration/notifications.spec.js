@@ -1,3 +1,5 @@
+import { isPermissionAllowed } from "cypress-browser-permissions";
+
 describe("notifications", () => {
   beforeEach(() => {
     cy.clearLocalStorage();
@@ -47,11 +49,8 @@ describe("notifications", () => {
     });
     cy.findByLabelText("Toggle Push Notifications").click();
     cy.get("ion-toast[data-presented]")
-      .should("exist")
       .shadow()
-      .find(".toast-message")
-      .should(
-        "contain.text",
+      .findByText(
         "We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
       );
   });
@@ -68,13 +67,8 @@ describe("notifications", () => {
     });
     cy.findByLabelText("Toggle Push Notifications").click();
     cy.get("ion-toast[data-presented]")
-      .should("exist")
       .shadow()
-      .find(".toast-message")
-      .should(
-        "contain.text",
-        "We will notify you of any updates to this order"
-      );
+      .findByText("We will notify you of any updates to this order");
   });
 
   Cypress.env().CI &&
@@ -91,13 +85,8 @@ describe("notifications", () => {
       });
       cy.findByLabelText("Toggle Push Notifications").click();
       cy.get("ion-toast[data-presented]")
-        .should("exist")
         .shadow()
-        .find(".toast-message")
-        .should(
-          "contain.text",
-          "We will notify you of any updates to this order"
-        );
+        .findByText("We will notify you of any updates to this order");
 
       cy.window()
         .its("Notification", { timeout: 30000 })
@@ -106,8 +95,9 @@ describe("notifications", () => {
         });
     });
 
-  !Cypress.env().CI &&
-    it("will show desktop notification during test run", () => {
+  Cypress.browser.isHeaded &&
+    isPermissionAllowed("notifications") &&
+    it("will show desktop notification when permissions are allowed", () => {
       cy.visit("/orders/1001", {
         onBeforeLoad(win) {
           win.__CY_NOTIFICATION_PUSHED = cy.stub();
@@ -115,16 +105,9 @@ describe("notifications", () => {
       });
       cy.findByLabelText("Toggle Push Notifications").click();
 
-      cy.log("Please allow notifications to grant permissions");
-
       cy.get("ion-toast[data-presented]")
-        .should("exist")
         .shadow()
-        .find(".toast-message")
-        .should(
-          "contain.text",
-          "We will notify you of any updates to this order"
-        );
+        .findByText("We will notify you of any updates to this order");
 
       cy.window()
         .its("__CY_NOTIFICATION_PUSHED", { timeout: 30000 })

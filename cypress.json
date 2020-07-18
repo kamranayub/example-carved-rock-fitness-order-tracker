@@ -4,6 +4,10 @@
   "experimentalShadowDomSupport": true,
   "experimentalFetchPolyfill": true,
   "env": {
-    "ionicAnimationTimeout": 300
+    "ionicAnimationTimeout": 300,
+    "browserPermissions": {
+      "notifications": "allow",
+      "geolocation": "allow"
+    }
   }
 }
