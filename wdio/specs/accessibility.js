@@ -26,7 +26,7 @@ describe("accessibility", () => {
       await expect(browser).toHaveUrl(
         new URL("orders/1001", browser.config.baseUrl).toString()
       );
-      const title = await $("ion-title*='Order #1001'");
+      const title = await $("ion-title*=Order #1001");
       await expect(title).toBeDisplayed();
       await browser.pause(500); // wait for Ionic page transition
     });
