@@ -23,11 +23,8 @@ describe("offline support", () => {
 
     it("should show toast when browser goes offline", () => {
       cy.get("ion-toast[data-presented]")
-        .should("exist")
         .shadow()
-        .find(".toast-message")
-        .should(
-          "have.text",
+        .findByText(
           "Looks like you went offline, your data may not be up-to-date."
         );
 
@@ -49,11 +46,8 @@ describe("offline support", () => {
     it("should show toast", () => {
       cy.window().triggerEvent("online");
       cy.get("ion-toast[data-presented]")
-        .should("exist")
         .shadow()
-        .find(".toast-message")
-        .should(
-          "have.text",
+        .findByText(
           "You're back online, your data is automatically being updated."
         );
     });
