@@ -5,16 +5,20 @@ import * as serviceWorker from "./serviceWorker";
 
 //
 // Immediately check if orders cache existed on load
+// before loading React app (which could introduce the cache too quickly)
+// TODO: There may be a better way to handle this but in my testing,
+// this was the only way to prevent race conditions
 //
-if (window.caches) {
+if ("Cypress" in window) {
   window.caches.has("orders").then((exists) => {
     if (exists) {
       document.querySelector("html")?.classList.add("sw-orders-cache-exists");
     }
+    ReactDOM.render(<App />, document.getElementById("root"));
   });
+} else {
+  ReactDOM.render(<App />, document.getElementById("root"));
 }
-
-ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
