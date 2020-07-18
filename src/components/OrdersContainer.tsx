@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useState, useEffect } from "react";
 import {
   IonList,
   IonItem,
@@ -13,6 +13,7 @@ import { useQuery, queryCache } from "react-query";
 
 import { getOrders, getOrder } from "../data/orders";
 import useServiceWorkerBypass from "../use-sw-bypass";
+import { useHasCacheStorage } from "../use-cache-storage";
 import OrderStatusBadge from "./OrderStatusBadge";
 import Amount from "./Amount";
 
@@ -20,6 +21,7 @@ import "./OrdersContainer.css";
 
 export const OrdersContainer: FC<RouteComponentProps> = (props) => {
   const [swBypass] = useServiceWorkerBypass();
+  const hasOrdersSwCache = useHasCacheStorage("orders");
   const { data: orders = [], status, refetch } = useQuery("orders", [swBypass], getOrders, {
     onSuccess(orders) {
       // prefetch orders for caching purposes, in case user goes offline at _least_ we'll have preloaded some
@@ -47,7 +49,7 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
       <IonRefresher slot="fixed" onIonRefresh={refreshOrders}>
         <IonRefresherContent />
       </IonRefresher>
-      <IonList>
+      <IonList data-test="orders-list" data-from-cache={!!hasOrdersSwCache}>
         {orders.map((order) => (
           <IonItem
             key={order.id}
