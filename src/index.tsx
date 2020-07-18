@@ -3,6 +3,17 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+//
+// Immediately check if orders cache existed on load
+//
+if (window.caches) {
+  window.caches.has("orders").then((exists) => {
+    if (exists) {
+      document.querySelector("html")?.classList.add("sw-orders-cache-exists");
+    }
+  });
+}
+
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
@@ -38,12 +49,6 @@ window.addEventListener("load", () => {
   };
 
   if (window.caches) {
-    window.caches.has("orders").then((exists) => {
-      if (exists) {
-        document.querySelector("html")?.classList.add("sw-orders-cache-exists");
-      }
-    });
-
     addImagesToCache([
       "/assets/hero-1.jpg",
       "/assets/hero-2.jpg",

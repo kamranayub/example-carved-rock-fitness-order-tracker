@@ -4,7 +4,7 @@ describe("offline support", () => {
   });
 
   it("should load orders when online", () => {
-    cy.findByText("Order #1001").should("be.visible");
+    cy.findByTestId("orders-list").should("be.visible");
   });
 
   describe("when going offline", () => {

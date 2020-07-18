@@ -43,16 +43,33 @@ Cypress.Commands.add("clearSessionStorage", () => {
   });
 });
 
-Cypress.Commands.add("clearCacheStorage", () => {
-  cy.window().should(async (window) => {
-    async function clearCache() {
-      const cacheKeys = await window.caches.keys();
-      return Promise.all(cacheKeys.map((key) => window.caches.delete(key)));
-    }
-    await clearCache();
-    const keys = await window.caches.keys();
-    expect(keys).to.have.length(0);
-  });
+Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
+  cy.window()
+    .its("caches")
+    .should(async (caches) => {
+      const hasCache = await caches.has(cacheName);
+      expect(hasCache).to.be.true;
+
+      if (options.minimumCacheEntries) {
+        const cache = await caches.open(cacheName);
+        const cacheEntries = await cache.keys();
+        expect(cacheEntries).to.have.length.gte(options.minimumCacheEntries);
+      }
+    });
+});
+
+Cypress.Commands.add("clearCacheStorage", (cacheName) => {
+  cy.window()
+    .its("caches")
+    .should(async (caches) => {
+      const hasCache = await caches.has(cacheName);
+
+      if (hasCache) {
+        const hasDeleted = await caches.delete(cacheName);
+
+        expect(hasDeleted).to.be.true;
+      }
+    });
 });
 
 Cypress.Commands.add(
