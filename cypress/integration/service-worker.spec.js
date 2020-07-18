@@ -11,14 +11,14 @@ describe("service workers", () => {
   // since SW will cache and serve the app data
   !Cypress.env("SW_ALREADY_RAN") &&
     it("should load orders once without caching", () => {
-      cy.findByTestId("orders-list").should("not.have.attr", "data-from-cache");
       cy.findByText("Order #1001").should("be.visible");
+      cy.findByTestId("orders-list").should("not.have.class", "sw-cached");
       Cypress.env("SW_ALREADY_RAN", true);
     });
 
   it("should load orders immediately from cache on reload", () => {
     cy.reload();
-    cy.findByTestId("orders-list").should("have.attr", "data-from-cache");
     cy.findByText("Order #1001").should("be.visible");
+    cy.findByTestId("orders-list").should("have.class", "sw-cached");
   });
 });
