@@ -6,7 +6,7 @@
   "env": {
     "ionicAnimationTimeout": 300,
     "browserPermissions": {
-      "notifications": "block",
+      "notifications": "allow",
       "geolocation": "allow"
     }
   }
