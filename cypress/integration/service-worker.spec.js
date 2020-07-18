@@ -7,7 +7,7 @@ describe("service workers", () => {
     cy.get("html", { timeout: 6000 }).should("have.class", "sw-ready");
   });
 
-  // Present this test from running if we already ran it once
+  // Prevent this test from running if we already ran it once
   // since SW will cache and serve the app data
   !Cypress.env("SW_ALREADY_RAN") &&
     it("should load orders once", () => {
