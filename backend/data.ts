@@ -8,7 +8,7 @@ export const orders: CarvedRockFitnessApi.Order[] = [
     orderItems: [
       {
         productId: 900,
-        productName: "XtraTuff Men's Hiking Books",
+        productName: "XtraTuff Men's Hiking Boots",
         price: 35,
         qty: 1,
         image: "",
@@ -46,7 +46,7 @@ export const orders: CarvedRockFitnessApi.Order[] = [
       },
       {
         productId: 802,
-        productName: "6-pack Ultra Light Adamantium Carbine",
+        productName: "6-pack Ultra Light Adamantium Carabiner",
         price: 59.99,
         qty: 1,
         image: "",
