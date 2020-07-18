@@ -7,7 +7,7 @@ export function useHasCacheStorage(cacheName: string) {
     window?.caches?.has(cacheName).then((hasCacheStorage) => {
       setHasCache(hasCacheStorage);
     });
-  }, []);
+  }, [cacheName]);
 
   return hasCache;
 }
