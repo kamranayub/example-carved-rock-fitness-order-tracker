@@ -49,7 +49,7 @@ export const OrdersContainer: FC<RouteComponentProps> = (props) => {
       <IonRefresher slot="fixed" onIonRefresh={refreshOrders}>
         <IonRefresherContent />
       </IonRefresher>
-      <IonList data-test="orders-list" data-from-cache={!!hasOrdersSwCache}>
+      <IonList data-testid="orders-list" data-from-cache={!!hasOrdersSwCache}>
         {orders.map((order) => (
           <IonItem
             key={order.id}
