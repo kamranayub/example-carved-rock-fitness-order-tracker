@@ -13,7 +13,6 @@ import { useQuery, queryCache } from "react-query";
 
 import { getOrders, getOrder } from "../data/orders";
 import useServiceWorkerBypass from "../use-sw-bypass";
-import { useHasCacheStorage } from "../use-cache-storage";
 import OrderStatusBadge from "./OrderStatusBadge";
 import Amount from "./Amount";
 
