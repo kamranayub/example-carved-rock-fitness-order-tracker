@@ -44,11 +44,12 @@ Cypress.Commands.add("clearSessionStorage", () => {
 });
 
 Cypress.Commands.add("clearCacheStorage", () => {
-  cy.window().then(async (window) => {
-    const cacheKeys = await window.caches.keys();
-    return Promise.all(cacheKeys.map((key) => window.caches.delete(key)));
-  });
   cy.window().should(async (window) => {
+    async function clearCache() {
+      const cacheKeys = await window.caches.keys();
+      return Promise.all(cacheKeys.map((key) => window.caches.delete(key)));
+    }
+    await clearCache();
     const keys = await window.caches.keys();
     expect(keys).to.have.length(0);
   });
