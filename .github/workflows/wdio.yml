@@ -21,7 +21,7 @@ jobs:
           run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
 
         - name: Install
-          uses: ianwalter/puppeteer@master
+          uses: ianwalter/puppeteer@3.0.1
           with:
             args: npm install
 
@@ -36,7 +36,7 @@ jobs:
             NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
 
         - name: Test
-          uses: ianwalter/puppeteer@master
+          uses: ianwalter/puppeteer@3.0.1
           env:
             WDIO_BASE_URL: ${{ steps.netlify.outputs.url }}
           with:
