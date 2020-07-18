@@ -25,19 +25,31 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import "@testing-library/cypress/add-commands";
 
-Cypress.Commands.overwrite("visit", (originalFn, path, options) => {
-  if (options && options.useSw) {
+Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
+  if (options.useSw) {
     return originalFn(path, options);
   }
 
   // Bypass SW caching for index.html routes
-  // WARN: This doesn't handle if path already contains a query!
-  return originalFn(path + "?sw_bypass", options);
+  return originalFn(path, {
+    ...options,
+    qs: { ...options.qs, sw_bypass: true },
+  });
 });
 
 Cypress.Commands.add("clearSessionStorage", () => {
   cy.window().then((window) => {
     window.sessionStorage.clear();
+  });
+});
+
+Cypress.Commands.add("clearCacheStorage", () => {
+  cy.window().then((window) => {
+    if (window.caches) {
+      return window.caches.keys().then((cacheKeys) => {
+        return Promise.all(cacheKeys.map(window.caches.delete));
+      });
+    }
   });
 });
 

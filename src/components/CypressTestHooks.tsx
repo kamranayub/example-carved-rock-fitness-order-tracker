@@ -8,21 +8,19 @@ const CypressTestHooks: FC = () => {
     if ("Cypress" in window) {
       console.debug("App is running under Cypress, enabling test globals:");
 
-      if (typeof window.__CY_DISABLE_SW_API_CACHING !== "undefined") {
-        console.debug(
-          "window.__CY_DISABLE_SW_API_CACHING",
-          window.__CY_DISABLE_SW_API_CACHING
-        );
-        setSwBypass(window.__CY_DISABLE_SW_API_CACHING);
+      if (window.location.search.indexOf("sw_bypass") > -1) {
+        console.debug("sw_bypass");
+        setSwBypass(true);
+      }
+
+      if (window.caches) {
+        console.debug("clearing cache storage");
+        window.caches.keys().then((cacheKeys) => {
+          cacheKeys.map(window.caches.delete);
+        });
       }
     }
-
-    return () => {
-      if ("Cypress" in window) {
-        delete window.__CY_DISABLE_SW_API_CACHING;
-      }
-    };
-  });
+  }, [setSwBypass]);
 
   return null;
 };
