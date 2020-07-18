@@ -1,4 +1,4 @@
-import { useEffect, FC, useRef } from "react";
+import { useEffect, FC } from "react";
 import useServiceWorkerBypass from "../use-sw-bypass";
 
 const CypressTestHooks: FC = () => {
