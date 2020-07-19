@@ -47,17 +47,15 @@ Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
   cy.window()
     .its("caches")
     .should(async (caches) => {
-      const hasCache = await caches.has(cacheName);
-      expect(hasCache).to.be.true;
+      const cache = await caches.open(cacheName);
+      expect(cache).to.exist;
 
       if (options.minimumCacheEntries) {
-        const cache = await caches.open(cacheName);
         const cacheEntries = await cache.keys();
         expect(cacheEntries).to.have.length.gte(options.minimumCacheEntries);
       }
 
       if (options.maximumCacheEntries) {
-        const cache = await caches.open(cacheName);
         const cacheEntries = await cache.keys();
         expect(cacheEntries).to.have.length.lte(options.maximumCacheEntries);
       }

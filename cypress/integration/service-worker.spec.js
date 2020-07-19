@@ -6,20 +6,18 @@ describe("service workers", () => {
 
   it("should wait for service worker to be registered", () => {
     // Bypass service worker initially so we can check the cache properly
-    cy.visit("/", { useSw: true, qs: { cy_initialize: true } });
-
-    // Empty the orders cache
-    cy.clearCacheStorage("orders");
-
-    // Initialize the application
-    cy.window().its("__CY_INITIALIZE_APP").invoke();
-
+    cy.visit("/", { useSw: true });
     // We have a hook that adds an HTML classname when service worker is ready
     cy.get("html", { timeout: 6000 }).should("have.class", "sw-ready");
   });
 
+  it("should clear the service worker cache", () => {
+    // Empty the orders cache
+    cy.clearCacheStorage("orders");
+  });
+
   it("should load orders without caching on initial load", () => {
-    cy.reload();
+    cy.visit("/", { useSw: true, qs: { cy_initialize: true } });
 
     // Ensure no order cache entries exist
     cy.waitForCacheStorage("orders", {
@@ -27,14 +25,14 @@ describe("service workers", () => {
     });
 
     // Initialize the application
-    cy.window().its("__CY_INITIALIZE_APP").invoke();
+    cy.window().invoke("__CY_INITIALIZE_APP");
 
     // Orders should load from network
     cy.findByTestId("orders-list").should("be.visible");
   });
 
   it("should load orders immediately from cache on reload", () => {
-    cy.reload();
+    cy.visit("/", { useSw: true, qs: { cy_initialize: true } });
 
     // Ensure order cache entries exist
     cy.waitForCacheStorage("orders", {
@@ -42,7 +40,7 @@ describe("service workers", () => {
     });
 
     // Initialize the application
-    cy.window().its("__CY_INITIALIZE_APP").invoke();
+    cy.window().invoke("__CY_INITIALIZE_APP");
 
     // Orders will load from cache
     cy.findByTestId("orders-list").should("be.visible");
