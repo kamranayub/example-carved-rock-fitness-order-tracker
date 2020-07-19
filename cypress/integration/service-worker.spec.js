@@ -1,3 +1,9 @@
+//
+// Remember: When testing service workers, you have to wait for the new service worker
+// to activate before you're actually testing the latest code. On fresh test runs, like
+// in CI, you won't have issues but locally, double check the service worker activation
+// in the browser if you're seeing old code.
+//
 describe("service workers", () => {
   beforeEach(() => {
     // Clear any session storage for the test run, such as cy_sw_bypass flags
@@ -5,7 +11,6 @@ describe("service workers", () => {
   });
 
   it("should wait for service worker to be registered", () => {
-    // Bypass service worker initially so we can check the cache properly
     cy.visit("/", { useSw: true });
     // We have a hook that adds an HTML classname when service worker is ready
     cy.get("html", { timeout: 6000 }).should("have.class", "sw-ready");
@@ -17,6 +22,7 @@ describe("service workers", () => {
   });
 
   it("should load orders without caching on initial load", () => {
+    // Control when we initialize the app
     cy.visit("/", { useSw: true, qs: { cy_initialize: true } });
 
     // Ensure no order cache entries exist
@@ -32,6 +38,7 @@ describe("service workers", () => {
   });
 
   it("should load orders immediately from cache on reload", () => {
+    // Control when we initialize the app
     cy.visit("/", { useSw: true, qs: { cy_initialize: true } });
 
     // Ensure order cache entries exist
