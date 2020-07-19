@@ -1,8 +1,8 @@
 describe("accessibility", () => {
   before(async () => {
     await browser.url("/");
-    const firstOrder = await $("ion-item*=Order #1001");
-    await expect(firstOrder).toBeDisplayed();
+    const ordersList = await $("[data-testid='orders-list']");
+    await expect(ordersList).toBeDisplayed();
   });
 
   describe("keyboard navigation", () => {

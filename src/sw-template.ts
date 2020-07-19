@@ -1,7 +1,7 @@
 import { clientsClaim } from "workbox-core";
 import { NavigationRoute, registerRoute } from "workbox-routing";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
-import { NetworkFirst, CacheFirst } from "workbox-strategies";
+import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
@@ -17,7 +17,7 @@ const navigationRoute = new NavigationRoute(handler, {
     // URLs starting with /_ such as Cypress/Gatsby URLs
     new RegExp("^/_"),
     // Bypassing for Cypress tests due to window hooks
-    new RegExp("sw_bypass"),
+    new RegExp("cy_sw_bypass"),
     new RegExp("/[^/?]+\\.[^/]+$"),
   ],
 });
@@ -30,7 +30,7 @@ registerRoute(navigationRoute);
 //
 registerRoute(
   ({ url }) => {
-    const shouldFetch = !url.searchParams.has("sw_bypass");
+    const shouldFetch = !url.searchParams.has("cy_sw_bypass");
 
     if (!shouldFetch) {
       console.log("Bypassing SW handling of URL", url.toString());
@@ -41,8 +41,7 @@ registerRoute(
       url.origin === "https://carved-rock-fitness-backend.azurewebsites.net"
     );
   },
-  new NetworkFirst({
-    networkTimeoutSeconds: 5,
+  new StaleWhileRevalidate({
     cacheName: "orders",
     plugins: [
       new CacheableResponsePlugin({

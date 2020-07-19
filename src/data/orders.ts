@@ -9,7 +9,7 @@ import { queryCache } from "react-query";
  */
 function url(path: string, bypassServiceWorkerCaching?: boolean) {
   const base = "https://carved-rock-fitness-backend.azurewebsites.net";
-  const query = bypassServiceWorkerCaching ? "?sw_bypass" : "";
+  const query = bypassServiceWorkerCaching ? "?cy_sw_bypass" : "";
 
   return base + path + query;
 }

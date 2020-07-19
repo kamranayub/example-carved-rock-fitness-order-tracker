@@ -3,25 +3,37 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+function initializeApp() {
+  ReactDOM.render(<App />, document.getElementById("root"));
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: https://bit.ly/CRA-PWA
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+  // Add class names for Cypress' benefit
+  // to check whether service worker is ready
+  serviceWorker.register({
+    onSuccess() {
+      document.querySelector("html")?.classList.add("sw", "sw-registered");
+    },
+    onUpdate() {
+      document.querySelector("html")?.classList.add("sw", "sw-updated");
+    },
+    onReady() {
+      document.querySelector("html")?.classList.add("sw", "sw-ready");
+    },
+  });
+}
 
-// Add class names for Cypress' benefit
-// to check whether service worker is ready
-serviceWorker.register({
-  onSuccess() {
-    document.querySelector("html")?.classList.add("sw", "sw-registered");
-  },
-  onUpdate() {
-    document.querySelector("html")?.classList.add("sw", "sw-updated");
-  },
-  onReady() {
-    document.querySelector("html")?.classList.add("sw", "sw-ready");
-  },
-});
+//
+// Allow Cypress to manually initialize the app, such as when
+// performing pre-initialization routines like cache inspection
+//
+if (window.location.search.indexOf("cy_initialize") > -1) {
+  console.debug("Cypress flag: cy_initialize", true);
+  window.__CY_INITIALIZE_APP = initializeApp;
+} else {
+  initializeApp();
+}
 
 //
 // For static files outside webpack/React

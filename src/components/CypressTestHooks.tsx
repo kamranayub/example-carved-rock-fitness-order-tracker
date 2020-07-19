@@ -5,24 +5,21 @@ const CypressTestHooks: FC = () => {
   const [, setSwBypass] = useServiceWorkerBypass();
 
   useEffect(() => {
+
+    // This will not take effect when service worker serves
+    // the index.html route, only when SW bypass is enabled
     if ("Cypress" in window) {
-      console.debug("App is running under Cypress, enabling test globals:");
-
-      if (typeof window.__CY_DISABLE_SW_API_CACHING !== "undefined") {
-        console.debug(
-          "window.__CY_DISABLE_SW_API_CACHING",
-          window.__CY_DISABLE_SW_API_CACHING
-        );
-        setSwBypass(window.__CY_DISABLE_SW_API_CACHING);
+      if (window.location.search.indexOf("cy_sw_bypass") > -1) {
+        console.debug("Cypress flag: cy_sw_bypass", true);
+        setSwBypass(true);
+      } else {
+        console.debug("Cypress flag: cy_sw_bypass", false);
+        setSwBypass(false);
       }
+    } else {
+      setSwBypass(false);
     }
-
-    return () => {
-      if ("Cypress" in window) {
-        delete window.__CY_DISABLE_SW_API_CACHING;
-      }
-    };
-  });
+  }, [setSwBypass]);
 
   return null;
 };
