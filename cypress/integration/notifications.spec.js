@@ -71,30 +71,6 @@ describe("notifications", () => {
       .findByText("We will notify you of any updates to this order");
   });
 
-  Cypress.env().CI &&
-    it("will simulate sending desktop notification", () => {
-      cy.visit("/orders/1001", {
-        onBeforeLoad(win) {
-          cy.stub(win.navigator.permissions, "query")
-            .withArgs({ name: "notifications" })
-            .resolves({ state: "granted" });
-
-          win.navigator.permissions.query.callThrough();
-          cy.spy(win, "Notification");
-        },
-      });
-      cy.findByLabelText("Toggle Push Notifications").click();
-      cy.get("ion-toast[data-presented]")
-        .shadow()
-        .findByText("We will notify you of any updates to this order");
-
-      cy.window()
-        .its("Notification", { timeout: 30000 })
-        .should("be.calledWithMatch", `Order #1001 Status`, {
-          body: 'Your order with 2 items is now "shipped"',
-        });
-    });
-
   Cypress.browser.isHeaded &&
     isPermissionAllowed("notifications") &&
     it("will show desktop notification when permissions are allowed", () => {
