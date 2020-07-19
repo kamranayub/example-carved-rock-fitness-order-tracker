@@ -28,10 +28,10 @@ describe("accessibility", () => {
       );
       const title = $("ion-title*=Order #1001");
       expect(title).toBeDisplayed();
-      browser.pause(500); // wait for Ionic page transition
     });
 
     it("should be able to focus on notification toggle", () => {
+      browser.pause(500); // wait for Ionic page transition
       browser.keys(["Tab", "Tab"]);
       const focused = browser.focused();
       expect(focused).toHaveAttribute(
