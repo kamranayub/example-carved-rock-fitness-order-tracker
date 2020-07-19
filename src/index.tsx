@@ -25,17 +25,12 @@ function initializeApp() {
 }
 
 //
-// Immediately check if orders cache existed on load
-// before registering SW or loading app to help prevent
-// race conditions.
+// Allow Cypress to manually initialize the app, such as when
+// performing pre-initialization routines like cache inspection
 //
-if ("Cypress" in window) {
-  window.caches.has("orders").then((exists) => {
-    if (exists) {
-      document.querySelector("html")?.classList.add("sw-orders-cache-exists");
-    }
-    initializeApp();
-  });
+if (window.location.search.indexOf("cy_initialize") > -1) {
+  console.debug("Cypress flag: cy_initialize", true);
+  window.__CY_INITIALIZE_APP = initializeApp;
 } else {
   initializeApp();
 }

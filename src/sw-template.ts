@@ -17,7 +17,7 @@ const navigationRoute = new NavigationRoute(handler, {
     // URLs starting with /_ such as Cypress/Gatsby URLs
     new RegExp("^/_"),
     // Bypassing for Cypress tests due to window hooks
-    new RegExp("sw_bypass"),
+    new RegExp("cy_sw_bypass"),
     new RegExp("/[^/?]+\\.[^/]+$"),
   ],
 });
@@ -30,7 +30,7 @@ registerRoute(navigationRoute);
 //
 registerRoute(
   ({ url }) => {
-    const shouldFetch = !url.searchParams.has("sw_bypass");
+    const shouldFetch = !url.searchParams.has("cy_sw_bypass");
 
     if (!shouldFetch) {
       console.log("Bypassing SW handling of URL", url.toString());

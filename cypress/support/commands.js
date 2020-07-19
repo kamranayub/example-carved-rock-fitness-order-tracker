@@ -33,7 +33,7 @@ Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
   // Bypass SW caching for index.html routes
   return originalFn(path, {
     ...options,
-    qs: { ...options.qs, sw_bypass: true },
+    qs: { ...options.qs, cy_sw_bypass: true },
   });
 });
 
@@ -54,6 +54,12 @@ Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
         const cache = await caches.open(cacheName);
         const cacheEntries = await cache.keys();
         expect(cacheEntries).to.have.length.gte(options.minimumCacheEntries);
+      }
+
+      if (options.maximumCacheEntries) {
+        const cache = await caches.open(cacheName);
+        const cacheEntries = await cache.keys();
+        expect(cacheEntries).to.have.length.lte(options.maximumCacheEntries);
       }
     });
 });
