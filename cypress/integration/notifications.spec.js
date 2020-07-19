@@ -72,8 +72,12 @@ describe("notifications", () => {
   });
 
   Cypress.browser.isHeaded &&
-    isPermissionAllowed("notifications") &&
     it("will show desktop notification when permissions are allowed", () => {
+      expect(
+        isPermissionAllowed("notifications"),
+        'Please set env.browserPermissions.notifications to "allow" to enable notifications'
+      ).to.be.true;
+
       cy.visit("/orders/1001", {
         onBeforeLoad(win) {
           win.__CY_NOTIFICATION_PUSHED = cy.stub();
