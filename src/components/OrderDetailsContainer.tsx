@@ -17,6 +17,8 @@ import { getOrder } from "../data/orders";
 import Amount from "../components/Amount";
 import OrderStatusCard from "./OrderStatusCard";
 
+import "./OrderDetailsContainer.css";
+
 export interface OrderDetailsRouteParams {
   id: string;
 }
