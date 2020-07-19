@@ -81,10 +81,6 @@ describe("notifications", () => {
       });
       cy.findByLabelText("Toggle Push Notifications").click();
 
-      cy.get("ion-toast[data-presented]")
-        .shadow()
-        .findByText("We will notify you of any updates to this order");
-
       cy.window()
         .its("__CY_NOTIFICATION_PUSHED", { timeout: 30000 })
         .should(
