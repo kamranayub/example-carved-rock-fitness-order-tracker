@@ -50,15 +50,15 @@ describe("responsive design", () => {
       cy.get("ion-menu-button").should("be.visible");
     });
 
-    it("should be the first size to show marketing imagery", () => {
-      cy.viewport("ipad-2");
-      cy.get(".hero-image-col").should("be.visible");
-    });
-
     it("should display left menu in landscape", () => {
       cy.viewport("ipad-2", "landscape");
       cy.findByRole("navigation").should("be.visible");
       cy.get("ion-menu-button").should("not.be.visible");
+    });
+
+    it("should be the first size to show marketing imagery", () => {
+      cy.viewport("ipad-2");
+      cy.get(".hero-image-col").should("be.visible");
     });
   });
 
