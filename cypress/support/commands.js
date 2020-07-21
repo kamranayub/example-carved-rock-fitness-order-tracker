@@ -50,12 +50,12 @@ Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
       const cache = await caches.open(cacheName);
       expect(cache).to.exist;
 
-      if (options.minimumCacheEntries) {
+      if ("minimumCacheEntries" in options) {
         const cacheEntries = await cache.keys();
         expect(cacheEntries).to.have.length.gte(options.minimumCacheEntries);
       }
 
-      if (options.maximumCacheEntries) {
+      if ("maximumCacheEntries" in options) {
         const cacheEntries = await cache.keys();
         expect(cacheEntries).to.have.length.lte(options.maximumCacheEntries);
       }
