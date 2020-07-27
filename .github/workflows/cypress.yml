@@ -10,8 +10,22 @@ on:
     branches: [ master ]
 
 jobs:
+  netlify:
+    runs-on: ubuntu-16.04
+    outputs:
+      url: ${{ steps.netlify.outputs.url }}
+    steps:
+      - uses: kamranayub/wait-for-netlify-action@2.0.0
+        id: netlify
+        with:
+          site_name: 'carved-rock-order-tracker-pwa'
+          max_timeout: 180
+        env:
+          NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
+
   chrome:
     runs-on: ubuntu-16.04
+    needs: netlify
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,23 +38,13 @@ jobs:
       - name: Publish local packages
         run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
 
-      # Wait for Netlify Deploy Preview to boot up
-      - name: Wait for Netlify Deploy Preview Commit
-        uses: kamranayub/wait-for-netlify-action@2.0.0
-        id: netlify
-        with:
-          site_name: 'carved-rock-order-tracker-pwa'
-          max_timeout: 180
-        env:
-          NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
-
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
         with:
           env: CI=true
           # Substitute Netlify Deploy Preview URL to test
-          config: baseUrl=${{ steps.netlify.outputs.url }},chromeWebSecurity=false
+          config: baseUrl=${{ needs.netlify.outputs.url }},chromeWebSecurity=false
           browser: chrome
 
       # Upload artifacts
@@ -51,6 +55,76 @@ jobs:
           path: cypress/screenshots
           
       # Test run video was always captured, so this action uses "always()" condition
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+  edge:
+    runs-on: windows-latest
+    needs: netlify
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Install global dependencies
+        run: sudo npm install yalc -g --force
+
+      - name: Publish local packages
+        run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
+
+      - uses: cypress-io/github-action@v2
+        with:
+          env: CI=true
+          # Substitute Netlify Deploy Preview URL to test
+          config: baseUrl=${{ needs.netlify.outputs.url }},chromeWebSecurity=false
+          browser: edge
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+  firefox:
+    runs-on: ubuntu-16.04
+    needs: netlify
+    container:
+      image: cypress/browsers:node12.14.1-chrome83-ff77
+      options: --user 1001
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Install global dependencies
+        run: sudo npm install yalc -g --force
+
+      - name: Publish local packages
+        run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
+
+      - uses: cypress-io/github-action@v2
+        with:
+          env: CI=true
+          # Substitute Netlify Deploy Preview URL to test
+          config: baseUrl=${{ needs.netlify.outputs.url }}
+          browser: firefox
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
       - uses: actions/upload-artifact@v1
         if: always()
         with:
