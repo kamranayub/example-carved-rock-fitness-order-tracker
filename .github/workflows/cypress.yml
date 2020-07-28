@@ -32,6 +32,11 @@ jobs:
         with:
           submodules: true
 
+      - run: npx yalc publish shared
+      - run: npx yalc add @carved-rock-fitness/shared
+      - run: npx yalc publish lib/create-react-app/packages/react-scripts
+      - run: npx yalc add react-scripts
+
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
@@ -64,6 +69,11 @@ jobs:
         with:
           submodules: true
 
+      - run: npx yalc publish shared
+      - run: npx yalc add @carved-rock-fitness/shared
+      - run: npx yalc publish lib/create-react-app/packages/react-scripts
+      - run: npx yalc add react-scripts
+
       - uses: cypress-io/github-action@v2
         with:
           env: CI=true
@@ -94,6 +104,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
+
+      - run: npx yalc publish shared
+      - run: npx yalc add @carved-rock-fitness/shared
+      - run: npx yalc publish lib/create-react-app/packages/react-scripts
+      - run: npx yalc add react-scripts
 
       - uses: cypress-io/github-action@v2
         with:
