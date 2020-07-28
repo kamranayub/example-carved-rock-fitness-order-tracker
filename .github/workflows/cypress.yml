@@ -32,10 +32,11 @@ jobs:
         with:
           submodules: true
 
-      - run: npx yalc publish shared
-      - run: npx yalc add @carved-rock-fitness/shared
-      - run: npx yalc publish lib/create-react-app/packages/react-scripts
-      - run: npx yalc add react-scripts
+      - run: sudo npm i yalc -g --force
+      - run: yalc publish shared
+      - run: yalc add @carved-rock-fitness/shared
+      - run: yalc publish lib/create-react-app/packages/react-scripts
+      - run: yalc add react-scripts
 
       # Run all Cypress tests
       - name: Tests on Chrome
@@ -69,10 +70,11 @@ jobs:
         with:
           submodules: true
 
-      - run: npx yalc publish shared
-      - run: npx yalc add @carved-rock-fitness/shared
-      - run: npx yalc publish lib/create-react-app/packages/react-scripts
-      - run: npx yalc add react-scripts
+      - run: npm i yalc -g --force
+      - run: yalc publish shared
+      - run: yalc add @carved-rock-fitness/shared
+      - run: yalc publish lib/create-react-app/packages/react-scripts
+      - run: yalc add react-scripts
 
       - uses: cypress-io/github-action@v2
         with:
@@ -105,10 +107,11 @@ jobs:
         with:
           submodules: true
 
-      - run: npx yalc publish shared
-      - run: npx yalc add @carved-rock-fitness/shared
-      - run: npx yalc publish lib/create-react-app/packages/react-scripts
-      - run: npx yalc add react-scripts
+      - run: sudo npm i yalc -g --force
+      - run: yalc publish shared
+      - run: yalc add @carved-rock-fitness/shared
+      - run: yalc publish lib/create-react-app/packages/react-scripts
+      - run: yalc add react-scripts
 
       - uses: cypress-io/github-action@v2
         with:
