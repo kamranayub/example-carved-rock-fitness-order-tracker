@@ -34,7 +34,7 @@ jobs:
         with:
           submodules: true
 
-      - run: sudo npm i yalc@1.0.0-pre.35 -g --force
+      - run: npm i yalc@1.0.0-pre.35 -g --force
       - run: yalc publish shared
       - run: yalc add @carved-rock-fitness/shared
       - run: yalc publish lib/create-react-app/packages/react-scripts
