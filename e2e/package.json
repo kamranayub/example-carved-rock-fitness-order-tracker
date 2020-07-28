@@ -11,8 +11,7 @@
     "@wdio/spec-reporter": "6.1.23",
     "cypress": "4.11.0",
     "cypress-browser-permissions": "1.0.3",
-    "cypress-plugin-retries": "1.5.2",
-    "eslint-plugin-cypress": "2.11.1"
+    "cypress-plugin-retries": "1.5.2"
   },
   "scripts": {
     "cypress": "cypress open",

@@ -11,8 +11,10 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-import { cypressBrowserPermissionsPlugin } from "cypress-browser-permissions";
-import cypressRetryPlugin from "cypress-plugin-retries/lib/plugin";
+const {
+  cypressBrowserPermissionsPlugin,
+} = require("cypress-browser-permissions");
+const cypressRetryPlugin = require("cypress-plugin-retries/lib/plugin");
 
 /**
  * @type {Cypress.PluginConfig}
