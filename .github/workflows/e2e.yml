@@ -138,7 +138,7 @@ jobs:
           env:
             WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
           with:
-            args: cd e2e && npm install && npm run wdio
+            args: bash -c "cd e2e && npm install && npm run wdio"
 
         - uses: actions/upload-artifact@v1
           if: failure()
