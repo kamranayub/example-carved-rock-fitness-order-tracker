@@ -113,10 +113,10 @@ jobs:
 
       - run: mkdir ~/.npm-global
       - run: npm i yalc@1.0.0-pre.35 -g
-      - run: yalc publish shared
-      - run: yalc add @carved-rock-fitness/shared
-      - run: yalc publish lib/create-react-app/packages/react-scripts
-      - run: yalc add react-scripts
+      - run: ~/.npm-global/bin/yalc publish shared
+      - run: ~/.npm-global/bin/yalc add @carved-rock-fitness/shared
+      - run: ~/.npm-global/bin/yalc publish lib/create-react-app/packages/react-scripts
+      - run: ~/.npm-global/bin/yalc add react-scripts
 
       - uses: cypress-io/github-action@v2
         with:
