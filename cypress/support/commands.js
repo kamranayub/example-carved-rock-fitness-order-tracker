@@ -47,6 +47,10 @@ Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
   cy.window()
     .its("caches")
     .should(async (caches) => {
+      if (!caches) {
+        return;
+      }
+
       const cache = await caches.open(cacheName);
       expect(cache).to.exist;
 
@@ -66,6 +70,10 @@ Cypress.Commands.add("clearCacheStorage", (cacheName) => {
   cy.window()
     .its("caches")
     .should(async (caches) => {
+      if (!caches) {
+        return;
+      }
+
       const hasCache = await caches.has(cacheName);
 
       if (hasCache) {
