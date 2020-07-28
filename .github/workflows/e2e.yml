@@ -135,14 +135,14 @@ jobs:
 
         - uses: ianwalter/puppeteer@3.0.1
           with:
-            args: bash -c "cd e2e && npm install"
+            args: --workdir /github/workspace/e2e npm install
              
         - name: Test
           uses: ianwalter/puppeteer@3.0.1
           env:
             WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
           with:
-            args: bash -c "cd e2e && npm run wdio"
+            args: --workdir /github/workspace/e2e npm run wdio
 
         - uses: actions/upload-artifact@v1
           if: failure()

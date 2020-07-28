@@ -39,7 +39,9 @@ Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
 
 Cypress.Commands.add("clearSessionStorage", () => {
   cy.window().then((window) => {
-    window.sessionStorage.clear();
+    if (window.sessionStorage) {
+      window.sessionStorage.clear();
+    }
   });
 });
 
