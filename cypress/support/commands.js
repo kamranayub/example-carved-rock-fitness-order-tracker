@@ -72,6 +72,10 @@ Cypress.Commands.add("clearCacheStorage", (cacheName) => {
         const hasDeleted = await caches.delete(cacheName);
 
         expect(hasDeleted).to.be.true;
+
+        // wait for good measure for cache to be deleted
+        // seems to be flaky without this
+        cy.wait(300);
       }
     });
 });
