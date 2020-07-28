@@ -112,7 +112,7 @@ jobs:
           submodules: true
 
       - run: mkdir ~/.npm-global
-      - run: npm i yalc@1.0.0-pre.35 -g
+      - run: npm i yalc@1.0.0-pre.35 typescript@3.9.3 -g
       - run: ~/.npm-global/bin/yalc publish shared
       - run: ~/.npm-global/bin/yalc add @carved-rock-fitness/shared
       - run: ~/.npm-global/bin/yalc publish lib/create-react-app/packages/react-scripts
