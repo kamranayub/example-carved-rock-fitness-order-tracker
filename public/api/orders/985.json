@@ -1,0 +1,17 @@
+{
+  "id": 985,
+  "orderedAt": "2020-03-17T23:30:00-0500",
+  "status": "delivered",
+  "orderItems": [
+    {
+      "productId": 700,
+      "productName": "Wingman UltraLite 3 1-Person Kayak",
+      "price": 699,
+      "qty": 1,
+      "image": ""
+    }
+  ],
+  "total": 724,
+  "subTotal": 699,
+  "tax": 25
+}

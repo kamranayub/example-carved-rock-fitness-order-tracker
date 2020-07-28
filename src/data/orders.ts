@@ -8,14 +8,13 @@ import { queryCache } from "react-query";
  * @param bypassServiceWorkerCaching Whether or not to hint to service worker to bypass caching for the request
  */
 function url(path: string, bypassServiceWorkerCaching?: boolean) {
-  const base = "https://carved-rock-fitness-backend.azurewebsites.net";
   const query = bypassServiceWorkerCaching ? "?cy_sw_bypass" : "";
 
-  return base + path + query;
+  return path + query;
 }
 
 export async function getOrders(_: string, swBypass: boolean) {
-  const res = await fetch(url("/api/orders", swBypass));
+  const res = await fetch(url("/api/orders/index.json", swBypass));
   if (res.ok) {
     const orders: CarvedRockFitnessApi.Order[] = await res.json();
     return orders;
@@ -25,7 +24,7 @@ export async function getOrders(_: string, swBypass: boolean) {
 }
 
 export async function getOrder(_: string, id: number, swBypass: boolean) {
-  const res = await fetch(url("/api/orders/" + id, swBypass));
+  const res = await fetch(url(`/api/orders/${id}.json`, swBypass));
   if (res.ok) {
     const order: CarvedRockFitnessApi.Order = await res.json();
     return order || undefined;
