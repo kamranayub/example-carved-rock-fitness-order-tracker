@@ -32,12 +32,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Install global dependencies
-        run: sudo npm install yalc -g --force
-
-      - name: Publish local packages
-        run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
-
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v1
@@ -70,12 +64,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Install global dependencies
-        run: sudo npm install yalc -g --force
-
-      - name: Publish local packages
-        run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
-
       - uses: cypress-io/github-action@v2
         with:
           env: CI=true
@@ -106,12 +94,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-
-      - name: Install global dependencies
-        run: sudo npm install yalc -g --force
-
-      - name: Publish local packages
-        run: yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts
 
       - uses: cypress-io/github-action@v2
         with:
