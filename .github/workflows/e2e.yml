@@ -10,6 +10,10 @@ on:
     branches: [ master ]
 
 jobs:
+
+  ###
+  # Wait for Netlify Deploy Preview to build and deploy
+  ###
   netlify:
     runs-on: ubuntu-16.04
     outputs:
@@ -23,7 +27,10 @@ jobs:
         env:
           NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
 
-  chrome:
+  ###
+  # Cypress Chrome tests
+  ###
+  cypress-chrome:
     runs-on: ubuntu-16.04
     needs: netlify
     container:
@@ -47,16 +54,19 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: cypress/screenshots
+          path: e2e/cypress/screenshots
           
       # Test run video was always captured, so this action uses "always()" condition
       - uses: actions/upload-artifact@v1
         if: always()
         with:
           name: cypress-videos
-          path: cypress/videos
+          path: e2e/cypress/videos
 
-  edge:
+  ###
+  # Cypress Microsoft Edge tests
+  ###
+  cypress-edge:
     runs-on: windows-latest
     needs: netlify
     steps:
@@ -66,7 +76,6 @@ jobs:
       - uses: cypress-io/github-action@v2
         with:
           env: CI=true
-          # Substitute Netlify Deploy Preview URL to test
           config: baseUrl=${{ needs.netlify.outputs.url }},chromeWebSecurity=false
           browser: edge
           working-directory: e2e
@@ -75,15 +84,18 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: cypress/screenshots
+          path: e2e/cypress/screenshots
           
       - uses: actions/upload-artifact@v1
         if: always()
         with:
           name: cypress-videos
-          path: cypress/videos
+          path: e2e/cypress/videos
 
-  firefox:
+  ###
+  # Cypress Firefox tests
+  ###
+  cypress-firefox:
     runs-on: ubuntu-16.04
     needs: netlify
     container:
@@ -96,7 +108,6 @@ jobs:
       - uses: cypress-io/github-action@v2
         with:
           env: CI=true
-          # Substitute Netlify Deploy Preview URL to test
           config: baseUrl=${{ needs.netlify.outputs.url }}
           browser: firefox
           working-directory: e2e
@@ -105,9 +116,38 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: cypress/screenshots
+          path: e2e/cypress/screenshots
       - uses: actions/upload-artifact@v1
         if: always()
         with:
           name: cypress-videos
-          path: cypress/videos
+          path: e2e/cypress/videos
+  
+  ###
+  # WebdriverIO Chrome tests
+  ###
+  wdio-chrome:
+    runs-on: ubuntu-latest
+    needs: netlify
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Test
+          uses: ianwalter/puppeteer@3.0.1
+          env:
+            WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
+          with:
+            args: cd e2e && npm install && npm run wdio
+
+        - uses: actions/upload-artifact@v1
+          if: failure()
+          with:
+            name: logs
+            path: e2e/wdio/logs
+
+        - uses: actions/upload-artifact@v1
+          if: failure()
+          with:
+            name: screenshots
+            path: e2e/wdio/screenshots
