@@ -5,6 +5,11 @@
 // in the browser if you're seeing old code.
 //
 describe("service workers", () => {
+  // To improve CI flakiness with cache storage async tests
+  before(() => {
+    Cypress.currentTest.retries(3);
+  });
+
   beforeEach(() => {
     // Clear any session storage for the test run, such as cy_sw_bypass flags
     cy.clearSessionStorage();
