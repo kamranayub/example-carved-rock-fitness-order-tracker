@@ -16,14 +16,12 @@ describe("service workers", () => {
     cy.get("html", { timeout: 6000 }).should("have.class", "sw-ready");
   });
 
-  it("should clear the service worker cache", () => {
-    // Empty the orders cache
-    cy.clearCacheStorage("orders");
-  });
-
   it("should load orders without caching on initial load", () => {
     // Control when we initialize the app
     cy.visit("/", { useSw: true, qs: { cy_initialize: true } });
+
+    // Empty the orders cache
+    cy.clearCacheStorage("orders");
 
     // Ensure no order cache entries exist
     cy.waitForCacheStorage("orders", {
