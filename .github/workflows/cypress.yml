@@ -31,15 +31,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - run: npm i yalc@1.0.0-pre.35 -g --force
-      - run: yalc publish shared
-      - run: yalc add @carved-rock-fitness/shared
-      - run: yalc publish lib/create-react-app/packages/react-scripts
-      - run: yalc add react-scripts
-
+        
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v2
@@ -48,6 +40,7 @@ jobs:
           # Substitute Netlify Deploy Preview URL to test
           config: baseUrl=${{ needs.netlify.outputs.url }},chromeWebSecurity=false
           browser: chrome
+          working-directory: e2e
 
       # Upload artifacts
       - uses: actions/upload-artifact@v1
@@ -69,14 +62,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - run: npm i yalc@1.0.0-pre.35 -g --force
-      - run: yalc publish shared
-      - run: yalc add @carved-rock-fitness/shared
-      - run: yalc publish lib/create-react-app/packages/react-scripts
-      - run: yalc add react-scripts
 
       - uses: cypress-io/github-action@v2
         with:
@@ -84,6 +69,7 @@ jobs:
           # Substitute Netlify Deploy Preview URL to test
           config: baseUrl=${{ needs.netlify.outputs.url }},chromeWebSecurity=false
           browser: edge
+          working-directory: e2e
 
       - uses: actions/upload-artifact@v1
         if: failure()
@@ -103,20 +89,9 @@ jobs:
     container:
       image: cypress/browsers:node12.14.1-chrome83-ff77
       options: --user 1001
-    env:
-      NPM_CONFIG_PREFIX: ~/.npm-global
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - run: mkdir ~/.npm-global
-      - run: npm i yalc@1.0.0-pre.35 typescript@3.9.3 -g
-      - run: ~/.npm-global/bin/yalc publish shared
-      - run: ~/.npm-global/bin/yalc add @carved-rock-fitness/shared
-      - run: ~/.npm-global/bin/yalc publish lib/create-react-app/packages/react-scripts
-      - run: ~/.npm-global/bin/yalc add react-scripts
 
       - uses: cypress-io/github-action@v2
         with:
@@ -124,6 +99,7 @@ jobs:
           # Substitute Netlify Deploy Preview URL to test
           config: baseUrl=${{ needs.netlify.outputs.url }}
           browser: firefox
+          working-directory: e2e
 
       - uses: actions/upload-artifact@v1
         if: failure()
