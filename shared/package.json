@@ -6,13 +6,11 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
-    "prepare": "npm run build",
-    "publish": "yalc publish"
+    "prepare": "npm run build"
   },
   "author": "Kamran Ayub",
   "license": "Apache-2.0",
   "devDependencies": {
-    "typescript": "^3.9.3",
-    "yalc": "^1.0.0-pre.35"
+    "typescript": "^3.9.3"
   }
 }
