@@ -101,12 +101,15 @@ jobs:
     container:
       image: cypress/browsers:node12.14.1-chrome83-ff77
       options: --user 1001
+    env:
+      NPM_CONFIG_PREFIX: ~/.npm-global
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: true
 
+      - run: mkdir ~/.npm-global
       - run: npm i yalc@1.0.0-pre.35 -g --force
       - run: yalc publish shared
       - run: yalc add @carved-rock-fitness/shared
