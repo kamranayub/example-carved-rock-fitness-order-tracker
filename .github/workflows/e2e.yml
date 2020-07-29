@@ -134,7 +134,7 @@ jobs:
     needs: netlify
     container:
       image: ianwalter/puppeteer:v4.0.0
-      options: --shm-size=1g
+      options: --shm-size=5g
     timeout-minutes: 10
     env:
       PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
