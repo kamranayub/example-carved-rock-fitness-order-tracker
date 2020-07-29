@@ -136,16 +136,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - run: cd e2e
+
       - uses: ianwalter/puppeteer@3.0.1
         with:
-          args: --workdir /github/workspace/e2e npm install
+          args: npm install
 
       - name: Test
         uses: ianwalter/puppeteer@3.0.1
         env:
           WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
         with:
-          args: --workdir /github/workspace/e2e npm run wdio
+          args: npm run wdio
 
       - uses: actions/upload-artifact@v1
         if: failure()
