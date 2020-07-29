@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: netlify
     container:
-      image: ianwalter/puppeteer-container@acc52cd2334ad9eaf6e1974562d263e0a711b7e8
+      image: ianwalter/puppeteer-container:acc52cd2334ad9eaf6e1974562d263e0a711b7e8
       options: --shm-size=1g
     timeout-minutes: 10
     env:
