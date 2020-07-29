@@ -135,6 +135,10 @@ jobs:
       image: ianwalter/puppeteer:3.0.0
       options: --shm-size=1g
     timeout-minutes: 10
+    env:
+      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      PUPPETEER_EXEC_PATH: google-chrome-stable
+      PUPPETEER_BROWSER: chromium
     defaults:
       run:
         working-directory: e2e
