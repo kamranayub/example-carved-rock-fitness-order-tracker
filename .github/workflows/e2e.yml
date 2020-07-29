@@ -22,7 +22,7 @@ jobs:
         id: netlify
         with:
           site_name: "carved-rock-order-tracker-pwa"
-          max_timeout: 180
+          max_timeout: 300
         env:
           NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
 
