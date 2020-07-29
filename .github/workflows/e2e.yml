@@ -130,24 +130,22 @@ jobs:
   ###
   wdio-chrome:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     needs: netlify
+    container:
+      image: ianwalter/puppeteer:3.0.0
+      options: --shm-size=1g
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: e2e
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - run: cd e2e
-
-      - uses: ianwalter/puppeteer@3.0.1
-        with:
-          args: npm install
-
-      - name: Test
-        uses: ianwalter/puppeteer@3.0.1
+      - run: npm install
+      - run: npm run wdio
         env:
           WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
-        with:
-          args: npm run wdio
 
       - uses: actions/upload-artifact@v1
         if: failure()
