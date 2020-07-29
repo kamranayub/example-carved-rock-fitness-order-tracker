@@ -82,9 +82,9 @@ exports.config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: process.env.CI ? "silent" : "info",
-  // outputDir: path.resolve(__dirname, "wdio", "logs"),
-  // screenshotDir: path.resolve(__dirname, "wdio", "screenshots"),
+  logLevel: "info",
+  outputDir: path.resolve(__dirname, "wdio", "logs"),
+  screenshotDir: path.resolve(__dirname, "wdio", "screenshots"),
   //
   // Set specific log levels per logger
   // loggers:
@@ -246,15 +246,15 @@ exports.config = {
     { error, result, duration, passed, retries }
   ) {
     // if test passed, ignore, else take and save screenshot.
-    // if (!error) {
-    //   return;
-    // }
-    // // get current test title and clean it, to use it as file name
-    // const filename = encodeURIComponent(test.title.replace(/\s+/g, "-"));
-    // // build file path
-    // const filePath = path.join(this.screenshotDir, filename + ".png");
-    // // save screenshot
-    // browser.saveScreenshot(filePath);
+    if (!error) {
+      return;
+    }
+    // get current test title and clean it, to use it as file name
+    const filename = encodeURIComponent(test.title.replace(/\s+/g, "-"));
+    // build file path
+    const filePath = path.join(this.screenshotDir, filename + ".png");
+    // save screenshot
+    browser.saveScreenshot(filePath);
   },
 
   /**
