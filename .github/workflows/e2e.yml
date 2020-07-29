@@ -151,14 +151,14 @@ jobs:
         env:
           WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
 
-      - uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: logs
-          path: e2e/wdio/logs
+      # - uses: actions/upload-artifact@v1
+      #   if: failure()
+      #   with:
+      #     name: logs
+      #     path: e2e/wdio/logs
 
-      - uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: screenshots
-          path: e2e/wdio/screenshots
+      # - uses: actions/upload-artifact@v1
+      #   if: failure()
+      #   with:
+      #     name: screenshots
+      #     path: e2e/wdio/screenshots
