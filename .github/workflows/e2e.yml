@@ -5,15 +5,11 @@ name: Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
-
-defaults:
-  timeout-minutes: 15
+    branches: [master]
 
 jobs:
-
   ###
   # Wait for Netlify Deploy Preview to build and deploy
   ###
@@ -25,7 +21,7 @@ jobs:
       - uses: kamranayub/wait-for-netlify-action@2.0.0
         id: netlify
         with:
-          site_name: 'carved-rock-order-tracker-pwa'
+          site_name: "carved-rock-order-tracker-pwa"
           max_timeout: 180
         env:
           NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
@@ -35,13 +31,14 @@ jobs:
   ###
   cypress-chrome:
     runs-on: ubuntu-16.04
+    timeout-minutes: 15
     needs: netlify
     container:
       image: cypress/browsers:node12.14.1-chrome83-ff77
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       # Run all Cypress tests
       - name: Tests on Chrome
         uses: cypress-io/github-action@v2
@@ -58,7 +55,7 @@ jobs:
         with:
           name: cypress-screenshots
           path: e2e/cypress/screenshots
-          
+
       # Test run video was always captured, so this action uses "always()" condition
       - uses: actions/upload-artifact@v1
         if: always()
@@ -71,6 +68,7 @@ jobs:
   ###
   cypress-edge:
     runs-on: windows-latest
+    timeout-minutes: 20
     needs: netlify
     steps:
       - name: Checkout
@@ -88,7 +86,7 @@ jobs:
         with:
           name: cypress-screenshots
           path: e2e/cypress/screenshots
-          
+
       - uses: actions/upload-artifact@v1
         if: always()
         with:
@@ -100,6 +98,7 @@ jobs:
   ###
   cypress-firefox:
     runs-on: ubuntu-16.04
+    timeout-minutes: 15
     needs: netlify
     container:
       image: cypress/browsers:node12.14.1-chrome83-ff77
@@ -125,36 +124,37 @@ jobs:
         with:
           name: cypress-videos
           path: e2e/cypress/videos
-  
+
   ###
   # WebdriverIO Chrome tests
   ###
   wdio-chrome:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: netlify
     steps:
-        - name: Checkout
-          uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-        - uses: ianwalter/puppeteer@3.0.1
-          with:
-            args: --workdir /github/workspace/e2e npm install
-             
-        - name: Test
-          uses: ianwalter/puppeteer@3.0.1
-          env:
-            WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
-          with:
-            args: --workdir /github/workspace/e2e npm run wdio
+      - uses: ianwalter/puppeteer@3.0.1
+        with:
+          args: --workdir /github/workspace/e2e npm install
 
-        - uses: actions/upload-artifact@v1
-          if: failure()
-          with:
-            name: logs
-            path: e2e/wdio/logs
+      - name: Test
+        uses: ianwalter/puppeteer@3.0.1
+        env:
+          WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
+        with:
+          args: --workdir /github/workspace/e2e npm run wdio
 
-        - uses: actions/upload-artifact@v1
-          if: failure()
-          with:
-            name: screenshots
-            path: e2e/wdio/screenshots
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: logs
+          path: e2e/wdio/logs
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: screenshots
+          path: e2e/wdio/screenshots
