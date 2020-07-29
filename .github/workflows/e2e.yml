@@ -142,7 +142,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - run: npm install
+      - run: npm ci
       - run: npm run wdio
         env:
           WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
