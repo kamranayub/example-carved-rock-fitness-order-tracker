@@ -4,7 +4,6 @@
 // in CI, you won't have issues but locally, double check the service worker activation
 // in the browser if you're seeing old code.
 //
-
 describe("service workers", () => {
   beforeEach(() => {
     // Clear any session storage for the test run, such as cy_sw_bypass flags
