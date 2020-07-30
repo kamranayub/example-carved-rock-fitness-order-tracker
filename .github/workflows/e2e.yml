@@ -42,7 +42,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           # Substitute Netlify Deploy Preview URL to test
-          config: baseUrl=${{ needs.netlify.outputs.url }},chromeWebSecurity=false
+          config: baseUrl=${{ needs.netlify.outputs.url }}
           browser: chrome
           working-directory: e2e
 
@@ -73,7 +73,7 @@ jobs:
 
       - uses: cypress-io/github-action@v2
         with:
-          config: baseUrl=${{ needs.netlify.outputs.url }},chromeWebSecurity=false
+          config: baseUrl=${{ needs.netlify.outputs.url }}
           browser: edge
           working-directory: e2e
 
