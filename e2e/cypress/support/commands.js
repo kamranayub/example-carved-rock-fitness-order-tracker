@@ -27,7 +27,10 @@ import "@testing-library/cypress/add-commands";
 
 Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
   if (options.useSw) {
-    return originalFn(path, options);
+    return originalFn(path, {
+      ...options,
+      qs: { ...options.qs, cy_sw_page_only_bypass: true },
+    });
   }
 
   // Bypass SW caching for index.html routes

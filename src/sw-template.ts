@@ -16,8 +16,10 @@ const navigationRoute = new NavigationRoute(handler, {
   denylist: [
     // URLs starting with /_ such as Cypress/Gatsby URLs
     new RegExp("^/_"),
-    // Bypassing for Cypress tests due to window hooks
+    // Bypassing for Cypress tests for page AND API requests
     new RegExp("cy_sw_bypass"),
+    // Bypassing for Cypress tests for ONLY page requests
+    new RegExp("cy_sw_page_only_bypass"),
     new RegExp("/[^/?]+\\.[^/]+$"),
   ],
 });
