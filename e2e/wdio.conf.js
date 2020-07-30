@@ -66,7 +66,11 @@ exports.config = {
         // See: https://www.browserstack.com/automate/handle-popups-alerts-prompts-in-automated-tests
         prefs: {
           // 0 - Default, 1 - Allow, 2 - Block
-          "profile.managed_default_content_settings.notifications": 1,
+          profile: {
+            managed_default_content_settings: {
+              notifications: 1,
+            },
+          },
         },
       },
     },

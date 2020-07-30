@@ -1,10 +1,6 @@
 import { isPermissionAllowed } from "cypress-browser-permissions";
 
 describe("notifications", () => {
-  beforeEach(() => {
-    cy.clearLocalStorage();
-  });
-
   it("will prompt user for permission to enable notifications when permission has not been set", () => {
     cy.visit("/orders/1001", {
       onBeforeLoad(win) {
