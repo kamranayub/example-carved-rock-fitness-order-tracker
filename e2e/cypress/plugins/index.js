@@ -29,15 +29,5 @@ module.exports = (on, config) => {
   // Enable retry logging
   cypressRetryPlugin(on);
 
-  // Customize Firefox launch preferences in CI
-  if (process.env.CI) {
-    on("before:browser:launch", (browser, launchOptions) => {
-      if (browser.family === "firefox") {
-        console.log("Setting FF viewport to 2560x1440");
-        launchOptions.args.push("--width=2560");
-        launchOptions.args.push("--height=1440");
-      }
-    });
-  }
   return config;
 };
