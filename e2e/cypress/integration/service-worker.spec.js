@@ -8,7 +8,7 @@
 describe("service workers", () => {
   beforeEach(() => {
     // Clear any session storage for the test run, such as cy_sw_bypass flags
-    // cy.clearSessionStorage();
+    cy.clearSessionStorage();
   });
 
   it("should wait for service worker to be registered", () => {
