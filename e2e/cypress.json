@@ -4,6 +4,7 @@
   "experimentalShadowDomSupport": true,
   "experimentalFetchPolyfill": true,
   "env": {
+    "RETRIES": 3,
     "ionicAnimationTimeout": 300,
     "browserPermissions": {
       "notifications": "allow",

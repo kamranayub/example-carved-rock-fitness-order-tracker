@@ -39,7 +39,9 @@ Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
 
 Cypress.Commands.add("clearSessionStorage", () => {
   cy.window().then((window) => {
-    window.sessionStorage.clear();
+    if (window.sessionStorage) {
+      window.sessionStorage.clear();
+    }
   });
 });
 
@@ -47,6 +49,10 @@ Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
   cy.window()
     .its("caches")
     .should(async (caches) => {
+      if (!caches) {
+        return;
+      }
+
       const cache = await caches.open(cacheName);
       expect(cache).to.exist;
 
@@ -66,12 +72,20 @@ Cypress.Commands.add("clearCacheStorage", (cacheName) => {
   cy.window()
     .its("caches")
     .should(async (caches) => {
+      if (!caches) {
+        return;
+      }
+
       const hasCache = await caches.has(cacheName);
 
       if (hasCache) {
         const hasDeleted = await caches.delete(cacheName);
 
         expect(hasDeleted).to.be.true;
+
+        // wait for good measure for cache to be deleted
+        // seems to be flaky without this
+        cy.wait(300);
       }
     });
 });
