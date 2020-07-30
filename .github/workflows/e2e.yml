@@ -109,6 +109,7 @@ jobs:
         env:
           MOZ_FORCE_DISABLE_E10S: 1
         with:
+          headless: true
           env: CI=true
           config: baseUrl=${{ needs.netlify.outputs.url }}
           browser: firefox
