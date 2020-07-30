@@ -93,36 +93,35 @@ jobs:
 
   ###
   # Cypress Firefox tests
-  # FIXME: Seems to stall/freeze under CI in notification tests?
   ###
-  # cypress-firefox:
-  #   runs-on: ubuntu-16.04
-  #   timeout-minutes: 15
-  #   needs: netlify
-  #   container:
-  #     image: cypress/browsers:node12.14.1-chrome83-ff77
-  #     options: --user 1001
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
+  cypress-firefox:
+    runs-on: ubuntu-16.04
+    timeout-minutes: 15
+    needs: netlify
+    container:
+      image: cypress/browsers:node12.14.1-chrome83-ff77
+      options: --user 1001
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  #     - uses: cypress-io/github-action@v2
-  #       with:
-  #         env: CI=true
-  #         config: baseUrl=${{ needs.netlify.outputs.url }}
-  #         browser: firefox
-  #         working-directory: e2e
+      - uses: cypress-io/github-action@v2
+        with:
+          env: CI=true
+          config: baseUrl=${{ needs.netlify.outputs.url }}
+          browser: firefox
+          working-directory: e2e
 
-  #     - uses: actions/upload-artifact@v1
-  #       if: failure()
-  #       with:
-  #         name: cypress-screenshots
-  #         path: e2e/cypress/screenshots
-  #     - uses: actions/upload-artifact@v1
-  #       if: always()
-  #       with:
-  #         name: cypress-videos
-  #         path: e2e/cypress/videos
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e/cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e/cypress/videos
 
   ###
   # WebdriverIO Chrome tests
