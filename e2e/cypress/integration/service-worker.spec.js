@@ -11,6 +11,12 @@ describe("service workers", () => {
     cy.clearSessionStorage();
   });
 
+  before(() => {
+    // Bypass SW once during test run so Cypress can hook itself in.
+    // When index.html is cached by Workbox, Cypress cannot add any hooks.
+    cy.visit("/");
+  });
+
   it("should wait for service worker to be registered", () => {
     cy.visit("/", { useSw: true });
     // We have a hook that adds an HTML classname when service worker is ready
