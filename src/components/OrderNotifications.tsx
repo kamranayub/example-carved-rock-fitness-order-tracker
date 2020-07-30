@@ -2,7 +2,7 @@ import { IonToggle, IonToast, IonIcon } from "@ionic/react";
 import React, { FC, useState, useCallback, useEffect } from "react";
 import { usePermission, useLocalStorage } from "react-use";
 import { notificationsOff, notifications } from "ionicons/icons";
-import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
+import { OrderStatus } from "../data/api";
 import { subscribeToOrder, getOrder } from "../data/orders";
 import { useQuery } from "react-query";
 import useServiceWorkerBypass from "../use-sw-bypass";
@@ -12,11 +12,11 @@ interface OrderNotificationsProps {
   orderId: string;
 }
 
-function canTrackOrder(orderStatus: CarvedRockFitnessApi.OrderStatus) {
+function canTrackOrder(orderStatus: OrderStatus) {
   switch (orderStatus) {
-    case CarvedRockFitnessApi.OrderStatus.Canceled:
+    case OrderStatus.Canceled:
       return false;
-    case CarvedRockFitnessApi.OrderStatus.Delivered:
+    case OrderStatus.Delivered:
       return false;
     default:
       return true;
@@ -70,7 +70,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
             parseInt(orderId, 10),
 
             // We are passing an order status to send via notification for demo purposes
-            CarvedRockFitnessApi.OrderStatus.Shipped
+            OrderStatus.Shipped
           );
         } else {
           setShowDisableNotificationToast(true);

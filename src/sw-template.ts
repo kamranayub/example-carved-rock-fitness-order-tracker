@@ -36,10 +36,7 @@ registerRoute(
       console.log("Bypassing SW handling of URL", url.toString());
     }
 
-    return (
-      shouldFetch &&
-      url.origin === "https://carved-rock-fitness-backend.azurewebsites.net"
-    );
+    return shouldFetch && url.pathname.includes("/api/orders/");
   },
   new StaleWhileRevalidate({
     cacheName: "orders",

@@ -1,16 +1,16 @@
-import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
+import { OrderStatus } from "./api";
 
 export function orderStatusToThemeColor(
-  status: CarvedRockFitnessApi.OrderStatus
+  status: OrderStatus
 ) {
   switch (status) {
-    case CarvedRockFitnessApi.OrderStatus.Pending:
+    case OrderStatus.Pending:
       return "medium";
-    case CarvedRockFitnessApi.OrderStatus.Shipped:
+    case OrderStatus.Shipped:
       return "success";
-    case CarvedRockFitnessApi.OrderStatus.Delayed:
+    case OrderStatus.Delayed:
       return "warning";
-    case CarvedRockFitnessApi.OrderStatus.Canceled:
+    case OrderStatus.Canceled:
       return "danger";
     default:
       return "dark";
