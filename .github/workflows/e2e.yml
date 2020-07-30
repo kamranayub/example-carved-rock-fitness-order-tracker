@@ -106,6 +106,8 @@ jobs:
         uses: actions/checkout@v2
 
       - uses: cypress-io/github-action@v2
+        env:
+          MOZ_FORCE_DISABLE_E10S: 1
         with:
           env: CI=true
           config: baseUrl=${{ needs.netlify.outputs.url }}
