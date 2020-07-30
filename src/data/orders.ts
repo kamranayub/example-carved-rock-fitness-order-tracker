@@ -1,5 +1,5 @@
-import { CarvedRockFitnessApi } from "@carved-rock-fitness/shared";
 import { queryCache } from "react-query";
+import { Order, OrderStatus } from "./api";
 
 /**
  * Helper to build CRF API URL
@@ -16,7 +16,7 @@ function url(path: string, bypassServiceWorkerCaching?: boolean) {
 export async function getOrders(_: string, swBypass: boolean) {
   const res = await fetch(url("/api/orders/index.json", swBypass));
   if (res.ok) {
-    const orders: CarvedRockFitnessApi.Order[] = await res.json();
+    const orders: Order[] = await res.json();
     return orders;
   }
 
@@ -26,7 +26,7 @@ export async function getOrders(_: string, swBypass: boolean) {
 export async function getOrder(_: string, id: number, swBypass: boolean) {
   const res = await fetch(url(`/api/orders/${id}.json`, swBypass));
   if (res.ok) {
-    const order: CarvedRockFitnessApi.Order = await res.json();
+    const order: Order = await res.json();
     return order || undefined;
   }
 
@@ -45,10 +45,10 @@ export async function getOrder(_: string, id: number, swBypass: boolean) {
  */
 export function subscribeToOrder(
   id: number,
-  status: CarvedRockFitnessApi.OrderStatus
+  status: OrderStatus
 ) {
   setTimeout(() => {
-    queryCache.setQueryData<CarvedRockFitnessApi.Order>(
+    queryCache.setQueryData<Order>(
       ["order", id],
       (existingOrder) => {
         if (existingOrder) {

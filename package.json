@@ -5,7 +5,6 @@
   "dependencies": {
     "@capacitor/cli": "2.1.0",
     "@capacitor/core": "2.1.0",
-    "@carved-rock-fitness/shared": "file:.yalc/@carved-rock-fitness/shared",
     "@ionic/react": "5.1.1",
     "@ionic/react-router": "5.0.7",
     "@testing-library/jest-dom": "4.2.4",
@@ -36,7 +35,7 @@
     "yalc": "1.0.0-pre.35"
   },
   "scripts": {
-    "postinstall": "yalc publish shared && yalc add @carved-rock-fitness/shared && yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts",
+    "postinstall": "yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
