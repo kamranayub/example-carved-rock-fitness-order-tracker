@@ -10,7 +10,7 @@
     "@wdio/mocha-framework": "6.1.19",
     "@wdio/spec-reporter": "6.1.23",
     "@wdio/sync": "6.1.14",
-    "cypress": "4.10.0",
+    "cypress": "^4.11.0",
     "cypress-browser-permissions": "1.0.5",
     "cypress-plugin-retries": "1.5.2"
   },
