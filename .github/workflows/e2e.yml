@@ -16,7 +16,7 @@ jobs:
     outputs:
       url: ${{ steps.netlify.outputs.url }}
     steps:
-      - uses: kamranayub/wait-for-netlify-action@2.0.0
+      - uses: kamranayub/wait-for-netlify-action@v2.0.3
         id: netlify
         with:
           site_name: "carved-rock-order-tracker-pwa"
