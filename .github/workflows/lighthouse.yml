@@ -20,7 +20,7 @@ jobs:
           max_timeout: 180
         env:
           NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
-          
+
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v3
         with:
@@ -29,5 +29,3 @@ jobs:
             ${{ steps.netlify.outputs.url }}/orders/1001
           budgetPath: ./budget.json
           uploadArtifacts: true
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{secrets.LHCI_GITHUB_APP_TOKEN}}
