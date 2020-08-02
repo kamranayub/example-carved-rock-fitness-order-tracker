@@ -1,0 +1,31 @@
+name: Google Lighthouse
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Wait for Netlify Deploy Preview Commit
+        uses: kamranayub/wait-for-netlify-action@v2.0.3
+        id: netlify
+        with:
+          site_name: 'carved-rock-order-tracker-pwa'
+          max_timeout: 180
+        env:
+          NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
+
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v3
+        with:
+          urls: |
+            ${{ steps.netlify.outputs.url }}
+            ${{ steps.netlify.outputs.url }}/orders/1001
+          budgetPath: ./budget.json
+          uploadArtifacts: true
