@@ -28,7 +28,10 @@ import "@testing-library/cypress/add-commands";
 Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
   if (options.useSw) {
     // Bypass SW caching for ONLY document routes (i.e. API route will be cached)
-    return originalFn(path, options);
+    return originalFn(path, {
+      ...options,
+      qs: { ...options.qs, cy_sw_page_only_bypass: true },
+    });
   }
 
   // Bypass SW caching for all document and API route
