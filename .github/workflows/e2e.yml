@@ -19,3 +19,53 @@ jobs:
           max_timeout: 300
         env:
           NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
+
+  cypress-chrome:
+    runs-on: ubuntu-16.04
+    needs: netlify
+    container:
+      image: cypress/browsers:node12.14.1-chrome83-ff77
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: cypress-io/github-action@v2
+        with:
+          config: baseUrl=${{needs.netlify.outputs.url}}
+          browser: chrome
+          working-directory: e2e
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e/cypress/screenshots
+
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e/cypress/videos
+
+  cypress-edge:
+    runs-on: windows-latest
+    needs: netlify
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: cypress-io/github-action@v2
+        with:
+          config: baseUrl=${{needs.netlify.outputs.url}}
+          browser: edge
+          working-directory: e2e
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e/cypress/screenshots
+
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e/cypress/videos
