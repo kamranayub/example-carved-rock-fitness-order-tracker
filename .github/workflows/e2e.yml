@@ -50,14 +50,13 @@ jobs:
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-chrome-screenshots
           path: e2e/cypress/screenshots
 
-      # Test run video was always captured, so this action uses "always()" condition
       - uses: actions/upload-artifact@v1
-        if: always()
+        if: failure()
         with:
-          name: cypress-videos
+          name: cypress-chrome-videos
           path: e2e/cypress/videos
 
   ###
@@ -80,13 +79,13 @@ jobs:
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-edge-screenshots
           path: e2e/cypress/screenshots
 
       - uses: actions/upload-artifact@v1
-        if: always()
+        if: failure()
         with:
-          name: cypress-videos
+          name: cypress-edge-videos
           path: e2e/cypress/videos
 
   ###
@@ -112,12 +111,13 @@ jobs:
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-firefox-screenshots
           path: e2e/cypress/screenshots
+
       - uses: actions/upload-artifact@v1
-        if: always()
+        if: failure()
         with:
-          name: cypress-videos
+          name: cypress-firefox-videos
           path: e2e/cypress/videos
 
   ###
@@ -144,11 +144,11 @@ jobs:
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: logs
+          name: wdio-logs
           path: e2e/wdio/logs
 
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: screenshots
+          name: wdio-screenshots
           path: e2e/wdio/screenshots
