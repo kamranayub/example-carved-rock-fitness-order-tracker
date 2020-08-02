@@ -4,6 +4,6 @@ describe("orders", () => {
   });
 
   it("should show orders list", () => {
-    cy.findByText("Order #1001").should("not.be.visible");
+    cy.findByText("Order #1001").should("be.visible");
   });
 });
