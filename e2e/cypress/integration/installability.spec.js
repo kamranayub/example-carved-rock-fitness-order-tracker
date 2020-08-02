@@ -37,7 +37,7 @@ describe("installability", () => {
       .click();
 
     cy.get("@installToast").should("not.exist");
-    cy.visit("/"); // cy.reload() hangs in FF
+    cy.reload();
     cy.window().triggerEvent("beforeinstallprompt");
     cy.get("@installToast").should("not.exist");
   });
