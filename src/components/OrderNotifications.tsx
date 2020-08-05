@@ -1,11 +1,12 @@
 import { IonToggle, IonToast, IonIcon } from "@ionic/react";
 import React, { FC, useState, useCallback, useEffect } from "react";
-import { usePermission, useLocalStorage } from "react-use";
+import { useLocalStorage } from "react-use";
 import { notificationsOff, notifications } from "ionicons/icons";
 import { OrderStatus } from "../data/api";
 import { subscribeToOrder, getOrder } from "../data/orders";
 import { useQuery } from "react-query";
 import useServiceWorkerBypass from "../use-sw-bypass";
+import usePermission from "../use-permission";
 import { setIonToastPresented } from "../util";
 
 interface OrderNotificationsProps {
@@ -23,6 +24,53 @@ function canTrackOrder(orderStatus: OrderStatus) {
   }
 }
 
+/**
+ * Wraps Notification.requestPermission for Safari compatibility
+ * and returns "denied" if notifications are unsupported
+ */
+async function requestNotificationPermission() {
+  if ("Notification" in window) {
+    const requestPromise = new Promise((resolve) =>
+      Notification.requestPermission(resolve)
+    );
+
+    const result = await requestPromise;
+    if (!result) {
+      // In Safari, we have to re-check the permission state
+      return Notification.permission;
+    }
+    return result;
+  }
+  return Promise.resolve("denied"); // unsupported
+}
+
+function useNotificationPermission() {
+  const notificationPermission = usePermission({ name: "notifications" });
+
+  if ("Notification" in window) {
+    // Safari mostly, since it doesn't support Permissions API
+    const localPermission = Notification.permission;
+
+    if (!notificationPermission) {
+      return localPermission;
+    }
+  }
+
+  return notificationPermission;
+}
+
+function sendTestNotification(orderId: string) {
+  //
+  // Simulate subscribing to an order from the server
+  //
+  subscribeToOrder(
+    parseInt(orderId, 10),
+
+    // We are passing an order status to send via notification for demo purposes
+    OrderStatus.Shipped
+  );
+}
+
 const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
   const [swBypass] = useServiceWorkerBypass();
   const { data: order } = useQuery(
@@ -35,7 +83,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
     setEnableNotifications,
     unsetEnableNotifications,
   ] = useLocalStorage("notifications/orders/" + orderId, false);
-  const notificationPermission = usePermission({ name: "notifications" });
+  const notificationPermission = useNotificationPermission();
   const [isPermissionGranted, setIsPermissionGranted] = useState(
     notificationPermission === "granted"
   );
@@ -49,42 +97,36 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
     setShowDisableNotificationToast,
   ] = useState(false);
 
-  const handleToggleChange = useCallback(
+  const handleToggleClick = useCallback(
     async (e) => {
       e.preventDefault();
 
-      const { checked } = e.detail;
+      const willBeEnabled = !enableNotifications;
 
       // check for permissions
       if (isPermissionGranted) {
-        setEnableNotifications(checked);
+        setEnableNotifications(willBeEnabled);
 
-        if (checked) {
+        if (willBeEnabled) {
           setShowEnableNotificationToast(true);
           setShowDisableNotificationToast(false);
-
-          //
-          // Simulate subscribing to an order from the server
-          //
-          subscribeToOrder(
-            parseInt(orderId, 10),
-
-            // We are passing an order status to send via notification for demo purposes
-            OrderStatus.Shipped
-          );
+          sendTestNotification(orderId);
         } else {
           setShowDisableNotificationToast(true);
           setShowEnableNotificationToast(false);
         }
       } else if (
-        notificationPermission === "prompt" ||
-        (notificationPermission as any) === "default" // some browsers
+        willBeEnabled &&
+        (notificationPermission === "prompt" ||
+          notificationPermission === "default")
       ) {
-        const promptPermission = await Notification.requestPermission();
+        const promptPermission = await requestNotificationPermission();
 
         if (promptPermission === "granted") {
-          if (!checked) {
+          if (willBeEnabled) {
             setEnableNotifications(true);
+            setShowEnableNotificationToast(true);
+            sendTestNotification(orderId);
           }
           setIsPermissionGranted(true);
         } else {
@@ -93,13 +135,21 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
           unsetEnableNotifications();
         }
       } else if (notificationPermission === "denied") {
-        setShowDeniedToast(true);
+        if (!willBeEnabled) {
+          setIsPermissionGranted(false);
+          setEnableNotifications(false);
+        } else {
+          setShowDeniedToast(true);
+        }
+      } else if (!willBeEnabled) {
+        unsetEnableNotifications();
       }
     },
     [
       orderId,
       isPermissionGranted,
       notificationPermission,
+      enableNotifications,
       setEnableNotifications,
       unsetEnableNotifications,
     ]
@@ -117,7 +167,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
       <IonToggle
         disabled={order ? !canTrackOrder(order.status) : true}
         checked={enableNotifications}
-        onIonChange={handleToggleChange}
+        onClick={handleToggleClick}
         style={{
           "--background":
             notificationPermission === "denied"
@@ -146,6 +196,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
         message="We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
         onDidPresent={setIonToastPresented}
         isOpen={showDeniedToast}
+        duration={5000}
         color="warning"
       />
     </>
