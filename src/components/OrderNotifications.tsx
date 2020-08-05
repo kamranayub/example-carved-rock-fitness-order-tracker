@@ -1,11 +1,12 @@
 import { IonToggle, IonToast, IonIcon } from "@ionic/react";
 import React, { FC, useState, useCallback, useEffect } from "react";
-import { usePermission, useLocalStorage } from "react-use";
+import { useLocalStorage } from "react-use";
 import { notificationsOff, notifications } from "ionicons/icons";
 import { OrderStatus } from "../data/api";
 import { subscribeToOrder, getOrder } from "../data/orders";
 import { useQuery } from "react-query";
 import useServiceWorkerBypass from "../use-sw-bypass";
+import usePermission from "../use-permission";
 import { setIonToastPresented } from "../util";
 
 interface OrderNotificationsProps {
