@@ -35,6 +35,21 @@ async function requestNotificationPermission() {
   return Promise.resolve("denied"); // unsupported
 }
 
+function useNotificationPermission() {
+  const notificationPermission = usePermission({ name: "notifications" });
+
+  if ("Notification" in window) {
+    // Safari mostly, since it doesn't support Permissions API
+    const localPermission = Notification.permission;
+
+    if (!notificationPermission) {
+      return localPermission;
+    }
+  }
+
+  return notificationPermission;
+}
+
 const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
   const [swBypass] = useServiceWorkerBypass();
   const { data: order } = useQuery(
@@ -47,7 +62,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
     setEnableNotifications,
     unsetEnableNotifications,
   ] = useLocalStorage("notifications/orders/" + orderId, false);
-  const notificationPermission = usePermission({ name: "notifications" });
+  const notificationPermission = useNotificationPermission();
   const [isPermissionGranted, setIsPermissionGranted] = useState(
     notificationPermission === "granted"
   );
@@ -155,6 +170,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
         message="We'll need permission before we can send you order updates. To enable, check your browser settings for this site."
         onDidPresent={setIonToastPresented}
         isOpen={showDeniedToast}
+        duration={5000}
         color="warning"
       />
     </>
