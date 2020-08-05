@@ -15,18 +15,31 @@ exports.config = merge(
 // We could add Chrome desktop here as well,
 // but this is an example of running separate real devices
 // in BS
+const common = {
+  project: "Carved Rock Fitness Order Tracker",
+  buildName: process.env.GITHUB_RUN_ID
+    ? `GitHub ${GITHUB_WORKFLOW} / ${process.env.GITHUB_RUN_ID}.${process.env.GITHUB_RUN_NUMBER}`
+    : "Local",
+};
 exports.config.capabilities = [
   {
     browserName: "Safari",
     device: "iPhone 11",
-    realMobile: "true",
+    real_mobile: "true",
     os_version: "13",
     deviceOrientation: "landscape",
 
     name: "iPhone 11 (landscape)",
+    ...common,
+  },
+  {
+    browserName: "Android",
+    device: "Google Pixel 4",
+    real_mobile: "true",
+    os_version: "11.0",
+
+    name: "Pixel 4",
     project: "Carved Rock Fitness Order Tracker",
-    buildName: process.env.GITHUB_RUN_ID
-      ? `GitHub ${GITHUB_WORKFLOW} / ${process.env.GITHUB_RUN_ID}.${process.env.GITHUB_RUN_NUMBER}`
-      : "Local",
+    ...common,
   },
 ];
