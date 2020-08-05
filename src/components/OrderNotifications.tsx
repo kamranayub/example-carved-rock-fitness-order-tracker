@@ -30,7 +30,16 @@ function canTrackOrder(orderStatus: OrderStatus) {
  */
 async function requestNotificationPermission() {
   if ("Notification" in window) {
-    return Promise.resolve(Notification.requestPermission);
+    const requestPromise = new Promise((resolve) =>
+      Notification.requestPermission(resolve)
+    );
+
+    const result = await requestPromise;
+    if (!result) {
+      // In Safari, we have to re-check the permission state
+      return Notification.permission;
+    }
+    return result;
   }
   return Promise.resolve("denied"); // unsupported
 }
@@ -48,6 +57,18 @@ function useNotificationPermission() {
   }
 
   return notificationPermission;
+}
+
+function sendTestNotification(orderId: string) {
+  //
+  // Simulate subscribing to an order from the server
+  //
+  subscribeToOrder(
+    parseInt(orderId, 10),
+
+    // We are passing an order status to send via notification for demo purposes
+    OrderStatus.Shipped
+  );
 }
 
 const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
@@ -76,39 +97,36 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
     setShowDisableNotificationToast,
   ] = useState(false);
 
-  const handleToggleChange = useCallback(
+  const handleToggleClick = useCallback(
     async (e) => {
       e.preventDefault();
 
-      const { checked } = e.detail;
+      const willBeEnabled = !enableNotifications;
 
       // check for permissions
       if (isPermissionGranted) {
-        setEnableNotifications(checked);
+        setEnableNotifications(willBeEnabled);
 
-        if (checked) {
+        if (willBeEnabled) {
           setShowEnableNotificationToast(true);
           setShowDisableNotificationToast(false);
-
-          //
-          // Simulate subscribing to an order from the server
-          //
-          subscribeToOrder(
-            parseInt(orderId, 10),
-
-            // We are passing an order status to send via notification for demo purposes
-            OrderStatus.Shipped
-          );
+          sendTestNotification(orderId);
         } else {
           setShowDisableNotificationToast(true);
           setShowEnableNotificationToast(false);
         }
-      } else if (notificationPermission !== "denied") {
+      } else if (
+        willBeEnabled &&
+        (notificationPermission === "prompt" ||
+          notificationPermission === "default")
+      ) {
         const promptPermission = await requestNotificationPermission();
 
         if (promptPermission === "granted") {
-          if (!checked) {
+          if (willBeEnabled) {
             setEnableNotifications(true);
+            setShowEnableNotificationToast(true);
+            sendTestNotification(orderId);
           }
           setIsPermissionGranted(true);
         } else {
@@ -117,13 +135,21 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
           unsetEnableNotifications();
         }
       } else if (notificationPermission === "denied") {
-        setShowDeniedToast(true);
+        if (!willBeEnabled) {
+          setIsPermissionGranted(false);
+          setEnableNotifications(false);
+        } else {
+          setShowDeniedToast(true);
+        }
+      } else if (!willBeEnabled) {
+        unsetEnableNotifications();
       }
     },
     [
       orderId,
       isPermissionGranted,
       notificationPermission,
+      enableNotifications,
       setEnableNotifications,
       unsetEnableNotifications,
     ]
@@ -141,7 +167,7 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
       <IonToggle
         disabled={order ? !canTrackOrder(order.status) : true}
         checked={enableNotifications}
-        onIonChange={handleToggleChange}
+        onClick={handleToggleClick}
         style={{
           "--background":
             notificationPermission === "denied"
