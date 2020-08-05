@@ -24,6 +24,17 @@ function canTrackOrder(orderStatus: OrderStatus) {
   }
 }
 
+/**
+ * Wraps Notification.requestPermission for Safari compatibility
+ * and returns "denied" if notifications are unsupported
+ */
+async function requestNotificationPermission() {
+  if ("Notification" in window) {
+    return Promise.resolve(Notification.requestPermission);
+  }
+  return Promise.resolve("denied"); // unsupported
+}
+
 const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
   const [swBypass] = useServiceWorkerBypass();
   const { data: order } = useQuery(
@@ -77,11 +88,8 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
           setShowDisableNotificationToast(true);
           setShowEnableNotificationToast(false);
         }
-      } else if (
-        notificationPermission === "prompt" ||
-        (notificationPermission as any) === "default" // some browsers
-      ) {
-        const promptPermission = await Notification.requestPermission();
+      } else if (notificationPermission !== "denied") {
+        const promptPermission = await requestNotificationPermission();
 
         if (promptPermission === "granted") {
           if (!checked) {
