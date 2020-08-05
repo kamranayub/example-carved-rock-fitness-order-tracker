@@ -1,4 +1,5 @@
 // Patched version: https://github.com/streamich/react-use/pull/1416/commits/5cebdf0618a64d59cfe7f8061de26ac622712a3f
+/* eslint-disable */
 import { useEffect, useState } from "react";
 import { off, on } from "react-use/lib/util";
 
