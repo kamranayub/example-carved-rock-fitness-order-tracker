@@ -34,9 +34,17 @@ You may build the sample locally, though it requires some extra dependencies due
 
 #### Install Global Dependencies
 
-This project uses Ionic Framework with React and to publish local packages, it uses [yalc](https://npmjs.com/package/yalc)
+This project uses Ionic Framework with React.
 
 ```bash
 npm install -g @ionic/cli
-npm install -g yalc
 ```
+
+## Patched Packages
+
+- `react-scripts` at `4d9fe49e71233fc1e8f05a26eb6e25755637375e`
+  - Uses workbox v5 pre-release
+- `react-use` at `5cebdf0618a64d59cfe7f8061de26ac622712a3f`
+  - Uses patch of `usePermission` hook
+
+These packages are in `.yalc` which can be managed by [yalc](https://npmjs.com/package/yalc).

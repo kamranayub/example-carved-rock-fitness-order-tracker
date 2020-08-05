@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "packages": {
+    "react-scripts": {
+      "signature": "ff8af13f681b7138811ff1d2ae72b2a3",
+      "file": true
+    },
+    "react-use": {
+      "signature": "60bb3077a6b4790e3d8b17c7243fdb40",
+      "file": true,
+      "replaced": "15.1.1"
+    }
+  }
+}

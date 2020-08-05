@@ -27,7 +27,7 @@
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
     "react-scripts": "file:.yalc/react-scripts",
-    "react-use": "15.1.1",
+    "react-use": "file:.yalc/react-use",
     "typescript": "3.8.3",
     "workbox-core": "5.1.3",
     "workbox-precaching": "5.1.3",
@@ -35,7 +35,6 @@
     "yalc": "1.0.0-pre.35"
   },
   "scripts": {
-    "postinstall": "yalc publish lib/create-react-app/packages/react-scripts && yalc add react-scripts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -68,6 +67,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,css,md,ts,tsx}": "prettier --write"
   }
 }
