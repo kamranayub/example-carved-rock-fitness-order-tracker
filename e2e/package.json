@@ -5,19 +5,23 @@
   "dependencies": {
     "@testing-library/cypress": "6.0.0",
     "@testing-library/user-event": "8.0.3",
+    "@wdio/browserstack-service": "6.1.15",
     "@wdio/cli": "6.1.24",
     "@wdio/local-runner": "6.1.24",
     "@wdio/mocha-framework": "6.1.19",
     "@wdio/spec-reporter": "6.1.23",
     "@wdio/sync": "6.1.14",
-    "cypress": "^4.11.0",
+    "cross-env": "7.0.2",
+    "cypress": "4.11.0",
     "cypress-browser-permissions": "1.0.5",
-    "cypress-plugin-retries": "1.5.2"
+    "cypress-plugin-retries": "1.5.2",
+    "deepmerge": "4.2.2"
   },
   "scripts": {
     "cypress": "cypress open",
     "cypress:run": "cypress run --browser chrome",
-    "wdio": "wdio wdio.conf.js"
+    "wdio": "wdio run wdio.conf.js",
+    "wdio:bs": "wdio run wdio.conf.bs.js"
   },
   "description": "End-to-end tests for sample Progressive Web App designed for the Testing Progressive Web Apps course"
 }
