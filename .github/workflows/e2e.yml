@@ -133,9 +133,7 @@ jobs:
       run:
         working-directory: e2e
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v2
       - run: npm ci
       - run: npm run wdio
         env:
@@ -153,6 +151,9 @@ jobs:
           name: wdio-screenshots
           path: e2e/wdio/screenshots
 
+  ###
+  # WebdriverIO BrowserStack tests
+  ##
   wdio-browserstack:
     runs-on: ubuntu-latest
     needs: netlify
@@ -163,24 +164,10 @@ jobs:
       run:
         working-directory: e2e
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v2
       - run: npm ci
       - run: npm run wdio:bs
         env:
           WDIO_BASE_URL: ${{ needs.netlify.outputs.url }}
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-
-      - uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: wdio-logs
-          path: e2e/wdio/logs
-
-      - uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: wdio-screenshots
-          path: e2e/wdio/screenshots
