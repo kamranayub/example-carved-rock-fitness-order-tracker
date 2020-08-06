@@ -5,7 +5,7 @@ import useIsAppInstalled from "../use-is-app-installed";
 import { setIonToastPresented } from "../util";
 
 /**
- * Customize the PWA installation prompt. Only supported in Chrome and Android.
+ * Customize the PWA installation prompt. Supported in Chrome and Android. For iOS or devices that do not support onbeforeinstallprompt, a generic toast is shown and automatically dismissed.
  */
 const InstallationPrompt: FC = () => {
   const [
@@ -13,6 +13,7 @@ const InstallationPrompt: FC = () => {
     setDeferredPrompt,
   ] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallToast, setShowInstallToast] = useState(true);
+  const [showGenericInstallToast, setShowGenericInstallToast] = useState(false);
   const [hasDismissed, setHasDismissed] = useSessionStorage(
     "dismissedInstallPrompt",
     false
@@ -55,6 +56,7 @@ const InstallationPrompt: FC = () => {
       setShowInstallToast(true);
     };
 
+    // Has already dismissed or installed
     if (ignorePrompt) {
       window.removeEventListener(
         "beforeinstallprompt",
@@ -63,53 +65,76 @@ const InstallationPrompt: FC = () => {
       return;
     }
 
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    if ("onbeforeinstallprompt" in window) {
+      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    } else {
+      // Show a generic toast prompt that auto-dismisses
+      // just for testing on devices that don't support customized
+      // prompts
+      setShowGenericInstallToast(true);
+    }
 
     return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt
-      );
+      if ("onbeforeinstallprompt" in window) {
+        window.removeEventListener(
+          "beforeinstallprompt",
+          handleBeforeInstallPrompt
+        );
+      }
     };
   }, [ignorePrompt, hasDismissed, hasInstalled, isAppInstalled]);
 
   return (
-    <IonToast
-      isOpen={showInstallToast}
-      message="Install this app for faster access next time"
-      onDidPresent={setIonToastPresented}
-      onDidDismiss={() => setShowInstallToast(false)}
-      position="bottom"
-      buttons={[
-        {
-          side: "start",
-          icon: "download-outline",
-          text: "Install Now",
-          handler: async () => {
-            deferredPrompt?.prompt();
+    <>
+      <IonToast
+        isOpen={showInstallToast}
+        message="Install this app for faster access next time"
+        onDidPresent={setIonToastPresented}
+        onDidDismiss={() => setShowInstallToast(false)}
+        position="bottom"
+        buttons={[
+          {
+            side: "start",
+            icon: "download-outline",
+            text: "Install Now",
+            handler: async () => {
+              deferredPrompt?.prompt();
 
-            const userChoice = await deferredPrompt?.userChoice;
+              const userChoice = await deferredPrompt?.userChoice;
 
-            if (userChoice?.outcome === "accepted") {
-              console.log("User accepted the install prompt");
-              setHasInstalled(true);
-            } else {
-              console.log("User dismissed the install prompt");
+              if (userChoice?.outcome === "accepted") {
+                console.log("User accepted the install prompt");
+                setHasInstalled(true);
+              } else {
+                console.log("User dismissed the install prompt");
+                setHasDismissed(true);
+              }
+
+              return true;
+            },
+          },
+          {
+            text: "Maybe Later",
+            role: "cancel",
+            handler: () => {
               setHasDismissed(true);
-            }
+            },
+          },
+        ]}
+      />
 
-            return true;
-          },
-        },
-        {
-          text: "Maybe Later",
-          role: "cancel",
-          handler: () => {
-            setHasDismissed(true);
-          },
-        },
-      ]}
-    />
+      <IonToast
+        isOpen={showGenericInstallToast}
+        message="Add this app to your homescreen for faster access!"
+        onDidPresent={setIonToastPresented}
+        onDidDismiss={() => {
+          setShowGenericInstallToast(false);
+          setHasDismissed(true);
+        }}
+        position="bottom"
+        duration={6000}
+      />
+    </>
   );
 };
 
