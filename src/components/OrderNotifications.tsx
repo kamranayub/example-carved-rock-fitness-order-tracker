@@ -173,17 +173,15 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
     }
   }, [notificationPermission]);
 
-  const canToggleTracking = areNotificationsSupported()
-    ? order
-      ? canTrackOrder(order.status)
-      : false
-    : false;
+  if (!areNotificationsSupported()) {
+    return null;
+  }
 
   return (
     <>
       <IonIcon icon={enableNotifications ? notifications : notificationsOff} />
       <IonToggle
-        disabled={!canToggleTracking}
+        disabled={order ? !canTrackOrder(order.status) : true}
         checked={enableNotifications}
         onClick={handleToggleClick}
         style={{
