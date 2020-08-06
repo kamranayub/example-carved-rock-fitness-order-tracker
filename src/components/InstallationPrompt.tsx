@@ -1,5 +1,5 @@
 import React, { useEffect, FC, useState, useLayoutEffect } from "react";
-import { IonToast } from "@ionic/react";
+import { IonToast, isPlatform } from "@ionic/react";
 import { useSessionStorage, useLocalStorage } from "react-use";
 import useIsAppInstalled from "../use-is-app-installed";
 import { setIonToastPresented } from "../util";
@@ -65,22 +65,19 @@ const InstallationPrompt: FC = () => {
       return;
     }
 
-    if ("onbeforeinstallprompt" in window) {
-      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-    } else {
-      // Show a generic toast prompt that auto-dismisses
-      // just for testing on devices that don't support customized
-      // prompts
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    // Show a generic toast prompt that auto-dismisses
+    // just for iOS to showcase manual testing
+    if (isPlatform("ios")) {
       setShowGenericInstallToast(true);
     }
 
     return () => {
-      if ("onbeforeinstallprompt" in window) {
-        window.removeEventListener(
-          "beforeinstallprompt",
-          handleBeforeInstallPrompt
-        );
-      }
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
     };
   }, [ignorePrompt, hasDismissed, hasInstalled, isAppInstalled]);
 
