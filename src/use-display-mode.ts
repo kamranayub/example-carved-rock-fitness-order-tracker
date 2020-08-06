@@ -15,8 +15,6 @@ export default function useDisplayMode(): DisplayMode {
 
   useEffect(() => {
     const handleDisplayModeMedia = (e: MediaQueryListEvent) => {
-      console.log('use-display-mode: changed');
-      
       if (e.matches) {
         setDisplayMode("standalone");
       } else {
