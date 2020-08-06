@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { getCacheKeyForURL } from "workbox-precaching";
 
 export type DisplayMode =
   | "browser tab"
