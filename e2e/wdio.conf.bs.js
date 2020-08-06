@@ -18,7 +18,7 @@ exports.config = merge(
 const common = {
   project: "Carved Rock Fitness Order Tracker",
   buildName: process.env.GITHUB_RUN_ID
-    ? `GitHub ${GITHUB_WORKFLOW} / ${process.env.GITHUB_RUN_ID}.${process.env.GITHUB_RUN_NUMBER}`
+    ? `GitHub ${process.env.GITHUB_WORKFLOW} / ${process.env.GITHUB_RUN_ID}.${process.env.GITHUB_RUN_NUMBER}`
     : "Local",
 };
 exports.config.capabilities = [
