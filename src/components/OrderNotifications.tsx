@@ -44,6 +44,18 @@ async function requestNotificationPermission() {
   return Promise.resolve("denied"); // unsupported
 }
 
+function areNotificationsSupported() {
+  if ("permissions" in navigator && navigator.permissions?.query) {
+    return true;
+  }
+
+  if ("Notification" in window) {
+    return true;
+  }
+
+  return false;
+}
+
 function useNotificationPermission() {
   const notificationPermission = usePermission({ name: "notifications" });
 
@@ -161,11 +173,17 @@ const OrderNotifications: FC<OrderNotificationsProps> = ({ orderId }) => {
     }
   }, [notificationPermission]);
 
+  const canToggleTracking = areNotificationsSupported()
+    ? order
+      ? canTrackOrder(order.status)
+      : false
+    : false;
+
   return (
     <>
       <IonIcon icon={enableNotifications ? notifications : notificationsOff} />
       <IonToggle
-        disabled={order ? !canTrackOrder(order.status) : true}
+        disabled={!canToggleTracking}
         checked={enableNotifications}
         onClick={handleToggleClick}
         style={{
