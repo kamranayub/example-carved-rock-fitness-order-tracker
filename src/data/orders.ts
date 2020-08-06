@@ -43,31 +43,39 @@ export async function getOrder(_: string, id: number, swBypass: boolean) {
  * @param id The order to subscribe to
  * @param status The status to forcefully update to (this wouldn't normally be provided by the client!)
  */
-export function subscribeToOrder(
-  id: number,
-  status: OrderStatus
-) {
+export function subscribeToOrder(id: number, status: OrderStatus) {
   setTimeout(() => {
-    queryCache.setQueryData<Order>(
-      ["order", id],
-      (existingOrder) => {
-        if (existingOrder) {
-          const n = new Notification(`Order #${existingOrder.id} Status`, {
-            body: `Your order with ${existingOrder.orderItems.length} items is now "${status}"`,
+    queryCache.setQueryData<Order>(["order", id], (existingOrder) => {
+      if (existingOrder) {
+        const title = `Order #${existingOrder.id} Status`;
+        const body = `Your order with ${existingOrder.orderItems.length} items is now "${status}"`;
+        try {
+          const n = new Notification(title, {
+            body,
           });
 
           n.addEventListener("show", () => {
-            console.log("notification shown!", n);
             if (typeof window.__CY_NOTIFICATION_PUSHED !== "undefined") {
               window.__CY_NOTIFICATION_PUSHED(n.body);
             }
           });
-
-          return { ...existingOrder, status };
-        } else {
-          throw new Error(`Order with ID ${id} not found in cache`);
+        } catch (error) {
+          // On mobile Chrome, you must use serviceWorkerRegistration.showNotification(). In reality, you'd probably do this instead of a "local" Notification above for all devices but this is an example of both
+          //
+          // Notably you can't listen to any events from this, but
+          // you can use registration.getNotifications() to check what
+          // was sent previously.
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification(title, {
+              body,
+            });
+          });
         }
+
+        return { ...existingOrder, status };
+      } else {
+        throw new Error(`Order with ID ${id} not found in cache`);
       }
-    );
+    });
   }, 5000);
 }
