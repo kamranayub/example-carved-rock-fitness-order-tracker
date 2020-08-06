@@ -47,7 +47,7 @@ async function requestNotificationPermission() {
 function useNotificationPermission() {
   const notificationPermission = usePermission({ name: "notifications" });
 
-  if ("Notification" in window) {
+  if (!navigator.permissions?.query) {
     // Safari mostly, since it doesn't support Permissions API
     const localPermission = Notification.permission;
 
