@@ -6,7 +6,9 @@ import useDisplayMode from "./use-display-mode";
  */
 export default function useIsAppInstalled() {
   const displayMode = useDisplayMode();
-  const [isAppInstalled, setIsAppInstalled] = useState(false);
+  const [isAppInstalled, setIsAppInstalled] = useState(
+    displayMode !== "browser tab"
+  );
 
   useEffect(() => {
     const handleAppInstalled = () => {
