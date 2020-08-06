@@ -1,8 +1,8 @@
 module.exports = {
   isRealMobileDevice() {
-    return !!browser.requestedCapabilities.realMobile;
+    return !!browser.requestedCapabilities.real_mobile;
   },
   isAndroidDevice() {
-    return !!browser.requestedCapabilities.browserName === "Android";
+    return browser.requestedCapabilities.browserName === "Android";
   },
 };
