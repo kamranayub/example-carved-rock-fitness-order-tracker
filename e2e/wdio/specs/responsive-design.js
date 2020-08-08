@@ -1,3 +1,5 @@
+const { isDevice } = require("util");
+
 describe("responsive design", () => {
   it("should load the homepage with order data", () => {
     browser.url("/");
@@ -8,8 +10,8 @@ describe("responsive design", () => {
   // Only run this test in Safari on iPhone 11
   // though we could be more robust and write a function
   // to return what devices might have the notch
-  browser.requestedCapabilities.device === "iPhone 11" &&
-    browser.requestedCapabilities.deviceOrientation === "landscape" &&
+  isDevice("iPhone 11") &&
+    isDeviceOrientation("landscape") &&
     it("should move content over to account for notch in landscape mode", () => {
       // Ionic will have a safe area variable set to the value
       // of `env(safe-area-inset-left)` when running in iPhone 11 Safari

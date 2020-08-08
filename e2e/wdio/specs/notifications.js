@@ -1,7 +1,7 @@
-const { isAndroidDevice } = require("../util");
+const { isAndroidChrome } = require("../util");
 
 describe("notifications", () => {
-  isAndroidDevice() &&
+  isAndroidChrome() &&
     it("should show notification on Android Chrome", () => {
       browser.url("/orders/1001");
       const notificationToggle = $("[aria-label='Toggle Push Notifications']");
