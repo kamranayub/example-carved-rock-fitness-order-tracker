@@ -1,4 +1,4 @@
-const { isDevice } = require("util");
+const { isDevice, isDeviceOrientation } = require("util");
 
 describe("responsive design", () => {
   it("should load the homepage with order data", () => {
