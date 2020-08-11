@@ -58,14 +58,6 @@ export function register(config?: Config) {
           );
         }
 
-        //
-        // Skip waiting during Cypress test run
-        //
-        if ("Cypress" in window && registration.waiting) {
-          console.log("Telling SW to skipWaiting during Cypress run");
-          registration.waiting.postMessage({ type: "SKIP_WAITING" });
-        }
-
         if (config && config.onReady) {
           config.onReady(registration);
         }

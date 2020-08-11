@@ -5,6 +5,10 @@ import { createGlobalState } from "react-use";
 
 import "./HeroImageCol.css";
 
+/**
+ * Global context state for setting the current hero image to display,
+ * which can change across pages
+ */
 export const useHeroImage = createGlobalState<string>("");
 
 const HeroImageCol: FC = () => {

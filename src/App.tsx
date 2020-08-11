@@ -5,6 +5,9 @@ import { IonReactRouter } from "@ionic/react-router";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import NetworkIndicator from "./components/NetworkIndicator";
+import Layout from "./components/Layout";
+import InstallationPrompt from "./components/InstallationPrompt";
+import CypressTestHooks from "./components/CypressTestHooks";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -24,9 +27,6 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import Layout from "./components/Layout";
-import InstallationPrompt from "./components/InstallationPrompt";
-import CypressTestHooks from "./components/CypressTestHooks";
 
 const App: React.FC = () => (
   <IonApp>

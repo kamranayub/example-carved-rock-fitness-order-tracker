@@ -65,13 +65,3 @@ registerRoute(
     ],
   })
 );
-
-self.addEventListener("message", function (event: ExtendableMessageEvent) {
-  if (event.data) {
-    switch (event.type) {
-      case "SKIP_WAITING":
-        self.skipWaiting();
-        break;
-    }
-  }
-});

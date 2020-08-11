@@ -1,11 +1,14 @@
 import { useEffect, FC } from "react";
 import useServiceWorkerBypass from "../use-sw-bypass";
 
+/**
+ * Handles loading and setting any Cypress global flags
+ * during a test run
+ */
 const CypressTestHooks: FC = () => {
   const [, setSwBypass] = useServiceWorkerBypass();
 
   useEffect(() => {
-
     // This will not take effect when service worker serves
     // the index.html route, only when SW bypass is enabled
     if ("Cypress" in window) {
