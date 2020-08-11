@@ -1,3 +1,9 @@
+/**
+ * Responsive design for specific devices
+ *
+ * This covers the iPhone 11 "notch" test case. We could add more coverage
+ * or even visual testing (see Percy, from BrowserStack) to enhance this further.
+ */
 const { isDevice, isDeviceOrientation } = require("../util");
 
 describe("responsive design", () => {
