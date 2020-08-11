@@ -22,6 +22,10 @@ Most of the major capabilities of the app and tests were done using Pull Request
 
 The sample app may evolve over time as new capabilities and features are available to test PWAs but if you need to reference specific code shown in the course, I've [tagged releases you can browse](https://github.com/kamranayub/example-carved-rock-fitness-order-tracker/releases).
 
+## Code Documentation
+
+The application code and tests are heavily documented for reference.
+
 ## Getting Started
 
 Clone or fork this repository to explore the code and tests.
