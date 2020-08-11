@@ -25,6 +25,12 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import "@testing-library/cypress/add-commands";
 
+/**
+ * Overwritten visit command that handles sending the correct querystring
+ * flags to bypass parts of service worker caching during tests. If the visited
+ * page is served by a service worker, Cypress is unable to stub or spy on
+ * window APIs or XHR requests so it's important to default for all visit requests.
+ */
 Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
   if (options.useSw) {
     // Bypass SW caching for ONLY document routes (i.e. API route will be cached)
@@ -41,6 +47,9 @@ Cypress.Commands.overwrite("visit", (originalFn, path, options = {}) => {
   });
 });
 
+/**
+ * Clears the window.sessionStorage store
+ */
 Cypress.Commands.add("clearSessionStorage", () => {
   cy.window().then((window) => {
     if (window.sessionStorage) {
@@ -49,6 +58,10 @@ Cypress.Commands.add("clearSessionStorage", () => {
   });
 });
 
+/**
+ * Waits for window.caches to contain the given cache name, and
+ * will wait for a min or max number of entries before proceeding
+ */
 Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
   cy.window()
     .its("caches")
@@ -72,6 +85,10 @@ Cypress.Commands.add("waitForCacheStorage", (cacheName, options = {}) => {
     });
 });
 
+/**
+ * Clears a window.caches storage by name and waits for it to be deleted
+ * completely.
+ */
 Cypress.Commands.add("clearCacheStorage", (cacheName) => {
   cy.window()
     .its("caches")
@@ -94,6 +111,10 @@ Cypress.Commands.add("clearCacheStorage", (cacheName) => {
     });
 });
 
+/**
+ * Dispatch an event with an optional payload, used for
+ * simulating browser events.
+ */
 Cypress.Commands.add(
   "triggerEvent",
   { prevSubject: "window" },
@@ -103,12 +124,17 @@ Cypress.Commands.add(
   }
 );
 
+/**
+ * Waits for the default Ionic timeout, which is specified
+ * from configuration
+ */
 Cypress.Commands.add("waitForIonicAnimations", () => {
   cy.wait(Cypress.env().ionicAnimationTimeout);
 });
 
 /**
- * Waits for initial orders to load from backend
+ * Waits for initial orders to load from backend and will
+ * use the Cypress pageLoadTimeout by default
  */
 Cypress.Commands.add("waitForAppReadiness", () => {
   cy.findByTestId("orders-list", {
