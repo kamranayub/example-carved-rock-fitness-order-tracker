@@ -1,8 +1,9 @@
 # Sample Progressive Web App for Testing Progressive Web Apps Pluralsight Course
 
-This sample app was created for the Pluralsight course, Testing Progressive Web Apps by [Kamran Ayub](https://github.com/kamranayub). The [course repository](https://github.com/kamranayub/pluralsight-testing-progressive-web-apps) contains errata and updates, as well as the examples shown in the course. The app itself is a demo Progressive Web App written in React and TypeScript using the [Ionic Framework](https://ionicframework.com/).
+This sample app was created for the Pluralsight course, [Testing Progressive Web Apps](https://bit.ly/PSPWATesting) by [Kamran Ayub](https://github.com/kamranayub). The app itself is a demo Progressive Web App written in React and TypeScript using the [Ionic Framework](https://ionicframework.com/).
 
-The app is available publicly at https://carved-rock-order-tracker-pwa.netlify.app/
+- 📹 Course: [Testing Progressive Web Apps](https://bit.ly/PSPWATesting) (and [materials repo](https://github.com/kamranayub/pluralsight-testing-progressive-web-apps))
+- 🌎 Sample: https://carved-rock-order-tracker-pwa.netlify.app/
 
 ## Features
 
@@ -18,9 +19,9 @@ The app is available publicly at https://carved-rock-order-tracker-pwa.netlify.a
 
 Most of the major capabilities of the app and tests were done using Pull Requests where I kept notes and documentation as I worked through the course. You can [reference them for more details](https://github.com/kamranayub/example-carved-rock-fitness-order-tracker/pulls?q=is%3Apr+sort%3Aupdated-desc+is%3Aclosed).
 
-## Course Reference
+## Course Updates
 
-The sample app may evolve over time as new capabilities and features are available to test PWAs but if you need to reference specific code shown in the course, you can reference [the course repository](https://github.com/kamranayub/pluralsight-testing-progressive-web-apps).
+The sample app may evolve over time as new capabilities and features are available to test PWAs but if you need to reference specific code shown in the course, you can view the [course repository and associated errata/updates](https://github.com/kamranayub/pluralsight-testing-progressive-web-apps).
 
 ## Code Documentation
 
