@@ -16,10 +16,10 @@ jobs:
     outputs:
       url: ${{ steps.netlify.outputs.url }}
     steps:
-      - uses: kamranayub/wait-for-netlify-action@v2.0.3
+      - uses: probablyup/wait-for-netlify-action@3.2.0
         id: netlify
         with:
-          site_name: "carved-rock-order-tracker-pwa"
+          site_id: "844b606a-25da-425c-9eb4-f2f362f9a9bc"
           max_timeout: 300
         env:
           NETLIFY_TOKEN: ${{secrets.NETLIFY_TOKEN}}
