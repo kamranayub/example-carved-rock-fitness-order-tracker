@@ -21,7 +21,7 @@
     "eslint-plugin-cypress": "2.11.1",
     "ionicons": "5.0.0",
     "localforage": "1.7.4",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-query": "1.5.3",
