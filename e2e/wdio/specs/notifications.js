@@ -11,26 +11,28 @@ describe("notifications", () => {
   // Only execute this test on Android Chrome, since
   // we switch to the NATIVE_APP context
   isAndroidChrome() &&
-    it("should show notification on Android Chrome", () => {
+    it("should show notification on Android Chrome", async () => {
       // Browse directly to the order detail page
-      browser.url("/orders/1001");
+      await browser.url("/orders/1001");
 
       // Grab the notification toggle by its ARIA label and toggle it
-      const notificationToggle = $("[aria-label='Toggle Push Notifications']");
+      const notificationToggle = await $(
+        "[aria-label='Toggle Push Notifications']"
+      );
       expect(notificationToggle).toHaveAttr("aria-checked", "false");
-      notificationToggle.click();
+      await notificationToggle.click();
 
       // A native prompt is being shown, so we have to
       // switch contexts
-      const webCtx = browser.getContext();
-      browser.switchContext("NATIVE_APP");
+      const webCtx = await browser.getContext();
+      await browser.switchContext("NATIVE_APP");
 
       // Grab the Allow button by XPath syntax
-      const allowButton = $("//android.widget.Button[@text='Allow']");
-      allowButton.click();
+      const allowButton = await $("//android.widget.Button[@text='Allow']");
+      await allowButton.click();
 
       // Switch back to the original CHROMIUM web context
-      browser.switchContext(webCtx);
+      await browser.switchContext(webCtx);
 
       // The toggle should be enabled
       expect(notificationToggle).toHaveAttr("aria-checked", "true");
@@ -40,9 +42,9 @@ describe("notifications", () => {
       // as local notifications don't work. If the order status changes,
       // the notification was successful otherwise it throws an error
       // preventing the status from changing.
-      browser.waitUntil(
-        () => {
-          const orderStatus = $("ion-card-title[role='heading']");
+      await browser.waitUntil(
+        async () => {
+          const orderStatus = await $("ion-card-title[role='heading']");
 
           return orderStatus.getText() === "shipped";
         },

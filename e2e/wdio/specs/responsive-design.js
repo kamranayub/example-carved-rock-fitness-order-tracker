@@ -7,9 +7,9 @@
 const { isDevice, isDeviceOrientation } = require("../util");
 
 describe("responsive design", () => {
-  it("should load the homepage with order data", () => {
-    browser.url("/");
-    const ordersList = $("[data-testid='orders-list']");
+  it("should load the homepage with order data", async () => {
+    await browser.url("/");
+    const ordersList = await $("[data-testid='orders-list']");
     expect(ordersList).toBeDisplayed();
   });
 
@@ -18,11 +18,11 @@ describe("responsive design", () => {
   // to return what devices might have the notch
   isDevice("iPhone 11") &&
     isDeviceOrientation("landscape") &&
-    it("should move content over to account for notch in landscape mode", () => {
+    it("should move content over to account for notch in landscape mode", async () => {
       // Ionic will have a safe area variable set to the value
       // of `env(safe-area-inset-left)` when running in iPhone 11 Safari
       // to adjust for the notch when viewport-fit=cover is applied
-      const ionSafeAreaLeft = browser.execute(() =>
+      const ionSafeAreaLeft = await browser.execute(() =>
         getComputedStyle(document.querySelector("html")).getPropertyValue(
           "--ion-safe-area-left"
         )
