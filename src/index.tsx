@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 function initializeApp() {
   ReactDOM.render(<App />, document.getElementById("root"));
@@ -11,7 +11,7 @@ function initializeApp() {
 
   // Add class names for Cypress' benefit
   // to check whether service worker is ready
-  serviceWorker.register({
+  serviceWorkerRegistration.register({
     onSuccess() {
       document.querySelector("html")?.classList.add("sw", "sw-registered");
     },
